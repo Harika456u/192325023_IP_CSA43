@@ -1,1 +1,2072 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+
+    <title>Library Management System</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+        body {
+            font-family: Arial;
+            margin: 25px;
+            background: #f5f7fa;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ccc;
+        }
+
+        input,
+        select,
+        textarea {
+            padding: 10px;
+            margin: 5px;
+            width: 230px;
+        }
+
+        button,
+        input[type="submit"] {
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background: white;
+        }
+
+        th,
+        td {
+            border: 1px solid #999;
+            padding: 10px;
+        }
+
+        th {
+            background: #e6e6e6;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+
+        .dashboard {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            padding: 20px;
+            background: #eaf2ff;
+            min-width: 150px;
+            border-radius: 8px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<h1>Library Management System</h1>
+
+
+<!-- ================= LOGIN ================= -->
+
+<div class="box">
+
+    <h2>Login</h2>
+
+    <input
+        type="text"
+        id="loginRoll"
+        placeholder="Roll Number">
+
+    <input
+        type="password"
+        id="loginPassword"
+        placeholder="Password">
+
+    <button onclick="login()">
+        Login
+    </button>
+
+    <p>
+        Admin Login:
+        <b>admin</b> /
+        <b>admin123</b>
+    </p>
+
+    <p id="loginResult"></p>
+
+</div>
+
+
+
+<!-- ================= STUDENT REGISTRATION ================= -->
+
+<div class="box">
+
+    <h2>Student Registration</h2>
+
+    <form id="studentForm">
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Student Name"
+            required>
+
+        <input
+            type="text"
+            id="roll"
+            placeholder="Roll Number"
+            required>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Email"
+            required>
+
+        <input
+            type="text"
+            id="phone"
+            placeholder="Phone">
+
+        <select id="department">
+
+            <option>AIML</option>
+            <option>CSE</option>
+            <option>ECE</option>
+            <option>IT</option>
+
+        </select>
+
+        <select id="year">
+
+            <option>1st Year</option>
+            <option>2nd Year</option>
+            <option>3rd Year</option>
+            <option>4th Year</option>
+
+        </select>
+
+        <select id="gender">
+
+            <option>Male</option>
+            <option>Female</option>
+
+        </select>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            required>
+
+        <br>
+
+        <input
+            type="submit"
+            value="Register Student">
+
+    </form>
+
+    <p id="studentResult"></p>
+
+</div>
+
+
+
+<!-- ================= ADMIN ================= -->
+
+<div id="adminArea" class="hidden">
+
+
+<!-- DASHBOARD -->
+
+<div class="box">
+
+    <h2>Admin Dashboard</h2>
+
+    <div class="dashboard">
+
+        <div class="card">
+            Students:
+            <b id="studentCount">0</b>
+        </div>
+
+        <div class="card">
+            Books:
+            <b id="bookCount">0</b>
+        </div>
+
+        <div class="card">
+            Issued:
+            <b id="issuedCount">0</b>
+        </div>
+
+        <div class="card">
+            Fine:
+            ₹<b id="fineCount">0</b>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- STUDENTS -->
+
+<div class="box">
+
+    <h2>Registered Students</h2>
+
+    <button onclick="loadStudents()">
+        Refresh Students
+    </button>
+
+    <table id="studentTable">
+
+        <tr>
+
+            <th>Name</th>
+            <th>Roll</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Department</th>
+            <th>Year</th>
+            <th>Gender</th>
+
+        </tr>
+
+    </table>
+
+</div>
+
+
+
+<!-- ADD BOOK -->
+
+<div class="box">
+
+    <h2>Add Book</h2>
+
+    <form id="bookForm">
+
+        <input
+            type="text"
+            id="bookId"
+            placeholder="Book ID"
+            required>
+
+        <input
+            type="text"
+            id="bookName"
+            placeholder="Book Name"
+            required>
+
+        <input
+            type="text"
+            id="author"
+            placeholder="Author"
+            required>
+
+        <input
+            type="text"
+            id="category"
+            placeholder="Category">
+
+        <input
+            type="number"
+            id="quantity"
+            placeholder="Quantity"
+            required>
+
+        <input
+            type="submit"
+            value="Add Book">
+
+    </form>
+
+    <p id="bookResult"></p>
+
+</div>
+
+
+
+<!-- BOOKS -->
+
+<div class="box">
+
+    <h2>Available Books</h2>
+
+    <button onclick="loadBooks()">
+        Refresh Books
+    </button>
+
+    <table id="bookTable">
+
+        <tr>
+
+            <th>Book ID</th>
+            <th>Book Name</th>
+            <th>Author</th>
+            <th>Category</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Action</th>
+
+        </tr>
+
+    </table>
+
+</div>
+
+
+
+<!-- ISSUE BOOK -->
+
+<div class="box">
+
+    <h2>Issue Book</h2>
+
+    <form id="issueForm">
+
+        <input
+            type="text"
+            id="issueRoll"
+            placeholder="Student Roll Number"
+            required>
+
+        <input
+            type="text"
+            id="issueBookId"
+            placeholder="Book ID"
+            required>
+
+        <input
+            type="date"
+            id="issueDate"
+            required>
+
+        <input
+            type="date"
+            id="returnDate"
+            required>
+
+        <input
+            type="submit"
+            value="Issue Book">
+
+    </form>
+
+    <p id="issueResult"></p>
+
+</div>
+
+
+
+<!-- RETURN -->
+
+<div class="box">
+
+    <h2>Return Book</h2>
+
+    <form id="returnForm">
+
+        <input
+            type="text"
+            id="returnRoll"
+            placeholder="Student Roll Number"
+            required>
+
+        <input
+            type="text"
+            id="returnBookId"
+            placeholder="Book ID"
+            required>
+
+        <input
+            type="date"
+            id="actualReturnDate"
+            required>
+
+        <input
+            type="submit"
+            value="Return Book">
+
+    </form>
+
+    <p id="returnResult"></p>
+
+</div>
+
+
+
+<!-- FINE -->
+
+<div class="box">
+
+    <h2>Fine</h2>
+
+    <form id="fineForm">
+
+        <input
+            type="text"
+            id="fineRoll"
+            placeholder="Student Roll Number"
+            required>
+
+        <input
+            type="number"
+            id="fineAmount"
+            placeholder="Fine Amount"
+            required>
+
+        <input
+            type="submit"
+            value="Add Fine">
+
+    </form>
+
+    <p id="fineResult"></p>
+
+</div>
+
+
+
+<!-- MATERIAL -->
+
+<div class="box">
+
+    <h2>Add Study Material</h2>
+
+    <form id="materialForm">
+
+        <input
+            type="text"
+            id="materialTitle"
+            placeholder="Material Title"
+            required>
+
+        <select id="materialYear">
+
+            <option>1st Year</option>
+            <option>2nd Year</option>
+            <option>3rd Year</option>
+            <option>4th Year</option>
+
+        </select>
+
+        <select id="materialSemester">
+
+            <option>Semester 1</option>
+            <option>Semester 2</option>
+
+        </select>
+
+        <input
+            type="text"
+            id="fileName"
+            placeholder="File Name">
+
+        <input
+            type="submit"
+            value="Add Material">
+
+    </form>
+
+    <p id="materialAdminResult"></p>
+
+</div>
+
+
+
+<!-- BORROW HISTORY -->
+
+<div class="box">
+
+    <h2>Borrow History</h2>
+
+    <button onclick="loadBorrowings()">
+        Refresh
+    </button>
+
+    <table id="borrowTable">
+
+        <tr>
+
+            <th>Roll</th>
+            <th>Book ID</th>
+            <th>Issue Date</th>
+            <th>Expected Return</th>
+            <th>Actual Return</th>
+            <th>Status</th>
+
+        </tr>
+
+    </table>
+
+</div>
+
+</div>
+
+
+
+<!-- ================= SEARCH BOOK ================= -->
+
+<div class="box">
+
+    <h2>Search Book</h2>
+
+    <input
+        type="text"
+        id="searchBook"
+        placeholder="Enter book name">
+
+    <button onclick="searchBooks()">
+        Search
+    </button>
+
+    <div id="searchResult"></div>
+
+</div>
+
+
+
+<!-- ================= MY HISTORY ================= -->
+
+<div class="box">
+
+    <h2>My Borrow History / Fine</h2>
+
+    <input
+        type="text"
+        id="myRoll"
+        placeholder="Enter Roll Number">
+
+    <button onclick="loadMyData()">
+        View My Data
+    </button>
+
+    <div id="myData"></div>
+
+</div>
+
+
+
+<!-- ================= MATERIAL SEARCH ================= -->
+
+<div class="box">
+
+    <h2>Search Study Material</h2>
+
+    <select id="searchYear">
+
+        <option>1st Year</option>
+        <option>2nd Year</option>
+        <option>3rd Year</option>
+        <option>4th Year</option>
+
+    </select>
+
+    <select id="searchSemester">
+
+        <option>Semester 1</option>
+        <option>Semester 2</option>
+
+    </select>
+
+    <button onclick="searchMaterial()">
+        Search Material
+    </button>
+
+    <div id="materialResult"></div>
+
+</div>
+
+
+
+<!-- ================= CONTACT ================= -->
+
+<div class="box">
+
+    <h2>Contact Form</h2>
+
+    <form id="contactForm">
+
+        <input
+            type="text"
+            id="contactName"
+            placeholder="Name"
+            required>
+
+        <input
+            type="email"
+            id="contactEmail"
+            placeholder="Email"
+            required>
+
+        <br>
+
+        <textarea
+            id="contactMessage"
+            rows="5"
+            placeholder="Message"
+            required></textarea>
+
+        <br>
+
+        <input
+            type="submit"
+            value="Submit">
+
+    </form>
+
+    <p id="contactResult"></p>
+
+</div>
+
+
+
+<script>
+
+
+// ================= API FUNCTION =================
+
+async function api(url, options = {}) {
+
+    const response = await fetch(url, {
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        ...options
+
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+
+        throw new Error(
+            data.error || "Something went wrong"
+        );
+
+    }
+
+    return data;
+
+}
+
+
+// ================= LOGIN =================
+
+async function login() {
+
+    try {
+
+        const data = await api(
+            "/api/login",
+            {
+                method: "POST",
+
+                body: JSON.stringify({
+
+                    roll:
+                        document.getElementById(
+                            "loginRoll"
+                        ).value,
+
+                    password:
+                        document.getElementById(
+                            "loginPassword"
+                        ).value
+
+                })
+
+            }
+        );
+
+
+        document.getElementById(
+            "loginResult"
+        ).innerHTML =
+            `<span class="success">
+                ${data.message}
+                - Welcome ${data.user.name}
+            </span>`;
+
+
+        if (data.user.role === "admin") {
+
+            document.getElementById(
+                "adminArea"
+            ).classList.remove("hidden");
+
+            loadStudents();
+            loadBooks();
+            loadBorrowings();
+            loadStats();
+
+        }
+
+
+        if (data.user.role === "student") {
+
+            document.getElementById(
+                "myRoll"
+            ).value =
+                data.user.roll;
+
+        }
+
+    }
+
+    catch (error) {
+
+        document.getElementById(
+            "loginResult"
+        ).innerHTML =
+            `<span class="error">
+                ${error.message}
+            </span>`;
+
+    }
+
+}
+
+
+
+// ================= REGISTER =================
+
+document.getElementById(
+    "studentForm"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        try {
+
+            const data =
+                await api(
+                    "/api/register",
+                    {
+
+                        method: "POST",
+
+                        body: JSON.stringify({
+
+                            name:
+                                document.getElementById(
+                                    "name"
+                                ).value,
+
+                            roll:
+                                document.getElementById(
+                                    "roll"
+                                ).value,
+
+                            email:
+                                document.getElementById(
+                                    "email"
+                                ).value,
+
+                            phone:
+                                document.getElementById(
+                                    "phone"
+                                ).value,
+
+                            department:
+                                document.getElementById(
+                                    "department"
+                                ).value,
+
+                            year:
+                                document.getElementById(
+                                    "year"
+                                ).value,
+
+                            gender:
+                                document.getElementById(
+                                    "gender"
+                                ).value,
+
+                            password:
+                                document.getElementById(
+                                    "password"
+                                ).value
+
+                        })
+
+                    }
+                );
+
+
+            document.getElementById(
+                "studentResult"
+            ).innerHTML =
+                `<span class="success">
+                    ${data.message}
+                </span>`;
+
+
+            document.getElementById(
+                "studentForm"
+            ).reset();
+
+        }
+
+        catch (error) {
+
+            document.getElementById(
+                "studentResult"
+            ).innerHTML =
+                `<span class="error">
+                    ${error.message}
+                </span>`;
+
+        }
+
+    }
+);
+
+
+
+// ================= LOAD STUDENTS =================
+
+async function loadStudents() {
+
+    const students =
+        await api(
+            "/api/students"
+        );
+
+
+    const table =
+        document.getElementById(
+            "studentTable"
+        );
+
+
+    table.innerHTML = `
+
+        <tr>
+
+            <th>Name</th>
+            <th>Roll</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Department</th>
+            <th>Year</th>
+            <th>Gender</th>
+
+        </tr>
+
+    `;
+
+
+    students.forEach(
+        student => {
+
+            const row =
+                table.insertRow();
+
+
+            row.insertCell(0)
+                .textContent =
+                student.name;
+
+            row.insertCell(1)
+                .textContent =
+                student.roll;
+
+            row.insertCell(2)
+                .textContent =
+                student.email;
+
+            row.insertCell(3)
+                .textContent =
+                student.phone;
+
+            row.insertCell(4)
+                .textContent =
+                student.department;
+
+            row.insertCell(5)
+                .textContent =
+                student.year;
+
+            row.insertCell(6)
+                .textContent =
+                student.gender;
+
+        }
+    );
+
+}
+
+
+
+// ================= ADD BOOK =================
+
+document.getElementById(
+    "bookForm"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        try {
+
+            const data =
+                await api(
+                    "/api/books",
+                    {
+
+                        method: "POST",
+
+                        body: JSON.stringify({
+
+                            bookId:
+                                document.getElementById(
+                                    "bookId"
+                                ).value,
+
+                            name:
+                                document.getElementById(
+                                    "bookName"
+                                ).value,
+
+                            author:
+                                document.getElementById(
+                                    "author"
+                                ).value,
+
+                            category:
+                                document.getElementById(
+                                    "category"
+                                ).value,
+
+                            quantity:
+                                document.getElementById(
+                                    "quantity"
+                                ).value
+
+                        })
+
+                    }
+                );
+
+
+            document.getElementById(
+                "bookResult"
+            ).textContent =
+                data.message;
+
+
+            document.getElementById(
+                "bookForm"
+            ).reset();
+
+
+            loadBooks();
+            loadStats();
+
+        }
+
+        catch (error) {
+
+            document.getElementById(
+                "bookResult"
+            ).textContent =
+                error.message;
+
+        }
+
+    }
+);
+
+
+
+// ================= LOAD BOOKS =================
+
+async function loadBooks() {
+
+    const books =
+        await api(
+            "/api/books"
+        );
+
+
+    const table =
+        document.getElementById(
+            "bookTable"
+        );
+
+
+    table.innerHTML = `
+
+        <tr>
+
+            <th>Book ID</th>
+            <th>Book Name</th>
+            <th>Author</th>
+            <th>Category</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Action</th>
+
+        </tr>
+
+    `;
+
+
+    books.forEach(
+        book => {
+
+            const row =
+                table.insertRow();
+
+
+            row.insertCell(0)
+                .textContent =
+                book.book_id;
+
+            row.insertCell(1)
+                .textContent =
+                book.name;
+
+            row.insertCell(2)
+                .textContent =
+                book.author;
+
+            row.insertCell(3)
+                .textContent =
+                book.category;
+
+            row.insertCell(4)
+                .textContent =
+                book.quantity;
+
+            row.insertCell(5)
+                .textContent =
+                book.status;
+
+
+            const action =
+                row.insertCell(6);
+
+
+            const edit =
+                document.createElement(
+                    "button"
+                );
+
+            edit.textContent =
+                "Edit";
+
+
+            edit.onclick =
+                () => editBook(book);
+
+
+            action.appendChild(
+                edit
+            );
+
+
+            const del =
+                document.createElement(
+                    "button"
+                );
+
+            del.textContent =
+                "Delete";
+
+
+            del.onclick =
+                () => deleteBook(book.id);
+
+
+            action.appendChild(
+                del
+            );
+
+        }
+    );
+
+}
+
+
+
+// ================= EDIT BOOK =================
+
+async function editBook(book) {
+
+    const name =
+        prompt(
+            "Book Name:",
+            book.name
+        );
+
+    if (name === null)
+        return;
+
+
+    const author =
+        prompt(
+            "Author:",
+            book.author
+        );
+
+
+    const category =
+        prompt(
+            "Category:",
+            book.category
+        );
+
+
+    const quantity =
+        prompt(
+            "Quantity:",
+            book.quantity
+        );
+
+
+    try {
+
+        await api(
+            "/api/books/" + book.id,
+            {
+
+                method: "PUT",
+
+                body: JSON.stringify({
+
+                    name,
+                    author,
+                    category,
+                    quantity
+
+                })
+
+            }
+        );
+
+
+        loadBooks();
+        loadStats();
+
+    }
+
+    catch (error) {
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+
+// ================= DELETE BOOK =================
+
+async function deleteBook(id) {
+
+    if (
+        !confirm(
+            "Delete this book?"
+        )
+    )
+        return;
+
+
+    try {
+
+        await api(
+            "/api/books/" + id,
+            {
+                method: "DELETE"
+            }
+        );
+
+
+        loadBooks();
+        loadStats();
+
+    }
+
+    catch (error) {
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+
+
+// ================= SEARCH BOOK =================
+
+async function searchBooks() {
+
+    const search =
+        document.getElementById(
+            "searchBook"
+        ).value;
+
+
+    const books =
+        await api(
+            "/api/search-books?q=" +
+            encodeURIComponent(
+                search
+            )
+        );
+
+
+    const result =
+        document.getElementById(
+            "searchResult"
+        );
+
+
+    if (books.length === 0) {
+
+        result.innerHTML =
+            "<p>Book not found.</p>";
+
+        return;
+
+    }
+
+
+    let html = `
+
+        <table>
+
+        <tr>
+
+            <th>Book ID</th>
+            <th>Book Name</th>
+            <th>Author</th>
+            <th>Category</th>
+            <th>Quantity</th>
+            <th>Status</th>
+
+        </tr>
+
+    `;
+
+
+    books.forEach(
+        book => {
+
+            html += `
+
+                <tr>
+
+                    <td>${book.book_id}</td>
+
+                    <td>${book.name}</td>
+
+                    <td>${book.author}</td>
+
+                    <td>${book.category}</td>
+
+                    <td>${book.quantity}</td>
+
+                    <td>${book.status}</td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    html += "</table>";
+
+
+    result.innerHTML =
+        html;
+
+}
+
+
+
+// ================= ISSUE BOOK =================
+
+document.getElementById(
+    "issueForm"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        try {
+
+            const data =
+                await api(
+                    "/api/issue",
+                    {
+
+                        method: "POST",
+
+                        body: JSON.stringify({
+
+                            roll:
+                                document.getElementById(
+                                    "issueRoll"
+                                ).value,
+
+                            bookId:
+                                document.getElementById(
+                                    "issueBookId"
+                                ).value,
+
+                            issueDate:
+                                document.getElementById(
+                                    "issueDate"
+                                ).value,
+
+                            returnDate:
+                                document.getElementById(
+                                    "returnDate"
+                                ).value
+
+                        })
+
+                    }
+                );
+
+
+            document.getElementById(
+                "issueResult"
+            ).textContent =
+                data.message;
+
+
+            document.getElementById(
+                "issueForm"
+            ).reset();
+
+
+            loadBooks();
+            loadBorrowings();
+            loadStats();
+
+        }
+
+        catch (error) {
+
+            document.getElementById(
+                "issueResult"
+            ).textContent =
+                error.message;
+
+        }
+
+    }
+);
+
+
+
+// ================= RETURN BOOK =================
+
+document.getElementById(
+    "returnForm"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        try {
+
+            const data =
+                await api(
+                    "/api/return",
+                    {
+
+                        method: "POST",
+
+                        body: JSON.stringify({
+
+                            roll:
+                                document.getElementById(
+                                    "returnRoll"
+                                ).value,
+
+                            bookId:
+                                document.getElementById(
+                                    "returnBookId"
+                                ).value,
+
+                            actualReturnDate:
+                                document.getElementById(
+                                    "actualReturnDate"
+                                ).value
+
+                        })
+
+                    }
+                );
+
+
+            document.getElementById(
+                "returnResult"
+            ).textContent =
+                data.message;
+
+
+            document.getElementById(
+                "returnForm"
+            ).reset();
+
+
+            loadBooks();
+            loadBorrowings();
+            loadStats();
+
+        }
+
+        catch (error) {
+
+            document.getElementById(
+                "returnResult"
+            ).textContent =
+                error.message;
+
+        }
+
+    }
+);
+
+
+
+// ================= FINE =================
+
+document.getElementById(
+    "fineForm"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        try {
+
+            const data =
+                await api(
+                    "/api/fines",
+                    {
+
+                        method: "POST",
+
+                        body: JSON.stringify({
+
+                            roll:
+                                document.getElementById(
+                                    "fineRoll"
+                                ).value,
+
+                            amount:
+                                document.getElementById(
+                                    "fineAmount"
+                                ).value
+
+                        })
+
+                    }
+                );
+
+
+            document.getElementById(
+                "fineResult"
+            ).textContent =
+                data.message;
+
+
+            document.getElementById(
+                "fineForm"
+            ).reset();
+
+
+            loadStats();
+
+        }
+
+        catch (error) {
+
+            document.getElementById(
+                "fineResult"
+            ).textContent =
+                error.message;
+
+        }
+
+    }
+);
+
+
+
+// ================= MATERIAL =================
+
+document.getElementById(
+    "materialForm"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        try {
+
+            const data =
+                await api(
+                    "/api/materials",
+                    {
+
+                        method: "POST",
+
+                        body: JSON.stringify({
+
+                            title:
+                                document.getElementById(
+                                    "materialTitle"
+                                ).value,
+
+                            year:
+                                document.getElementById(
+                                    "materialYear"
+                                ).value,
+
+                            semester:
+                                document.getElementById(
+                                    "materialSemester"
+                                ).value,
+
+                            fileName:
+                                document.getElementById(
+                                    "fileName"
+                                ).value
+
+                        })
+
+                    }
+                );
+
+
+            document.getElementById(
+                "materialAdminResult"
+            ).textContent =
+                data.message;
+
+
+            document.getElementById(
+                "materialForm"
+            ).reset();
+
+        }
+
+        catch (error) {
+
+            document.getElementById(
+                "materialAdminResult"
+            ).textContent =
+                error.message;
+
+        }
+
+    }
+);
+
+
+
+// ================= SEARCH MATERIAL =================
+
+async function searchMaterial() {
+
+    const year =
+        document.getElementById(
+            "searchYear"
+        ).value;
+
+
+    const semester =
+        document.getElementById(
+            "searchSemester"
+        ).value;
+
+
+    const materials =
+        await api(
+            `/api/materials?year=${encodeURIComponent(year)}&semester=${encodeURIComponent(semester)}`
+        );
+
+
+    const result =
+        document.getElementById(
+            "materialResult"
+        );
+
+
+    if (materials.length === 0) {
+
+        result.innerHTML =
+            "No study material found.";
+
+        return;
+
+    }
+
+
+    let html = `
+
+        <table>
+
+            <tr>
+
+                <th>Title</th>
+                <th>Year</th>
+                <th>Semester</th>
+                <th>File</th>
+
+            </tr>
+
+    `;
+
+
+    materials.forEach(
+        material => {
+
+            html += `
+
+                <tr>
+
+                    <td>
+                        ${material.title}
+                    </td>
+
+                    <td>
+                        ${material.year}
+                    </td>
+
+                    <td>
+                        ${material.semester}
+                    </td>
+
+                    <td>
+                        ${material.file_name}
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    html += "</table>";
+
+
+    result.innerHTML =
+        html;
+
+}
+
+
+
+// ================= BORROW HISTORY =================
+
+async function loadBorrowings() {
+
+    const borrowings =
+        await api(
+            "/api/borrowings"
+        );
+
+
+    const table =
+        document.getElementById(
+            "borrowTable"
+        );
+
+
+    table.innerHTML = `
+
+        <tr>
+
+            <th>Roll</th>
+            <th>Book ID</th>
+            <th>Issue Date</th>
+            <th>Expected Return</th>
+            <th>Actual Return</th>
+            <th>Status</th>
+
+        </tr>
+
+    `;
+
+
+    borrowings.forEach(
+        borrow => {
+
+            const row =
+                table.insertRow();
+
+
+            row.insertCell(0)
+                .textContent =
+                borrow.roll;
+
+            row.insertCell(1)
+                .textContent =
+                borrow.book_id;
+
+            row.insertCell(2)
+                .textContent =
+                borrow.issue_date;
+
+            row.insertCell(3)
+                .textContent =
+                borrow.expected_return_date;
+
+            row.insertCell(4)
+                .textContent =
+                borrow.actual_return_date || "";
+
+            row.insertCell(5)
+                .textContent =
+                borrow.status;
+
+        }
+    );
+
+}
+
+
+
+// ================= MY DATA =================
+
+async function loadMyData() {
+
+    const roll =
+        document.getElementById(
+            "myRoll"
+        ).value;
+
+
+    const borrowings =
+        await api(
+            "/api/borrowings?roll=" +
+            encodeURIComponent(
+                roll
+            )
+        );
+
+
+    const fines =
+        await api(
+            "/api/fines?roll=" +
+            encodeURIComponent(
+                roll
+            )
+        );
+
+
+    let html = `
+
+        <h3>Borrow History</h3>
+
+        <table>
+
+            <tr>
+
+                <th>Book ID</th>
+                <th>Issue Date</th>
+                <th>Expected Return</th>
+                <th>Actual Return</th>
+                <th>Status</th>
+
+            </tr>
+
+    `;
+
+
+    borrowings.forEach(
+        borrow => {
+
+            html += `
+
+                <tr>
+
+                    <td>
+                        ${borrow.book_id}
+                    </td>
+
+                    <td>
+                        ${borrow.issue_date}
+                    </td>
+
+                    <td>
+                        ${borrow.expected_return_date}
+                    </td>
+
+                    <td>
+                        ${borrow.actual_return_date || ""}
+                    </td>
+
+                    <td>
+                        ${borrow.status}
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    html += `
+
+        </table>
+
+        <h3>Fine</h3>
+
+        <table>
+
+            <tr>
+
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+
+            </tr>
+
+    `;
+
+
+    fines.forEach(
+        fine => {
+
+            html += `
+
+                <tr>
+
+                    <td>
+                        ₹${fine.amount}
+                    </td>
+
+                    <td>
+                        ${fine.status}
+                    </td>
+
+                    <td>
+                        ${fine.created_at}
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    html += "</table>";
+
+
+    document.getElementById(
+        "myData"
+    ).innerHTML =
+        html;
+
+}
+
+
+
+// ================= CONTACT =================
+
+document.getElementById(
+    "contactForm"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        try {
+
+            const data =
+                await api(
+                    "/api/contact",
+                    {
+
+                        method: "POST",
+
+                        body: JSON.stringify({
+
+                            name:
+                                document.getElementById(
+                                    "contactName"
+                                ).value,
+
+                            email:
+                                document.getElementById(
+                                    "contactEmail"
+                                ).value,
+
+                            message:
+                                document.getElementById(
+                                    "contactMessage"
+                                ).value
+
+                        })
+
+                    }
+                );
+
+
+            document.getElementById(
+                "contactResult"
+            ).textContent =
+                data.message;
+
+
+            document.getElementById(
+                "contactForm"
+            ).reset();
+
+        }
+
+        catch (error) {
+
+            document.getElementById(
+                "contactResult"
+            ).textContent =
+                error.message;
+
+        }
+
+    }
+);
+
+
+
+// ================= STATISTICS =================
+
+async function loadStats() {
+
+    const stats =
+        await api(
+            "/api/stats"
+        );
+
+
+    document.getElementById(
+        "studentCount"
+    ).textContent =
+        stats.students;
+
+
+    document.getElementById(
+        "bookCount"
+    ).textContent =
+        stats.books;
+
+
+    document.getElementById(
+        "issuedCount"
+    ).textContent =
+        stats.issued;
+
+
+    document.getElementById(
+        "fineCount"
+    ).textContent =
+        stats.fines;
+
+}
+
+
+
+// ================= DATE =================
+
+window.onload = function() {
+
+    const today =
+        new Date()
+        .toISOString()
+        .split("T")[0];
+
+
+    document.getElementById(
+        "issueDate"
+    ).value =
+        today;
+
+
+    document.getElementById(
+        "actualReturnDate"
+    ).value =
+        today;
+
+};
+
+</script>
+
+</body>
+
+</html>
