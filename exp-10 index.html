@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StyleHub - Online Fashion Store</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #fff8f5;
+    color: #30243b;
+}
+
+header {
+    background: #40264f;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+header h1 {
+    color: #ffc4d6;
+    font-size: 36px;
+    margin-bottom: 8px;
+}
+
+nav {
+    background: #ffc4d6;
+    padding: 13px;
+    text-align: center;
+}
+
+nav a {
+    display: inline-block;
+    margin: 7px;
+    text-decoration: none;
+    color: #40264f;
+    font-weight: bold;
+}
+
+nav a:hover {
+    background: #40264f;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.banner {
+    background: linear-gradient(120deg, #f8dce7, #eee0ff);
+    padding: 35px 20px;
+    text-align: center;
+}
+
+.banner h2 {
+    color: #40264f;
+    margin-bottom: 12px;
+    font-size: 30px;
+}
+
+section {
+    background: white;
+    margin: 18px;
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 2px 9px #eadce8;
+}
+
+h2 {
+    color: #874b91;
+    margin-bottom: 16px;
+}
+
+h3 {
+    margin: 10px 0;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 11px;
+    margin: 8px 0 14px;
+    border: 1px solid #ddcce0;
+    border-radius: 6px;
+}
+
+button {
+    background: #874b91;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 4px;
+}
+
+button:hover {
+    background: #40264f;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 18px;
+}
+
+.card {
+    background: #fffafd;
+    border: 1px solid #ead8e9;
+    border-radius: 10px;
+    padding: 14px;
+}
+
+.card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.price {
+    color: #b13f70;
+    font-weight: bold;
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.tag {
+    display: inline-block;
+    background: #fbe1eb;
+    color: #783c70;
+    border-radius: 5px;
+    padding: 5px 8px;
+    font-size: 12px;
+}
+
+.offer {
+    background: #fff0cf;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 12px;
+}
+
+footer {
+    background: #40264f;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ead8e9;
+    text-align: left;
+}
+
+th {
+    background: #f8dce7;
+}
+
+@media(max-width: 600px) {
+    section {
+        margin: 9px;
+        padding: 15px;
+    }
+
+    .banner h2 {
+        font-size: 24px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>StyleHub</h1>
+    <p>Fashion for Every Style, Every Day</p>
+    <p>Men | Women | Kids | Footwear | Accessories</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#register">Register</a>
+    <a href="#login">Login</a>
+    <a href="#products">Shop</a>
+    <a href="#sizeguide">Size Guide</a>
+    <a href="#cart">Cart</a>
+    <a href="#wishlist">Wishlist</a>
+    <a href="#checkout">Checkout</a>
+    <a href="#orders">My Orders</a>
+    <a href="#returns">Returns</a>
+    <a href="#admin">Admin</a>
+</nav>
+
+<div class="banner" id="home">
+    <h2>Discover Your Signature Style</h2>
+    <p>Explore the latest fashion trends at affordable prices.</p>
+    <p class="offer">Special Offer: Enjoy exclusive discounts on selected styles!</p>
+    <br>
+    <a href="#products">Explore Collection ↓</a>
+</div>
+
+<section>
+    <h2>Shop by Category</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>👔 Men</h3>
+            <p>Shirts, T-shirts, trousers and jackets.</p>
+            <a href="#products">Shop Men</a>
+        </div>
+        <div class="card">
+            <h3>👗 Women</h3>
+            <p>Dresses, tops, jeans and ethnic wear.</p>
+            <a href="#products">Shop Women</a>
+        </div>
+        <div class="card">
+            <h3>🧒 Kids</h3>
+            <p>Comfortable and colorful kidswear.</p>
+            <a href="#products">Shop Kids</a>
+        </div>
+        <div class="card">
+            <h3>👟 Footwear</h3>
+            <p>Sneakers, sandals and formal shoes.</p>
+            <a href="#products">Shop Footwear</a>
+        </div>
+        <div class="card">
+            <h3>👜 Accessories</h3>
+            <p>Bags, watches and fashion accessories.</p>
+            <a href="#products">Shop Accessories</a>
+        </div>
+    </div>
+</section>
+
+<section id="register">
+    <h2>Customer Registration</h2>
+    <form onsubmit="registerUser(event)">
+        <label>Full Name</label>
+        <input id="regName" required placeholder="Enter your name">
+
+        <label>Email</label>
+        <input id="regEmail" type="email" required placeholder="Enter email">
+
+        <label>Phone Number</label>
+        <input id="regPhone" type="tel" required placeholder="Enter phone number">
+
+        <label>Password</label>
+        <input id="regPassword" type="password" required placeholder="Create password">
+
+        <button type="submit">Register</button>
+    </form>
+    <p id="registerMessage"></p>
+</section>
+
+<section id="login">
+    <h2>Customer Login</h2>
+    <form onsubmit="loginUser(event)">
+        <label>Email</label>
+        <input id="loginEmail" type="email" required>
+
+        <label>Password</label>
+        <input id="loginPassword" type="password" required>
+
+        <button type="submit">Login</button>
+        <button type="button" onclick="logoutUser()">Logout</button>
+    </form>
+    <p id="loginMessage"></p>
+</section>
+
+<section id="products">
+    <h2>Fashion Collection</h2>
+
+    <label>Search Products</label>
+    <input id="search" placeholder="Search clothing, shoes, accessories..."
+           oninput="filterProducts()">
+
+    <label>Main Category</label>
+    <select id="category" onchange="updateSubcategories(); filterProducts()">
+        <option value="all">All Categories</option>
+        <option>Men</option>
+        <option>Women</option>
+        <option>Kids</option>
+        <option>Footwear</option>
+        <option>Accessories</option>
+    </select>
+
+    <label>Subcategory</label>
+    <select id="subcategory" onchange="filterProducts()">
+        <option value="all">All Subcategories</option>
+    </select>
+
+    <label>Maximum Price</label>
+    <select id="maxPrice" onchange="filterProducts()">
+        <option value="100000">All Prices</option>
+        <option value="500">Up to ₹500</option>
+        <option value="1000">Up to ₹1,000</option>
+        <option value="2000">Up to ₹2,000</option>
+        <option value="3000">Up to ₹3,000</option>
+    </select>
+
+    <div class="grid" id="productList"></div>
+    <p id="noProducts" hidden>No products found.</p>
+</section>
+
+<section id="sizeguide">
+    <h2>Size Guide</h2>
+    <p>Use this sample size chart to help select your clothing size.</p>
+    <table>
+        <tr>
+            <th>Size</th>
+            <th>Chest (inches)</th>
+            <th>Waist (inches)</th>
+        </tr>
+        <tr><td>S</td><td>34–36</td><td>28–30</td></tr>
+        <tr><td>M</td><td>38–40</td><td>32–34</td></tr>
+        <tr><td>L</td><td>42–44</td><td>36–38</td></tr>
+        <tr><td>XL</td><td>46–48</td><td>40–42</td></tr>
+    </table>
+    <p>Measurements vary by brand and product. Check each product's size information.</p>
+</section>
+
+<section id="cart">
+    <h2>Shopping Cart</h2>
+    <div id="cartItems">Your cart is empty.</div>
+    <h3 id="cartTotal">Total: ₹0</h3>
+</section>
+
+<section id="wishlist">
+    <h2>My Wishlist</h2>
+    <div id="wishlistItems">Your wishlist is empty.</div>
+</section>
+
+<section id="checkout">
+    <h2>Checkout</h2>
+    <form onsubmit="checkout(event)">
+        <label>Customer Name</label>
+        <input id="customerName" required>
+
+        <label>Email</label>
+        <input id="customerEmail" type="email" required>
+
+        <label>Delivery Address</label>
+        <textarea id="address" required placeholder="Enter your delivery address"></textarea>
+
+        <label>Payment Method</label>
+        <select id="payment">
+            <option>Cash on Delivery</option>
+            <option>UPI (Demo)</option>
+            <option>Credit / Debit Card (Demo)</option>
+        </select>
+
+        <button type="submit">Place Order</button>
+    </form>
+    <p id="checkoutMessage"></p>
+</section>
+
+<section id="orders">
+    <h2>Order Tracking and History</h2>
+    <label>Search by Order ID</label>
+    <input id="orderSearch" placeholder="Enter order number" oninput="showOrders()">
+    <div id="orderList">No orders placed yet.</div>
+</section>
+
+<section id="returns">
+    <h2>Return and Exchange Request</h2>
+    <form onsubmit="submitReturn(event)">
+        <label>Order ID</label>
+        <input id="returnOrderId" type="number" required>
+
+        <label>Request Type</label>
+        <select id="returnType">
+            <option>Return</option>
+            <option>Exchange</option>
+        </select>
+
+        <label>Reason</label>
+        <textarea id="returnReason" required></textarea>
+
+        <button type="submit">Submit Request</button>
+    </form>
+    <div id="returnMessage"></div>
+</section>
+
+<section id="reviews">
+    <h2>Customer Reviews</h2>
+    <p id="reviewProduct">Choose a product to review it.</p>
+
+    <form onsubmit="submitReview(event)">
+        <input id="reviewProductId" type="hidden">
+
+        <label>Your Name</label>
+        <input id="reviewName" required>
+
+        <label>Rating</label>
+        <select id="reviewRating">
+            <option value="5">5 - Excellent</option>
+            <option value="4">4 - Very Good</option>
+            <option value="3">3 - Good</option>
+            <option value="2">2 - Average</option>
+            <option value="1">1 - Poor</option>
+        </select>
+
+        <label>Review</label>
+        <textarea id="reviewComment" required></textarea>
+
+        <button type="submit">Submit Review</button>
+    </form>
+    <div id="reviewList"></div>
+</section>
+
+<section id="admin">
+    <h2>Administrator Login</h2>
+    <form onsubmit="adminLogin(event)">
+        <label>Username</label>
+        <input id="adminUser" required>
+
+        <label>Password</label>
+        <input id="adminPassword" type="password" required>
+
+        <button type="submit">Login as Admin</button>
+    </form>
+
+    <p id="adminMessage"></p>
+
+    <div id="adminPanel" hidden>
+        <h2>Manage Products</h2>
+        <form onsubmit="addProduct(event)">
+            <label>Product Name</label>
+            <input id="newName" required>
+
+            <label>Category</label>
+            <select id="newCategory">
+                <option>Men</option>
+                <option>Women</option>
+                <option>Kids</option>
+                <option>Footwear</option>
+                <option>Accessories</option>
+            </select>
+
+            <label>Subcategory</label>
+            <input id="newSubcategory" required placeholder="Example: Casual Wear">
+
+            <label>Price (₹)</label>
+            <input id="newPrice" type="number" min="1" required>
+
+            <label>Description</label>
+            <textarea id="newDescription" required></textarea>
+
+            <button type="submit">Add Product</button>
+        </form>
+
+        <h2>Update or Remove Products</h2>
+        <div id="adminProducts"></div>
+
+        <h2>Customer Checkout Information</h2>
+        <div id="customerOrders"></div>
+
+        <h2>Return and Exchange Requests</h2>
+        <div id="adminReturns"></div>
+    </div>
+</section>
+
+<footer>
+    <h3>StyleHub</h3>
+    <p>Style your life. Wear your confidence.</p>
+    <p>© 2026 StyleHub Online Fashion Store</p>
+</footer>
+
+<script>
+let products = [
+    {id:1,name:"Men's Casual Shirt",category:"Men",subcategory:"Casual Wear",price:899,size:"S, M, L, XL",description:"Comfortable cotton casual shirt for everyday wear.",image:"https://images.unsplash.com/photo-1603252110481-7ba873bf42ab?w=500"},
+    {id:2,name:"Women's Floral Dress",category:"Women",subcategory:"Dresses",price:1499,size:"S, M, L, XL",description:"Elegant floral dress suitable for outings and parties.",image:"https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=500"},
+    {id:3,name:"Kids' T-Shirt",category:"Kids",subcategory:"Casual Wear",price:499,size:"S, M, L",description:"Soft and colorful T-shirt for children.",image:"https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=500"},
+    {id:4,name:"Running Sneakers",category:"Footwear",subcategory:"Sports Shoes",price:1999,size:"6, 7, 8, 9, 10",description:"Lightweight sneakers designed for everyday comfort.",image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500"},
+    {id:5,name:"Fashion Handbag",category:"Accessories",subcategory:"Bags",price:1299,size:"One Size",description:"Stylish handbag for everyday essentials.",image:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500"},
+    {id:6,name:"Men's Formal Trousers",category:"Men",subcategory:"Formal Wear",price:1699,size:"S, M, L, XL",description:"Classic formal trousers for work and special occasions.",image:"https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=500"},
+    {id:7,name:"Women's Casual Top",category:"Women",subcategory:"Casual Wear",price:799,size:"S, M, L, XL",description:"Modern casual top for everyday fashion.",image:"https://images.unsplash.com/photo-1551163943-3f6a855d1153?w=500"}
+];
+
+let cart = [];
+let wishlist = [];
+let orders = [];
+let reviews = [];
+let returnRequests = [];
+let customers = [];
+let nextProductId = 8;
+let nextOrderId = 1001;
+
+function registerUser(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("regEmail").value;
+
+    if (customers.some(c => c.email === email)) {
+        document.getElementById("registerMessage").textContent =
+            "This email is already registered.";
+        return;
+    }
+
+    customers.push({
+        name: document.getElementById("regName").value,
+        email: email,
+        phone: document.getElementById("regPhone").value,
+        password: document.getElementById("regPassword").value
+    });
+
+    document.getElementById("registerMessage").textContent =
+        "Registration successful! Please log in.";
+    event.target.reset();
+}
+
+function loginUser(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+    const customer = customers.find(c =>
+        c.email === email && c.password === password
+    );
+
+    if (customer) {
+        document.getElementById("loginMessage").textContent =
+            "Welcome, " + customer.name + "! Login successful.";
+        document.getElementById("customerName").value = customer.name;
+        document.getElementById("customerEmail").value = customer.email;
+        document.getElementById("reviewName").value = customer.name;
+    } else {
+        document.getElementById("loginMessage").textContent =
+            "Invalid login. Please register first.";
+    }
+}
+
+function logoutUser() {
+    document.getElementById("loginMessage").textContent =
+        "You have logged out of the demo.";
+}
+
+function updateSubcategories() {
+    const category = document.getElementById("category").value;
+    const sub = document.getElementById("subcategory");
+
+    sub.innerHTML = '<option value="all">All Subcategories</option>';
+
+    const names = [...new Set(products
+        .filter(p => category === "all" || p.category === category)
+        .map(p => p.subcategory))];
+
+    names.forEach(name => {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        sub.appendChild(option);
+    });
+}
+
+function renderProducts() {
+    const box = document.getElementById("productList");
+    box.innerHTML = "";
+
+    products.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.dataset.name = p.name;
+        card.dataset.category = p.category;
+        card.dataset.subcategory = p.subcategory;
+        card.dataset.price = p.price;
+
+        const img = document.createElement("img");
+        img.src = p.image || "https://placehold.co/400x300?text=Fashion+Item";
+        img.alt = p.name;
+
+        const tag = document.createElement("span");
+        tag.className = "tag";
+        tag.textContent = p.category + " / " + p.subcategory;
+
+        const title = document.createElement("h3");
+        title.textContent = p.name;
+
+        const description = document.createElement("p");
+        description.textContent = p.description;
+
+        const size = document.createElement("p");
+        size.textContent = "Available sizes: " + p.size;
+
+        const price = document.createElement("p");
+        price.className = "price";
+        price.textContent = "₹" + p.price;
+
+        const sizeLabel = document.createElement("label");
+        sizeLabel.textContent = "Choose Size";
+
+        const sizeSelect = document.createElement("select");
+        p.size.split(", ").forEach(s => {
+            const option = document.createElement("option");
+            option.value = s;
+            option.textContent = s;
+            sizeSelect.appendChild(option);
+        });
+
+        const add = document.createElement("button");
+        add.textContent = "Add to Cart";
+        add.onclick = () => addToCart(p.id, sizeSelect.value);
+
+        const wish = document.createElement("button");
+        wish.textContent = "♡ Wishlist";
+        wish.onclick = () => addToWishlist(p.id);
+
+        const review = document.createElement("button");
+        review.textContent = "Review";
+        review.onclick = () => writeReview(p.id);
+
+        card.append(img, tag, title, description, size, price,
+                    sizeLabel, sizeSelect, add, wish, review);
+
+        box.appendChild(card);
+    });
+
+    filterProducts();
+}
+
+function filterProducts() {
+    const search = document.getElementById("search").value.toLowerCase();
+    const category = document.getElementById("category").value;
+    const subcategory = document.getElementById("subcategory").value;
+    const maxPrice = Number(document.getElementById("maxPrice").value);
+    let count = 0;
+
+    document.querySelectorAll("#productList .card").forEach(card => {
+        const match =
+            card.dataset.name.toLowerCase().includes(search) &&
+            (category === "all" || card.dataset.category === category) &&
+            (subcategory === "all" || card.dataset.subcategory === subcategory) &&
+            Number(card.dataset.price) <= maxPrice;
+
+        card.style.display = match ? "block" : "none";
+        if (match) count++;
+    });
+
+    document.getElementById("noProducts").hidden = count !== 0;
+}
+
+function addToCart(id, size) {
+    const product = products.find(p => p.id === id);
+    const existing = cart.find(p => p.id === id && p.selectedSize === size);
+
+    if (existing) {
+        existing.quantity++;
+    } else {
+        cart.push({...product, selectedSize:size, quantity:1});
+    }
+
+    showCart();
+}
+
+function showCart() {
+    const box = document.getElementById("cartItems");
+    box.innerHTML = "";
+    let total = 0;
+
+    if (cart.length === 0) {
+        box.textContent = "Your cart is empty.";
+    }
+
+    cart.forEach(item => {
+        total += item.price * item.quantity;
+
+        const row = document.createElement("div");
+        row.className = "card";
+        row.style.margin = "10px 0";
+
+        const details = document.createElement("p");
+        details.textContent = item.name + " | Size: " + item.selectedSize +
+            " | ₹" + item.price;
+        row.appendChild(details);
+
+        const qty = document.createElement("input");
+        qty.type = "number";
+        qty.min = "1";
+        qty.value = item.quantity;
+        qty.style.maxWidth = "100px";
+        qty.setAttribute("aria-label", "Quantity for " + item.name);
+
+        qty.onchange = function () {
+            item.quantity = Math.max(1, Number(qty.value) || 1);
+            showCart();
+        };
+
+        const remove = document.createElement("button");
+        remove.textContent = "Remove";
+        remove.onclick = function () {
+            cart = cart.filter(p =>
+                !(p.id === item.id && p.selectedSize === item.selectedSize)
+            );
+            showCart();
+        };
+
+        row.append(qty, remove);
+        box.appendChild(row);
+    });
+
+    document.getElementById("cartTotal").textContent = "Total: ₹" + total;
+}
+
+function addToWishlist(id) {
+    const product = products.find(p => p.id === id);
+
+    if (!wishlist.some(p => p.id === id)) {
+        wishlist.push(product);
+    }
+
+    showWishlist();
+}
+
+function showWishlist() {
+    const box = document.getElementById("wishlistItems");
+    box.innerHTML = "";
+
+    if (wishlist.length === 0) {
+        box.textContent = "Your wishlist is empty.";
+        return;
+    }
+
+    wishlist.forEach(p => {
+        const row = document.createElement("p");
+        row.textContent = p.name + " - ₹" + p.price;
+
+        const remove = document.createElement("button");
+        remove.textContent = "Remove";
+        remove.onclick = function () {
+            wishlist = wishlist.filter(item => item.id !== p.id);
+            showWishlist();
+        };
+
+        row.appendChild(remove);
+        box.appendChild(row);
+    });
+}
+
+function checkout(event) {
+    event.preventDefault();
+
+    if (cart.length === 0) {
+        alert("Please add products to your cart first.");
+        return;
+    }
+
+    const order = {
+        id: nextOrderId++,
+        customer: document.getElementById("customerName").value,
+        email: document.getElementById("customerEmail").value,
+        address: document.getElementById("address").value,
+        payment: document.getElementById("payment").value,
+        items: cart.map(item => ({...item})),
+        total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
+        status: "Order Placed"
+    };
+
+    orders.push(order);
+    cart = [];
+
+    showCart();
+    showOrders();
+
+    document.getElementById("checkoutMessage").textContent =
+        "Order placed successfully! Order ID: " + order.id +
+        ". This is a demo; no real payment was processed.";
+
+    event.target.reset();
+}
+
+function showOrders() {
+    const box = document.getElementById("orderList");
+    const search = document.getElementById("orderSearch").value.trim();
+
+    box.innerHTML = "";
+
+    const filtered = orders.filter(o => String(o.id).includes(search));
+
+    if (filtered.length === 0) {
+        box.textContent = "No matching orders found.";
+    }
+
+    filtered.forEach(o => {
+        const row = document.createElement("div");
+        row.className = "card";
+        row.style.margin = "10px 0";
+
+        const details = document.createElement("p");
+        details.textContent = "Order #" + o.id +
+            " | Customer: " + o.customer +
+            " | Total: ₹" + o.total +
+            " | Status: " + o.status +
+            " | Items: " + o.items.map(i =>
+                i.name + " (" + i.selectedSize + ") x" + i.quantity
+            ).join(", ");
+
+        row.appendChild(details);
+        box.appendChild(row);
+    });
+
+    const customerBox = document.getElementById("customerOrders");
+    customerBox.innerHTML = "";
+
+    orders.forEach(o => {
+        const p = document.createElement("p");
+        p.textContent = "Order #" + o.id + " | " + o.customer +
+            " | " + o.email + " | " + o.address + " | ₹" + o.total;
+
+        const status = document.createElement("select");
+        ["Order Placed", "Processing", "Shipped", "Delivered", "Cancelled"]
+            .forEach(s => {
+                const option = document.createElement("option");
+                option.value = s;
+                option.textContent = s;
+                if (o.status === s) option.selected = true;
+                status.appendChild(option);
+            });
+
+        status.onchange = function () {
+            o.status = status.value;
+            showOrders();
+        };
+
+        customerBox.append(p, status);
+    });
+}
+
+function writeReview(id) {
+    const product = products.find(p => p.id === id);
+    document.getElementById("reviewProductId").value = id;
+    document.getElementById("reviewProduct").textContent =
+        "Reviewing: " + product.name;
+    document.getElementById("reviews").scrollIntoView();
+}
+
+function submitReview(event) {
+    event.preventDefault();
+
+    const id = Number(document.getElementById("reviewProductId").value);
+
+    if (!products.some(p => p.id === id)) {
+        alert("Choose Review on a product first.");
+        return;
+    }
+
+    const review = {
+        productId: id,
+        name: document.getElementById("reviewName").value,
+        rating: document.getElementById("reviewRating").value,
+        comment: document.getElementById("reviewComment").value
+    };
+
+    reviews.push(review);
+
+    const product = products.find(p => p.id === id);
+    const row = document.createElement("p");
+    row.textContent = product.name + " | " + review.name +
+        " | " + review.rating + "/5 stars | " + review.comment;
+
+    document.getElementById("reviewList").appendChild(row);
+    event.target.reset();
+}
+
+function submitReturn(event) {
+    event.preventDefault();
+
+    const id = Number(document.getElementById("returnOrderId").value);
+    const order = orders.find(o => o.id === id);
+
+    if (!order) {
+        document.getElementById("returnMessage").textContent =
+            "Order ID not found.";
+        return;
+    }
+
+    const request = {
+        orderId: id,
+        type: document.getElementById("returnType").value,
+        reason: document.getElementById("returnReason").value,
+        status: "Request Submitted"
+    };
+
+    returnRequests.push(request);
+
+    const row = document.createElement("p");
+    row.textContent = "Order #" + id + " | " + request.type +
+        " | " + request.reason + " | " + request.status;
+    document.getElementById("returnMessage").appendChild(row);
+
+    const adminRow = document.createElement("p");
+    adminRow.textContent = row.textContent;
+    document.getElementById("adminReturns").appendChild(adminRow);
+
+    event.target.reset();
+}
+
+function adminLogin(event) {
+    event.preventDefault();
+
+    // Demo credentials only; production systems need secure server-side authentication.
+    if (
+        document.getElementById("adminUser").value === "admin" &&
+        document.getElementById("adminPassword").value === "admin123"
+    ) {
+        document.getElementById("adminMessage").textContent =
+            "Admin login successful.";
+        document.getElementById("adminPanel").hidden = false;
+        showAdminProducts();
+        showOrders();
+    } else {
+        document.getElementById("adminMessage").textContent =
+            "Invalid admin username or password.";
+    }
+}
+
+function addProduct(event) {
+    event.preventDefault();
+
+    const product = {
+        id: nextProductId++,
+        name: document.getElementById("newName").value,
+        category: document.getElementById("newCategory").value,
+        subcategory: document.getElementById("newSubcategory").value,
+        price: Number(document.getElementById("newPrice").value),
+        size: "S, M, L, XL",
+        description: document.getElementById("newDescription").value,
+        image: ""
+    };
+
+    products.push(product);
+    renderProducts();
+    updateSubcategories();
+    showAdminProducts();
+
+    event.target.reset();
+    alert("Product added successfully.");
+}
+
+function showAdminProducts() {
+    const box = document.getElementById("adminProducts");
+    box.innerHTML = "";
+
+    products.forEach(p => {
+        const row = document.createElement("div");
+        row.className = "card";
+        row.style.margin = "10px 0";
+
+        const title = document.createElement("p");
+        title.textContent = p.name + " (" + p.category + ")";
+
+        const price = document.createElement("input");
+        price.type = "number";
+        price.min = "1";
+        price.value = p.price;
+
+        const description = document.createElement("textarea");
+        description.value = p.description;
+
+        const update = document.createElement("button");
+        update.textContent = "Update";
+        update.onclick = function () {
+            const newPrice = Number(price.value);
+
+            if (newPrice <= 0) {
+                alert("Enter a valid price.");
+                return;
+            }
+
+            p.price = newPrice;
+            p.description = description.value;
+
+            renderProducts();
+            showAdminProducts();
+        };
+
+        const remove = document.createElement("button");
+        remove.textContent = "Remove";
+        remove.onclick = function () {
+            products = products.filter(item => item.id !== p.id);
+            cart = cart.filter(item => item.id !== p.id);
+            wishlist = wishlist.filter(item => item.id !== p.id);
+
+            renderProducts();
+            showCart();
+            showWishlist();
+            showAdminProducts();
+            updateSubcategories();
+        };
+
+        row.append(title, price, description, update, remove);
+        box.appendChild(row);
+    });
+}
+
+document.getElementById("category").addEventListener("change", updateSubcategories);
+
+renderProducts();
+updateSubcategories();
+</script>
+
+</body>
+</html>
