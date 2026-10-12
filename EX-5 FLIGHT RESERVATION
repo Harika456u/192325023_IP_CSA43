@@ -1,0 +1,533 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flight Reservation System</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: #fff8f0;
+    color: #333;
+}
+
+/* Header */
+header {
+    background: linear-gradient(120deg, #6c3483, #c0397b);
+    color: white;
+    text-align: center;
+    padding: 28px;
+}
+
+header h1 {
+    margin-bottom: 10px;
+}
+
+/* Navigation */
+nav {
+    background: #22223b;
+    padding: 15px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 7px;
+    display: inline-block;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #ffbd69;
+}
+
+/* Main content */
+.container {
+    width: 90%;
+    max-width: 900px;
+    margin: 30px auto;
+}
+
+.page {
+    background: white;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    border-top: 5px solid #e67e22;
+    box-shadow: 0 4px 12px #ddd;
+    scroll-margin-top: 15px;
+}
+
+.page:nth-child(odd) {
+    border-top-color: #16a085;
+}
+
+.page:nth-child(even) {
+    border-top-color: #c0397b;
+}
+
+h2 {
+    color: #6c3483;
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: #d35400;
+    margin-top: 20px;
+}
+
+/* Forms */
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fffdf9;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid #16a085;
+}
+
+/* Buttons */
+button, .btn {
+    display: inline-block;
+    background: #e67e22;
+    color: white;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    margin: 5px 3px;
+    font-weight: bold;
+}
+
+button:hover, .btn:hover {
+    background: #d35400;
+}
+
+.green-btn {
+    background: #16a085;
+}
+
+.green-btn:hover {
+    background: #117864;
+}
+
+.purple-btn {
+    background: #6c3483;
+}
+
+.purple-btn:hover {
+    background: #512e5f;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background: #16a085;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background: #fdf0e7;
+}
+
+tr:hover {
+    background: #fce4ec;
+}
+
+/* Home section */
+#home {
+    text-align: center;
+    background: linear-gradient(120deg, #fff0dc, #fce4ec);
+    border-top: 5px solid #c0397b;
+}
+
+#home h2 {
+    color: #8e44ad;
+    font-size: 28px;
+}
+
+/* Admin section */
+#admin {
+    border-top-color: #8e44ad;
+    background: #fbf7ff;
+}
+
+/* Payment section */
+#payment {
+    background: #f0fff8;
+    border-top-color: #16a085;
+}
+
+/* Feedback section */
+#feedback {
+    background: #fff5f7;
+    border-top-color: #e84393;
+}
+
+/* Footer */
+footer {
+    background: #22223b;
+    color: white;
+    text-align: center;
+    padding: 22px;
+    line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: 95%;
+    }
+
+    .page {
+        padding: 15px;
+    }
+
+    nav a {
+        margin: 6px;
+        font-size: 13px;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    th, td {
+        padding: 7px;
+    }
+}
+
+@media print {
+    header, nav, footer, .no-print {
+        display: none;
+    }
+
+    body {
+        background: white;
+    }
+
+    .page {
+        box-shadow: none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>✈ Online Flight Reservation System</h1>
+    <p>Travel Smart • Fly Safe • Explore More</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#admin">Admin Login</a>
+    <a href="#forgot">Forgot Password</a>
+    <a href="#search">Search Flight</a>
+    <a href="#book">Book Ticket</a>
+    <a href="#payment">Payment</a>
+    <a href="#myticket">My Ticket</a>
+    <a href="#cancel">Cancel Ticket</a>
+    <a href="#feedback">Feedback</a>
+    <a href="#report">Admin Report</a>
+    <a href="#status">Booking Status</a>
+    <a href="#print">Print Ticket</a>
+</nav>
+
+<div class="container">
+
+<!-- HOME -->
+<section class="page" id="home">
+    <h2>Welcome to SkyWay Airlines</h2>
+    <p>Discover destinations and make your next journey memorable.</p>
+    <br>
+    <a class="btn" href="#search">Search Flights</a>
+    <a class="btn green-btn" href="#book">Book Ticket</a>
+    <a class="btn purple-btn" href="#myticket">My Ticket</a>
+</section>
+
+<!-- ADMIN LOGIN -->
+<section class="page" id="admin">
+    <h2>Administrator Login</h2>
+    <form action="#report">
+        <label>Admin Username</label>
+        <input type="text" placeholder="Enter username" required>
+
+        <label>Password</label>
+        <input type="password" placeholder="Enter password" required>
+
+        <button type="submit">Login</button>
+        <a class="btn purple-btn" href="#forgot">Forgot Password?</a>
+    </form>
+</section>
+
+<!-- FORGOT PASSWORD -->
+<section class="page" id="forgot">
+    <h2>Forgot Password</h2>
+    <form action="#admin">
+        <label>Registered Email</label>
+        <input type="email" placeholder="Enter email address" required>
+        <button type="submit">Reset Password</button>
+    </form>
+</section>
+
+<!-- SEARCH FLIGHT -->
+<section class="page" id="search">
+    <h2>Search Flights</h2>
+
+    <form action="#book">
+        <label>Departure City</label>
+        <input type="text" placeholder="Enter departure city" required>
+
+        <label>Destination City</label>
+        <input type="text" placeholder="Enter destination" required>
+
+        <label>Travel Date</label>
+        <input type="date" required>
+
+        <label>Travel Class</label>
+        <select>
+            <option>Economy</option>
+            <option>Business</option>
+            <option>First Class</option>
+        </select>
+
+        <label>Number of Passengers</label>
+        <input type="number" min="1" value="1" required>
+
+        <button type="submit">Search Flights</button>
+    </form>
+
+    <h3>Available Flights (Sample Data)</h3>
+    <table>
+        <tr>
+            <th>Flight No.</th>
+            <th>Route</th>
+            <th>Fare</th>
+            <th>Seats</th>
+        </tr>
+        <tr>
+            <td>AI101</td>
+            <td>Chennai - Delhi</td>
+            <td>₹5,000</td>
+            <td>20</td>
+        </tr>
+        <tr>
+            <td>AI202</td>
+            <td>Chennai - Mumbai</td>
+            <td>₹4,000</td>
+            <td>15</td>
+        </tr>
+    </table>
+</section>
+
+<!-- BOOK TICKET -->
+<section class="page" id="book">
+    <h2>Book Your Ticket</h2>
+
+    <form action="#payment">
+        <label>Flight Number</label>
+        <input type="text" placeholder="Example: AI101" required>
+
+        <label>Passenger Name</label>
+        <input type="text" placeholder="Full name" required>
+
+        <label>Age</label>
+        <input type="number" min="1" required>
+
+        <label>Gender</label>
+        <select>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+        </select>
+
+        <label>Email Address</label>
+        <input type="email" required>
+
+        <label>Select Seat</label>
+        <select>
+            <option>12A - Window</option>
+            <option>12B - Middle</option>
+            <option>13A - Window</option>
+            <option>13B - Aisle</option>
+        </select>
+
+        <button type="submit">Continue to Payment</button>
+    </form>
+</section>
+
+<!-- PAYMENT -->
+<section class="page" id="payment">
+    <h2>Ticket Payment</h2>
+
+    <form action="#myticket">
+        <label>Booking ID</label>
+        <input type="text" placeholder="Enter booking ID" required>
+
+        <label>Amount (₹)</label>
+        <input type="number" min="1" required>
+
+        <label>Payment Method</label>
+        <select>
+            <option>UPI</option>
+            <option>Credit Card</option>
+            <option>Debit Card</option>
+            <option>Net Banking</option>
+        </select>
+
+        <button type="submit">Pay Now</button>
+    </form>
+    <p>Demo only. No actual payment is processed.</p>
+</section>
+
+<!-- MY TICKET -->
+<section class="page" id="myticket">
+    <h2>My Ticket</h2>
+
+    <table>
+        <tr><th>Booking ID</th><td>F101</td></tr>
+        <tr><th>Passenger</th><td>Student One</td></tr>
+        <tr><th>Flight Number</th><td>AI101</td></tr>
+        <tr><th>Departure</th><td>Chennai</td></tr>
+        <tr><th>Destination</th><td>Delhi</td></tr>
+        <tr><th>Status</th><td>Confirmed (Sample)</td></tr>
+    </table>
+
+    <a class="btn green-btn" href="#print">Print Ticket</a>
+    <a class="btn" href="#cancel">Cancel Ticket</a>
+    <a class="btn purple-btn" href="#status">Check Status</a>
+</section>
+
+<!-- CANCEL TICKET -->
+<section class="page" id="cancel">
+    <h2>Cancel Ticket</h2>
+
+    <form action="#status">
+        <label>Booking ID</label>
+        <input type="text" required>
+
+        <label>Passenger Email</label>
+        <input type="email" required>
+
+        <label>Reason for Cancellation</label>
+        <textarea rows="4"></textarea>
+
+        <button type="submit">Submit Cancellation</button>
+    </form>
+</section>
+
+<!-- FEEDBACK -->
+<section class="page" id="feedback">
+    <h2>Customer Feedback</h2>
+
+    <form action="#home">
+        <label>Name</label>
+        <input type="text" required>
+
+        <label>Email</label>
+        <input type="email" required>
+
+        <label>Rating</label>
+        <select>
+            <option>★★★★★ - Excellent</option>
+            <option>★★★★ - Very Good</option>
+            <option>★★★ - Good</option>
+            <option>★★ - Average</option>
+            <option>★ - Poor</option>
+        </select>
+
+        <label>Comments</label>
+        <textarea rows="4" required></textarea>
+
+        <button type="submit">Submit Feedback</button>
+    </form>
+</section>
+
+<!-- ADMIN REPORT -->
+<section class="page" id="report">
+    <h2>Administrator Report</h2>
+
+    <table>
+        <tr><th>Category</th><th>Count</th></tr>
+        <tr><td>Total Flights</td><td>25</td></tr>
+        <tr><td>Total Bookings</td><td>150</td></tr>
+        <tr><td>Confirmed Tickets</td><td>120</td></tr>
+        <tr><td>Cancelled Tickets</td><td>10</td></tr>
+        <tr><td>Registered Users</td><td>100</td></tr>
+    </table>
+
+    <p>These figures are sample data for demonstration.</p>
+</section>
+
+<!-- BOOKING STATUS -->
+<section class="page" id="status">
+    <h2>View Booking Status</h2>
+
+    <form action="#status">
+        <label>Booking ID</label>
+        <input type="text" placeholder="Enter booking ID" required>
+
+        <label>Passenger Email</label>
+        <input type="email" required>
+
+        <button type="submit">Check Status</button>
+    </form>
+
+    <h3>Sample Status</h3>
+    <p>Booking ID: F101</p>
+    <p>Status: Confirmed</p>
+</section>
+
+<!-- PRINT TICKET -->
+<section class="page" id="print">
+    <h2>Print Flight Ticket</h2>
+
+    <p><b>Booking ID:</b> F101</p>
+    <p><b>Passenger:</b> Student One</p>
+    <p><b>Flight:</b> AI101</p>
+    <p><b>Departure:</b> Chennai</p>
+    <p><b>Destination:</b> Delhi</p>
+    <p><b>Class:</b> Economy</p>
+    <p><b>Status:</b> Confirmed (Sample)</p>
+
+    <button class="no-print" onclick="window.print()">
+        Print Ticket
+    </button>
+</section>
+
+</div>
+
+<footer>
+    <p>✈ SkyWay Airlines - Online Reservation System</p>
+    <p>&copy; 2026 All Rights Reserved</p>
+</footer>
+
+</body>
+</html>
+```
