@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Train Search</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #eaf2f8;
+        }
+
+        .container {
+            width: 400px;
+            margin: 60px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        h2 {
+            text-align: center;
+            color: darkblue;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 15px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: darkblue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: orange;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Train Search</h2>
+
+    <form action="#">
+        <label>From Station:</label>
+        <input type="text" placeholder="Enter source station" required>
+
+        <label>To Station:</label>
+        <input type="text" placeholder="Enter destination station" required>
+
+        <label>Journey Date:</label>
+        <input type="date" required>
+
+        <label>Travel Class:</label>
+        <select required>
+            <option value="">Select Class</option>
+            <option>Sleeper</option>
+            <option>AC 3 Tier</option>
+            <option>AC 2 Tier</option>
+            <option>First Class</option>
+        </select>
+
+        <button type="submit">Search Train</button>
+    </form>
+</div>
+
+</body>
+</html>
