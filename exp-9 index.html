@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechSavvy - Online Gadget Store</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f5fb;
+    color: #20243a;
+}
+
+header {
+    background: #20243a;
+    color: white;
+    text-align: center;
+    padding: 24px;
+}
+
+header h1 {
+    color: #ffad42;
+    margin-bottom: 8px;
+}
+
+nav {
+    background: #ffad42;
+    padding: 13px;
+    text-align: center;
+}
+
+nav a {
+    display: inline-block;
+    margin: 7px;
+    color: #20243a;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: white;
+    background: #6c45c0;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+section {
+    background: white;
+    margin: 18px;
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 2px 9px #dfe0eb;
+}
+
+h2 {
+    color: #6c45c0;
+    margin-bottom: 15px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 11px;
+    margin: 8px 0 14px;
+    border: 1px solid #d0d2e2;
+    border-radius: 6px;
+}
+
+button {
+    background: #6c45c0;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 4px;
+}
+
+button:hover {
+    background: #ff8c2a;
+    color: #20243a;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 18px;
+}
+
+.product {
+    background: #faf9ff;
+    border: 1px solid #e2def4;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.product img {
+    width: 100%;
+    height: 160px;
+    object-fit: contain;
+    background: white;
+    border-radius: 8px;
+}
+
+.product h3 {
+    color: #6c45c0;
+    margin: 10px 0;
+}
+
+.price {
+    color: #16805d;
+    font-weight: bold;
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.tag {
+    display: inline-block;
+    background: #ffefd9;
+    color: #88510b;
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+footer {
+    background: #20243a;
+    color: white;
+    text-align: center;
+    padding: 18px;
+}
+
+.notice {
+    padding: 12px;
+    background: #eaf8f0;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+@media(max-width: 600px) {
+    section {
+        margin: 9px;
+        padding: 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>⚡ TechSavvy</h1>
+    <p>Your One-Stop Online Gadget Store</p>
+    <p>Smartphones | Laptops | Tablets | Accessories</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#register">Register</a>
+    <a href="#login">Login</a>
+    <a href="#products">Products</a>
+    <a href="#cart">Cart</a>
+    <a href="#wishlist">Wishlist</a>
+    <a href="#checkout">Checkout</a>
+    <a href="#orders">My Orders</a>
+    <a href="#admin">Admin</a>
+</nav>
+
+<section id="home">
+    <h2>Welcome to TechSavvy</h2>
+    <p>
+        Discover the latest electronic gadgets at attractive prices.
+        Browse products by category, compare prices, add products to your
+        shopping cart, and place your order.
+    </p>
+    <p class="notice">Special Offer: Get exclusive discounts on selected gadgets!</p>
+
+    <h3 style="margin-top:20px">Popular Categories</h3>
+    <div class="product-grid" style="margin-top:12px">
+        <div class="product">
+            <h3>📱 Smartphones</h3>
+            <p>Mobiles, Android phones and accessories.</p>
+            <a href="#products">Explore Products</a>
+        </div>
+        <div class="product">
+            <h3>💻 Laptops</h3>
+            <p>Gaming, business and student laptops.</p>
+            <a href="#products">Explore Products</a>
+        </div>
+        <div class="product">
+            <h3>📲 Tablets</h3>
+            <p>Portable devices for study and work.</p>
+            <a href="#products">Explore Products</a>
+        </div>
+        <div class="product">
+            <h3>🎧 Accessories</h3>
+            <p>Headphones, keyboards and smartwatches.</p>
+            <a href="#products">Explore Products</a>
+        </div>
+    </div>
+</section>
+
+<section id="register">
+    <h2>Customer Registration</h2>
+    <form onsubmit="registerUser(event)">
+        <label>Full Name</label>
+        <input id="regName" required placeholder="Enter full name">
+
+        <label>Email</label>
+        <input id="regEmail" type="email" required placeholder="Enter email">
+
+        <label>Phone Number</label>
+        <input id="regPhone" type="tel" required placeholder="Enter phone number">
+
+        <label>Password</label>
+        <input id="regPassword" type="password" required placeholder="Create password">
+
+        <button type="submit">Register</button>
+    </form>
+    <p id="registerMessage"></p>
+</section>
+
+<section id="login">
+    <h2>Customer Login</h2>
+    <form onsubmit="loginUser(event)">
+        <label>Email</label>
+        <input id="loginEmail" type="email" required>
+
+        <label>Password</label>
+        <input id="loginPassword" type="password" required>
+
+        <button type="submit">Login</button>
+        <button type="button" onclick="logoutUser()">Logout</button>
+    </form>
+    <p id="loginMessage"></p>
+</section>
+
+<section id="products">
+    <h2>Product Catalogue</h2>
+
+    <label>Search Product</label>
+    <input id="search" placeholder="Search by product name..."
+           oninput="filterProducts()">
+
+    <label>Category</label>
+    <select id="category" onchange="updateSubcategories(); filterProducts()">
+        <option value="all">All Categories</option>
+        <option value="Smartphones">Smartphones</option>
+        <option value="Laptops">Laptops</option>
+        <option value="Tablets">Tablets</option>
+        <option value="Accessories">Accessories</option>
+    </select>
+
+    <label>Subcategory</label>
+    <select id="subcategory" onchange="filterProducts()">
+        <option value="all">All Subcategories</option>
+    </select>
+
+    <label>Maximum Price</label>
+    <select id="maxPrice" onchange="filterProducts()">
+        <option value="200000">All Prices</option>
+        <option value="1000">Up to ₹1,000</option>
+        <option value="10000">Up to ₹10,000</option>
+        <option value="30000">Up to ₹30,000</option>
+        <option value="60000">Up to ₹60,000</option>
+    </select>
+
+    <div class="product-grid" id="productList">
+
+        <div class="product" data-id="1" data-name="Smartphone X"
+             data-category="Smartphones" data-subcategory="Android"
+             data-price="25000">
+            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500" alt="Smartphone">
+            <span class="tag">Smartphones / Android</span>
+            <h3>Smartphone X</h3>
+            <p>128GB storage, high-resolution camera and fast processor.</p>
+            <p>Rating: ⭐ 4.5/5</p>
+            <p class="price">₹25,000</p>
+            <button onclick="addToCart(1)">Add to Cart</button>
+            <button onclick="addToWishlist(1)">♡ Wishlist</button>
+            <button onclick="writeReview(1)">Review</button>
+        </div>
+
+        <div class="product" data-id="2" data-name="Laptop Pro"
+             data-category="Laptops" data-subcategory="Business"
+             data-price="55000">
+            <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500" alt="Laptop">
+            <span class="tag">Laptops / Business</span>
+            <h3>Laptop Pro</h3>
+            <p>16GB RAM, SSD storage and a powerful processor.</p>
+            <p>Rating: ⭐ 4.7/5</p>
+            <p class="price">₹55,000</p>
+            <button onclick="addToCart(2)">Add to Cart</button>
+            <button onclick="addToWishlist(2)">♡ Wishlist</button>
+            <button onclick="writeReview(2)">Review</button>
+        </div>
+
+        <div class="product" data-id="3" data-name="Tablet Air"
+             data-category="Tablets" data-subcategory="Android"
+             data-price="18000">
+            <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500" alt="Tablet">
+            <span class="tag">Tablets / Android</span>
+            <h3>Tablet Air</h3>
+            <p>Portable tablet for learning, entertainment and work.</p>
+            <p>Rating: ⭐ 4.3/5</p>
+            <p class="price">₹18,000</p>
+            <button onclick="addToCart(3)">Add to Cart</button>
+            <button onclick="addToWishlist(3)">♡ Wishlist</button>
+            <button onclick="writeReview(3)">Review</button>
+        </div>
+
+        <div class="product" data-id="4" data-name="Wireless Headphones"
+             data-category="Accessories" data-subcategory="Audio"
+             data-price="2000">
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500" alt="Headphones">
+            <span class="tag">Accessories / Audio</span>
+            <h3>Wireless Headphones</h3>
+            <p>Wireless audio with comfortable ear cushions.</p>
+            <p>Rating: ⭐ 4.4/5</p>
+            <p class="price">₹2,000</p>
+            <button onclick="addToCart(4)">Add to Cart</button>
+            <button onclick="addToWishlist(4)">♡ Wishlist</button>
+            <button onclick="writeReview(4)">Review</button>
+        </div>
+
+        <div class="product" data-id="5" data-name="Smart Watch"
+             data-category="Accessories" data-subcategory="Wearables"
+             data-price="3000">
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500" alt="Smart watch">
+            <span class="tag">Accessories / Wearables</span>
+            <h3>Smart Watch</h3>
+            <p>Fitness tracking, notifications and activity monitoring.</p>
+            <p>Rating: ⭐ 4.2/5</p>
+            <p class="price">₹3,000</p>
+            <button onclick="addToCart(5)">Add to Cart</button>
+            <button onclick="addToWishlist(5)">♡ Wishlist</button>
+            <button onclick="writeReview(5)">Review</button>
+        </div>
+
+    </div>
+    <p id="noProducts" hidden>No products match your search.</p>
+</section>
+
+<section id="cart">
+    <h2>Shopping Cart</h2>
+    <div id="cartItems">Your cart is empty.</div>
+    <h3 id="cartTotal">Total: ₹0</h3>
+</section>
+
+<section id="wishlist">
+    <h2>My Wishlist</h2>
+    <div id="wishlistItems">Your wishlist is empty.</div>
+</section>
+
+<section id="checkout">
+    <h2>Checkout and Place Order</h2>
+    <form onsubmit="checkout(event)">
+        <label>Customer Name</label>
+        <input id="customerName" required>
+
+        <label>Email</label>
+        <input id="customerEmail" type="email" required>
+
+        <label>Shipping Address</label>
+        <textarea id="address" required placeholder="Enter full delivery address"></textarea>
+
+        <label>Payment Method</label>
+        <select id="payment">
+            <option>Cash on Delivery</option>
+            <option>UPI (Demo)</option>
+            <option>Credit / Debit Card (Demo)</option>
+        </select>
+
+        <button type="submit">Place Order</button>
+    </form>
+    <p id="checkoutMessage"></p>
+</section>
+
+<section id="orders">
+    <h2>My Orders and Order History</h2>
+    <label>Search Order ID</label>
+    <input id="orderSearch" placeholder="Enter order ID" oninput="showOrders()">
+    <div id="orderList">No orders placed yet.</div>
+</section>
+
+<section id="reviews">
+    <h2>Product Reviews</h2>
+    <p id="reviewProduct">Select Review on a product to leave feedback.</p>
+    <form onsubmit="submitReview(event)">
+        <input id="reviewProductId" type="hidden">
+
+        <label>Your Name</label>
+        <input id="reviewName" required>
+
+        <label>Rating</label>
+        <select id="reviewRating">
+            <option value="5">5 - Excellent</option>
+            <option value="4">4 - Very Good</option>
+            <option value="3">3 - Good</option>
+            <option value="2">2 - Average</option>
+            <option value="1">1 - Poor</option>
+        </select>
+
+        <label>Comment</label>
+        <textarea id="reviewComment" required></textarea>
+
+        <button type="submit">Submit Review</button>
+    </form>
+    <div id="reviewList"></div>
+</section>
+
+<section id="admin">
+    <h2>Administrator Login</h2>
+    <form onsubmit="adminLogin(event)">
+        <label>Username</label>
+        <input id="adminUser" required>
+
+        <label>Password</label>
+        <input id="adminPassword" type="password" required>
+
+        <button type="submit">Login as Admin</button>
+    </form>
+    <p id="adminMessage"></p>
+
+    <div id="adminPanel" hidden>
+        <h2>Manage Products</h2>
+        <form onsubmit="addProduct(event)">
+            <label>Product Name</label>
+            <input id="newName" required>
+
+            <label>Category</label>
+            <select id="newCategory">
+                <option>Smartphones</option>
+                <option>Laptops</option>
+                <option>Tablets</option>
+                <option>Accessories</option>
+            </select>
+
+            <label>Subcategory</label>
+            <input id="newSubcategory" required placeholder="Example: Android, Audio">
+
+            <label>Price (₹)</label>
+            <input id="newPrice" type="number" min="1" required>
+
+            <label>Description</label>
+            <textarea id="newDescription" required></textarea>
+
+            <button type="submit">Add Product</button>
+        </form>
+
+        <h2>Update or Remove Products</h2>
+        <div id="adminProducts"></div>
+
+        <h2>Customer Checkout Information</h2>
+        <div id="customerOrders"></div>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 TechSavvy Online Store</p>
+    <p>Shop Smart. Shop TechSavvy.</p>
+</footer>
+
+<script>
+let products = [
+    {id:1, name:"Smartphone X", category:"Smartphones", subcategory:"Android", price:25000, description:"128GB storage, high-resolution camera and fast processor.", image:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500"},
+    {id:2, name:"Laptop Pro", category:"Laptops", subcategory:"Business", price:55000, description:"16GB RAM, SSD storage and a powerful processor.", image:"https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500"},
+    {id:3, name:"Tablet Air", category:"Tablets", subcategory:"Android", price:18000, description:"Portable tablet for learning and entertainment.", image:"https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500"},
+    {id:4, name:"Wireless Headphones", category:"Accessories", subcategory:"Audio", price:2000, description:"Wireless audio with comfortable ear cushions.", image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500"},
+    {id:5, name:"Smart Watch", category:"Accessories", subcategory:"Wearables", price:3000, description:"Fitness tracking and notifications.", image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500"}
+];
+
+let cart = [];
+let wishlist = [];
+let orders = [];
+let reviews = [];
+let customers = [];
+let nextProductId = 6;
+let nextOrderId = 1001;
+let currentReviewId = null;
+
+function registerUser(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("regEmail").value;
+
+    if (customers.some(c => c.email === email)) {
+        document.getElementById("registerMessage").textContent =
+            "This email is already registered.";
+        return;
+    }
+
+    customers.push({
+        name: document.getElementById("regName").value,
+        email: email,
+        phone: document.getElementById("regPhone").value,
+        password: document.getElementById("regPassword").value
+    });
+
+    document.getElementById("registerMessage").textContent =
+        "Registration successful. Please log in.";
+    event.target.reset();
+}
+
+function loginUser(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+    const customer = customers.find(c =>
+        c.email === email && c.password === password
+    );
+
+    if (customer) {
+        document.getElementById("loginMessage").textContent =
+            "Welcome, " + customer.name + "! Login successful.";
+        document.getElementById("customerName").value = customer.name;
+        document.getElementById("customerEmail").value = customer.email;
+        document.getElementById("reviewName").value = customer.name;
+    } else {
+        document.getElementById("loginMessage").textContent =
+            "Invalid login. Please register first.";
+    }
+}
+
+function logoutUser() {
+    document.getElementById("loginMessage").textContent =
+        "You have logged out of the demo session.";
+}
+
+function updateSubcategories() {
+    const category = document.getElementById("category").value;
+    const sub = document.getElementById("subcategory");
+    sub.innerHTML = '<option value="all">All Subcategories</option>';
+
+    const names = [...new Set(products
+        .filter(p => category === "all" || p.category === category)
+        .map(p => p.subcategory))];
+
+    names.forEach(name => {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        sub.appendChild(option);
+    });
+}
+
+function filterProducts() {
+    const search = document.getElementById("search").value.toLowerCase();
+    const category = document.getElementById("category").value;
+    const subcategory = document.getElementById("subcategory").value;
+    const maxPrice = Number(document.getElementById("maxPrice").value);
+    let count = 0;
+
+    document.querySelectorAll("#productList .product").forEach(card => {
+        const match =
+            card.dataset.name.toLowerCase().includes(search) &&
+            (category === "all" || card.dataset.category === category) &&
+            (subcategory === "all" || card.dataset.subcategory === subcategory) &&
+            Number(card.dataset.price) <= maxPrice;
+
+        card.style.display = match ? "block" : "none";
+        if (match) count++;
+    });
+
+    document.getElementById("noProducts").hidden = count !== 0;
+}
+
+function addToCart(id) {
+    const product = products.find(p => p.id === id);
+    const existing = cart.find(item => item.id === id);
+
+    if (existing) {
+        existing.quantity++;
+    } else {
+        cart.push({...product, quantity:1});
+    }
+
+    showCart();
+}
+
+function showCart() {
+    const box = document.getElementById("cartItems");
+    box.innerHTML = "";
+    let total = 0;
+
+    if (cart.length === 0) {
+        box.textContent = "Your cart is empty.";
+    }
+
+    cart.forEach(item => {
+        total += item.price * item.quantity;
+
+        const row = document.createElement("div");
+        row.style.margin = "12px 0";
+
+        const title = document.createElement("p");
+        title.textContent = item.name + " - ₹" + item.price;
+        row.appendChild(title);
+
+        const quantity = document.createElement("input");
+        quantity.type = "number";
+        quantity.min = "1";
+        quantity.value = item.quantity;
+        quantity.style.maxWidth = "100px";
+
+        quantity.onchange = function () {
+            item.quantity = Math.max(1, Number(quantity.value) || 1);
+            showCart();
+        };
+
+        row.appendChild(quantity);
+
+        const remove = document.createElement("button");
+        remove.textContent = "Remove";
+        remove.onclick = function () {
+            cart = cart.filter(p => p.id !== item.id);
+            showCart();
+        };
+        row.appendChild(remove);
+        box.appendChild(row);
+    });
+
+    document.getElementById("cartTotal").textContent = "Total: ₹" + total;
+}
+
+function addToWishlist(id) {
+    const product = products.find(p => p.id === id);
+
+    if (!wishlist.some(p => p.id === id)) {
+        wishlist.push(product);
+    }
+
+    showWishlist();
+}
+
+function showWishlist() {
+    const box = document.getElementById("wishlistItems");
+    box.innerHTML = "";
+
+    if (wishlist.length === 0) {
+        box.textContent = "Your wishlist is empty.";
+        return;
+    }
+
+    wishlist.forEach(p => {
+        const row = document.createElement("p");
+        row.textContent = p.name + " - ₹" + p.price;
+
+        const remove = document.createElement("button");
+        remove.textContent = "Remove";
+        remove.onclick = function () {
+            wishlist = wishlist.filter(item => item.id !== p.id);
+            showWishlist();
+        };
+
+        row.appendChild(remove);
+        box.appendChild(row);
+    });
+}
+
+function checkout(event) {
+    event.preventDefault();
+
+    if (cart.length === 0) {
+        alert("Please add products to the cart before checkout.");
+        return;
+    }
+
+    const order = {
+        id: nextOrderId++,
+        customer: document.getElementById("customerName").value,
+        email: document.getElementById("customerEmail").value,
+        address: document.getElementById("address").value,
+        payment: document.getElementById("payment").value,
+        items: cart.map(item => ({...item})),
+        total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
+        status: "Order Placed"
+    };
+
+    orders.push(order);
+    cart = [];
+    showCart();
+    showOrders();
+
+    document.getElementById("checkoutMessage").textContent =
+        "Order placed successfully! Order ID: " + order.id +
+        ". Payment is a demonstration and was not processed.";
+
+    event.target.reset();
+}
+
+function showOrders() {
+    const box = document.getElementById("orderList");
+    const search = document.getElementById("orderSearch").value.trim();
+    box.innerHTML = "";
+
+    const filtered = orders.filter(o =>
+        String(o.id).includes(search)
+    );
+
+    if (filtered.length === 0) {
+        box.textContent = "No matching orders found.";
+        return;
+    }
+
+    filtered.forEach(o => {
+        const row = document.createElement("div");
+        row.className = "product";
+        row.style.margin = "10px 0";
+
+        const details = document.createElement("p");
+        details.textContent =
+            "Order #" + o.id + " | Customer: " + o.customer +
+            " | Total: ₹" + o.total + " | Status: " + o.status +
+            " | Payment: " + o.payment +
+            " | Products: " + o.items.map(i => i.name + " x " + i.quantity).join(", ");
+        row.appendChild(details);
+
+        box.appendChild(row);
+    });
+
+    const customerBox = document.getElementById("customerOrders");
+    if (customerBox) {
+        customerBox.innerHTML = "";
+
+        orders.forEach(o => {
+            const p = document.createElement("p");
+            p.textContent = "Order #" + o.id + " | " + o.customer +
+                " | " + o.email + " | " + o.address + " | ₹" + o.total;
+            customerBox.appendChild(p);
+        });
+    }
+}
+
+function writeReview(id) {
+    currentReviewId = id;
+    document.getElementById("reviewProductId").value = id;
+
+    const product = products.find(p => p.id === id);
+    document.getElementById("reviewProduct").textContent =
+        "Writing a review for: " + product.name;
+
+    document.getElementById("reviews").scrollIntoView();
+}
+
+function submitReview(event) {
+    event.preventDefault();
+
+    const id = Number(document.getElementById("reviewProductId").value);
+
+    if (!products.some(p => p.id === id)) {
+        alert("Please click Review on a product first.");
+        return;
+    }
+
+    const review = {
+        productId: id,
+        name: document.getElementById("reviewName").value,
+        rating: Number(document.getElementById("reviewRating").value),
+        comment: document.getElementById("reviewComment").value
+    };
+
+    reviews.push(review);
+
+    const product = products.find(p => p.id === id);
+    const row = document.createElement("p");
+    row.textContent = product.name + " | " + review.name +
+        " | " + review.rating + "/5 stars | " + review.comment;
+
+    document.getElementById("reviewList").appendChild(row);
+    event.target.reset();
+    currentReviewId = null;
+}
+
+function adminLogin(event) {
+    event.preventDefault();
+
+    const user = document.getElementById("adminUser").value;
+    const pass = document.getElementById("adminPassword").value;
+
+    // Demo credentials only; real authentication must use a secure backend.
+    if (user === "admin" && pass === "admin123") {
+        document.getElementById("adminMessage").textContent =
+            "Admin login successful.";
+        document.getElementById("adminPanel").hidden = false;
+        showAdminProducts();
+        showOrders();
+    } else {
+        document.getElementById("adminMessage").textContent =
+            "Invalid admin username or password.";
+    }
+}
+
+function addProduct(event) {
+    event.preventDefault();
+
+    const product = {
+        id: nextProductId++,
+        name: document.getElementById("newName").value,
+        category: document.getElementById("newCategory").value,
+        subcategory: document.getElementById("newSubcategory").value,
+        price: Number(document.getElementById("newPrice").value),
+        description: document.getElementById("newDescription").value,
+        image: ""
+    };
+
+    products.push(product);
+    renderProducts();
+    updateSubcategories();
+    showAdminProducts();
+
+    event.target.reset();
+    alert("Product added successfully.");
+}
+
+function renderProducts() {
+    const box = document.getElementById("productList");
+    box.innerHTML = "";
+
+    products.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "product";
+        card.dataset.id = p.id;
+        card.dataset.name = p.name;
+        card.dataset.category = p.category;
+        card.dataset.subcategory = p.subcategory;
+        card.dataset.price = p.price;
+
+        if (p.image) {
+            const img = document.createElement("img");
+            img.src = p.image;
+            img.alt = p.name;
+            card.appendChild(img);
+        }
+
+        const tag = document.createElement("span");
+        tag.className = "tag";
+        tag.textContent = p.category + " / " + p.subcategory;
+
+        const name = document.createElement("h3");
+        name.textContent = p.name;
+
+        const desc = document.createElement("p");
+        desc.textContent = p.description;
+
+        const price = document.createElement("p");
+        price.className = "price";
+        price.textContent = "₹" + p.price;
+
+        const add = document.createElement("button");
+        add.textContent = "Add to Cart";
+        add.onclick = () => addToCart(p.id);
+
+        const wish = document.createElement("button");
+        wish.textContent = "♡ Wishlist";
+        wish.onclick = () => addToWishlist(p.id);
+
+        card.append(tag, name, desc, price, add, wish);
+        box.appendChild(card);
+    });
+
+    filterProducts();
+}
+
+function showAdminProducts() {
+    const box = document.getElementById("adminProducts");
+    box.innerHTML = "";
+
+    products.forEach(p => {
+        const row = document.createElement("div");
+        row.className = "product";
+        row.style.margin = "10px 0";
+
+        const name = document.createElement("p");
+        name.textContent = p.name + " (" + p.category + ")";
+
+        const price = document.createElement("input");
+        price.type = "number";
+        price.min = "1";
+        price.value = p.price;
+        price.setAttribute("aria-label", "Price for " + p.name);
+
+        const description = document.createElement("textarea");
+        description.value = p.description;
+        description.setAttribute("aria-label", "Description for " + p.name);
+
+        const update = document.createElement("button");
+        update.textContent = "Update Product";
+        update.onclick = function () {
+            const newPrice = Number(price.value);
+            if (newPrice <= 0) {
+                alert("Enter a valid price.");
+                return;
+            }
+
+            p.price = newPrice;
+            p.description = description.value;
+            renderProducts();
+            showAdminProducts();
+        };
+
+        const remove = document.createElement("button");
+        remove.textContent = "Remove Product";
+        remove.onclick = function () {
+            products = products.filter(item => item.id !== p.id);
+            cart = cart.filter(item => item.id !== p.id);
+            wishlist = wishlist.filter(item => item.id !== p.id);
+            renderProducts();
+            showCart();
+            showWishlist();
+            showAdminProducts();
+            updateSubcategories();
+        };
+
+        row.append(name, price, description, update, remove);
+        box.appendChild(row);
+    });
+}
+
+document.getElementById("category").addEventListener("change", updateSubcategories);
+</script>
+
+</body>
+</html>
