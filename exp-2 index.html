@@ -1,0 +1,737 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GrandStay Hotel Booking</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#263449}
+header{background:#102b46;color:white;padding:20px 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+header h2{margin:0;color:#f6d49c}
+nav{background:#1b4568;display:flex;justify-content:center;gap:7px;flex-wrap:wrap;padding:12px}
+nav button{padding:10px 12px;color:white;background:transparent;border:1px solid #7695af;border-radius:5px;cursor:pointer}
+nav button:hover{background:#376d94}
+main{max-width:1150px;margin:25px auto;padding:0 16px}
+.hero{background:linear-gradient(120deg,#102b46,#477f9e);padding:38px 25px;border-radius:13px;color:white;margin-bottom:22px}
+.hero h1{font-size:32px}
+.panel{background:white;padding:22px;border-radius:11px;box-shadow:0 4px 16px #182f4510;margin-bottom:20px}
+h2{color:#214e70}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px}
+label{display:block;font-weight:bold;margin:12px 0 6px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #ccd7e1;border-radius:6px;font-size:15px}
+.btn{background:#24638d;color:white;border:0;padding:11px 16px;border-radius:6px;cursor:pointer;margin-top:12px}
+.btn:hover{background:#153d5a}
+.btn.secondary{background:#e6eef5;color:#214e70}
+.btn.danger{background:#b63838}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.card{border:1px solid #e1e8ef;border-radius:10px;overflow:hidden;background:white}
+.card img{width:100%;height:165px;object-fit:cover;background:#eaf0f5}
+.card-content{padding:15px}
+.price{font-size:21px;font-weight:bold;color:#24638d}
+.muted{font-size:14px;color:#6c7d8c}
+.hidden{display:none!important}
+.notice{background:#e5f6e9;color:#216638;padding:12px;border-radius:6px;margin-top:12px;overflow-wrap:anywhere}
+.error{background:#ffeded;color:#9b3030;padding:12px;border-radius:6px;margin-top:12px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin-top:14px;min-width:550px}
+th,td{border:1px solid #dce4eb;padding:10px;text-align:left}
+th{background:#eaf1f7}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.stat{padding:16px;background:#eaf3fa;border-radius:8px}
+.stat h3{font-size:14px;margin:0 0 8px}
+.stat p{font-size:24px;font-weight:bold;color:#24638d;margin:0}
+footer{background:#102b46;color:white;text-align:center;padding:24px;margin-top:35px}
+a{color:#24638d}
+@media(max-width:600px){.hero{padding:23px}.hero h1{font-size:25px}.panel{padding:15px}}
+</style>
+</head>
+<body>
+
+<header>
+  <h2>🏨 GrandStay Hotel</h2>
+  <span>Comfort • Luxury • Hospitality</span>
+</header>
+
+<nav>
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('rooms')">Rooms</button>
+<button onclick="showPage('availability')">Check Availability</button>
+<button onclick="showPage('book')">Book Room</button>
+<button onclick="showPage('profile')">My Profile</button>
+<button onclick="showPage('history')">My Bookings</button>
+<button onclick="showPage('reviews')">Reviews</button>
+<button onclick="showPage('about')">About Us</button>
+<button onclick="showPage('contact')">Contact</button>
+<button onclick="showPage('faq')">FAQs</button>
+<button onclick="showPage('travel')">Travel Guide</button>
+<button onclick="showPage('privacy')">Privacy Policy</button>
+<button onclick="showPage('register')">Register</button>
+<button onclick="showPage('login')">Login</button>
+<button onclick="logout()">Logout</button>
+<button onclick="showPage('admin')">Admin</button>
+</nav>
+
+<main>
+
+<section id="home" class="page">
+<div class="hero">
+<h1>Welcome to GrandStay Hotel</h1>
+<p>Find your perfect room, check availability and book your stay with ease.</p>
+<button class="btn" onclick="showPage('availability')">Check Room Availability</button>
+<button class="btn" onclick="showPage('rooms')">Explore Our Rooms</button>
+</div>
+<div class="panel">
+<h2>Find Your Stay</h2>
+<div class="grid">
+<div><label>Check-in Date</label><input id="homeIn" type="date"></div>
+<div><label>Check-out Date</label><input id="homeOut" type="date"></div>
+<div><label>Guests</label><select id="homeGuests"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+</div>
+<button class="btn" onclick="searchFromHome()">Search Available Rooms</button>
+</div>
+<div class="panel">
+<h2>Our Room Categories</h2>
+<div id="featuredRooms" class="cards"></div>
+</div>
+</section>
+
+<section id="rooms" class="page hidden">
+<div class="panel">
+<h2>Room Types and Prices</h2>
+<p class="muted">Explore our four room categories and their facilities.</p>
+<div id="roomList" class="cards"></div>
+</div>
+</section>
+
+<section id="availability" class="page hidden">
+<div class="panel">
+<h2>Check Room Availability</h2>
+<div class="grid">
+<div><label>Check-in Date</label><input id="availIn" type="date" required></div>
+<div><label>Check-out Date</label><input id="availOut" type="date" required></div>
+<div><label>Guests</label><select id="availGuests"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+</div>
+<button class="btn" onclick="checkAvailability()">Check Availability</button>
+<div id="availabilityResult"></div>
+</div>
+</section>
+
+<section id="book" class="page hidden">
+<div class="panel">
+<h2>Book a Hotel Room</h2>
+<p class="muted">Register and log in before placing a booking.</p>
+<form id="bookingForm">
+<label>Room Type</label><select id="bookingRoom" required></select>
+<div class="grid">
+<div><label>Check-in Date</label><input id="bookingIn" type="date" required></div>
+<div><label>Check-out Date</label><input id="bookingOut" type="date" required></div>
+<div><label>Number of Guests</label><select id="bookingGuests"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+</div>
+<label>Special Requests</label><textarea id="specialRequests" rows="3" placeholder="Optional requests"></textarea>
+<div id="bookingEstimate"></div>
+<label>Payment Method</label>
+<select id="paymentMethod"><option>Pay at Hotel (Demo)</option><option>UPI (Demo)</option><option>Card (Demo)</option></select>
+<button class="btn" type="submit">Confirm Booking</button>
+</form>
+<div id="bookingMessage"></div>
+</div>
+</section>
+
+<section id="profile" class="page hidden">
+<div class="panel">
+<h2>My Profile</h2>
+<form id="profileForm">
+<label>Full Name</label><input id="profileName" required>
+<label>Email Address</label><input id="profileEmail" type="email" required>
+<label>Phone Number</label><input id="profilePhone" type="tel" required>
+<label>Address</label><textarea id="profileAddress" rows="3"></textarea>
+<button class="btn" type="submit">Update Profile</button>
+</form>
+<div id="profileMessage"></div>
+</div>
+</section>
+
+<section id="history" class="page hidden">
+<div class="panel">
+<h2>My Booking History</h2>
+<div id="bookingHistory"></div>
+</div>
+</section>
+
+<section id="reviews" class="page hidden">
+<div class="panel">
+<h2>Customer Reviews and Ratings</h2>
+<form id="reviewForm">
+<label>Your Name</label><input id="reviewName" required>
+<label>Rating</label>
+<select id="reviewRating"><option value="5">★★★★★ - 5</option><option value="4">★★★★ - 4</option><option value="3">★★★ - 3</option><option value="2">★★ - 2</option><option value="1">★ - 1</option></select>
+<label>Review</label><textarea id="reviewText" required></textarea>
+<button class="btn" type="submit">Submit Review</button>
+</form>
+<div id="reviewMessage"></div>
+<h3>Guest Feedback</h3>
+<div id="reviewList"></div>
+</div>
+</section>
+
+<section id="register" class="page hidden">
+<div class="panel">
+<h2>Create Account</h2>
+<form id="registerForm">
+<label>Full Name</label><input id="regName" required>
+<label>Email</label><input id="regEmail" type="email" required>
+<label>Phone</label><input id="regPhone" type="tel" required>
+<label>Password</label><input id="regPassword" type="password" minlength="6" required>
+<button class="btn" type="submit">Register</button>
+</form>
+<div id="registerMessage"></div>
+</div>
+</section>
+
+<section id="login" class="page hidden">
+<div class="panel">
+<h2>Customer Login</h2>
+<form id="loginForm">
+<label>Email</label><input id="loginEmail" type="email" required>
+<label>Password</label><input id="loginPassword" type="password" required>
+<button class="btn" type="submit">Login</button>
+</form>
+<div id="loginMessage"></div>
+</div>
+</section>
+
+<section id="about" class="page hidden">
+<div class="panel">
+<h2>About GrandStay</h2>
+<div id="aboutContent"></div>
+</div>
+</section>
+
+<section id="contact" class="page hidden">
+<div class="panel">
+<h2>Contact Us</h2>
+<div id="contactContent"></div>
+</div>
+</section>
+
+<section id="faq" class="page hidden">
+<div class="panel">
+<h2>Customer Service FAQs</h2>
+<div id="faqContent"></div>
+</div>
+</section>
+
+<section id="travel" class="page hidden">
+<div class="panel">
+<h2>Local Travel Guide</h2>
+<div id="travelContent"></div>
+</div>
+</section>
+
+<section id="privacy" class="page hidden">
+<div class="panel">
+<h2>Privacy Policy</h2>
+<div id="privacyContent"></div>
+</div>
+</section>
+
+<section id="admin" class="page hidden">
+<div class="panel">
+<h2>Administrator Login</h2>
+<label>Username</label><input id="adminUser">
+<label>Password</label><input id="adminPassword" type="password">
+<button class="btn" onclick="adminLogin()">Login</button>
+<div id="adminMessage"></div>
+<p class="muted">Demo credentials: admin / admin123</p>
+</div>
+
+<div class="panel">
+<h2>Hotel Management Dashboard</h2>
+<div id="adminDashboard">Log in as administrator to manage the hotel.</div>
+<button class="btn" onclick="renderAdmin()">Refresh Dashboard</button>
+</div>
+
+<div class="panel">
+<h2>Update Room Quantity and Price</h2>
+<form id="roomAdminForm">
+<label>Room Type</label><select id="adminRoom"></select>
+<div class="grid">
+<div><label>Room Quantity</label><input id="adminQuantity" type="number" min="0" required></div>
+<div><label>Price per Night (₹)</label><input id="adminPrice" type="number" min="1" required></div>
+</div>
+<label>Room Description</label><textarea id="adminDescription" required></textarea>
+<button class="btn" type="submit">Update Room</button>
+</form>
+<div id="roomAdminMessage"></div>
+</div>
+
+<div class="panel">
+<h2>Manage Any Booking</h2>
+<p class="muted">Select a booking reference to modify details or cancel the booking.</p>
+<div id="adminBookings"></div>
+</div>
+
+<div class="panel">
+<h2>Edit Hotel Information Pages</h2>
+<label>Page</label>
+<select id="staticPage">
+<option value="about">About Us</option>
+<option value="contact">Contact Us</option>
+<option value="faq">Customer Service FAQs</option>
+<option value="travel">Local Travel Guide</option>
+<option value="privacy">Privacy Policy</option>
+</select>
+<label>Page Content (plain text)</label><textarea id="staticText" rows="8"></textarea>
+<button class="btn" onclick="saveStaticPage()">Save Page Content</button>
+<div id="staticMessage"></div>
+</div>
+</section>
+
+</main>
+<footer>© 2026 GrandStay Hotel | Internet Programming Lab Experiment</footer>
+
+<script>
+"use strict";
+
+const defaultRooms=[
+{id:1,name:"Standard Room",price:1800,quantity:10,guests:2,description:"A comfortable room with air conditioning, Wi-Fi, television and a private bathroom.",image:"https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=700&q=80"},
+{id:2,name:"Deluxe Room",price:3000,quantity:8,guests:3,description:"A spacious room with modern furnishings, premium bedding and city views.",image:"https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=700&q=80"},
+{id:3,name:"Executive Suite",price:5000,quantity:5,guests:3,description:"An elegant suite with a sitting area, premium amenities and extra space.",image:"https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=700&q=80"},
+{id:4,name:"Family Room",price:4200,quantity:6,guests:4,description:"A spacious family room designed for group stays and family holidays.",image:"https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=700&q=80"}
+];
+
+const defaultPages={
+about:"GrandStay Hotel offers comfortable accommodation, friendly service and convenient facilities for business and leisure travellers. Our goal is to make every guest feel at home.",
+contact:"Address: GrandStay Hotel, Main Road, Chennai, Tamil Nadu. Phone: +91 90000 12345. Email: support@grandstay.example. Reception: 24 hours.",
+faq:"Q: What time is check-in? A: 12:00 PM.\\n\\nQ: What time is check-out? A: 11:00 AM.\\n\\nQ: Can I cancel my booking? A: Eligible bookings can be cancelled at least 3 days before arrival.\\n\\nQ: Are payments real? A: This lab demonstration does not process actual payments.",
+travel:"Local Travel Guide\\n\\nGuests can use local buses, taxis and other public transport to explore nearby attractions. Confirm actual routes, fares and opening hours before travelling. Airport transfers should be arranged with the hotel in advance.",
+privacy:"Privacy Policy\\n\\nThis demonstration stores sample account and booking information in the browser's local storage. Do not enter real passwords, payment details or sensitive personal information. A production system must use secure server-side storage, access controls and an appropriate privacy policy."
+};
+
+function load(key,fallback){
+ try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback;}
+ catch(e){return fallback;}
+}
+
+let rooms=load("hotel_rooms",defaultRooms);
+let users=load("hotel_users",[]);
+let bookings=load("hotel_bookings",[]);
+let reviews=load("hotel_reviews",[]);
+let pageContent=load("hotel_pages",defaultPages);
+let currentUser=load("hotel_currentUser",null);
+let isAdmin=false;
+
+function saveData(){
+ localStorage.setItem("hotel_rooms",JSON.stringify(rooms));
+ localStorage.setItem("hotel_users",JSON.stringify(users));
+ localStorage.setItem("hotel_bookings",JSON.stringify(bookings));
+ localStorage.setItem("hotel_reviews",JSON.stringify(reviews));
+ localStorage.setItem("hotel_pages",JSON.stringify(pageContent));
+ localStorage.setItem("hotel_currentUser",JSON.stringify(currentUser));
+}
+
+function esc(v){
+ return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function message(id,text,error=false){
+ const box=document.getElementById(id);
+ box.innerHTML="";
+ const d=document.createElement("div");
+ d.className=error?"error":"notice";
+ d.textContent=text;
+ box.appendChild(d);
+}
+
+const d=new Date();
+const today=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+["homeIn","homeOut","availIn","availOut","bookingIn","bookingOut"].forEach(id=>{
+ document.getElementById(id).min=today;
+});
+document.getElementById("homeIn").value=today;
+document.getElementById("availIn").value=today;
+document.getElementById("bookingIn").value=today;
+
+function dayDifference(a,b){
+ return Math.round((new Date(b+"T00:00:00")-new Date(a+"T00:00:00"))/86400000);
+}
+
+function validDates(checkIn,checkOut){
+ return !!checkIn&&!!checkOut&&checkIn>=today&&checkOut>checkIn;
+}
+
+function nightsBetween(a,b){return dayDifference(a,b);}
+
+function showPage(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
+ document.getElementById(id).classList.remove("hidden");
+ if(id==="rooms")renderRooms();
+ if(id==="book")populateRoomSelect();
+ if(id==="profile")renderProfile();
+ if(id==="history")renderHistory();
+ if(id==="reviews")renderReviews();
+ if(id==="admin")renderAdmin();
+ renderStaticPages();
+ window.scrollTo(0,0);
+}
+
+function roomCard(r){
+ return `<div class="card">
+ <img src="${esc(r.image)}" alt="${esc(r.name)}" onerror="this.onerror=null;this.src='https://placehold.co/600x400/eaf0f5/214e70?text=Hotel+Room'">
+ <div class="card-content"><h3>${esc(r.name)}</h3><p>${esc(r.description)}</p>
+ <p><b>Maximum guests:</b> ${r.guests}</p>
+ <p><b>Rooms in inventory:</b> ${r.quantity}</p>
+ <p class="price">₹${Number(r.price).toLocaleString("en-IN")} / night</p>
+ <button class="btn" onclick="bookThisRoom(${r.id})">Book This Room</button></div></div>`;
+}
+
+function renderRooms(){
+ document.getElementById("roomList").innerHTML=rooms.map(roomCard).join("");
+ document.getElementById("featuredRooms").innerHTML=rooms.map(roomCard).join("");
+ populateRoomSelect();
+}
+
+function bookThisRoom(id){
+ showPage("book");
+ document.getElementById("bookingRoom").value=String(id);
+ updateEstimate();
+}
+
+function populateRoomSelect(){
+ const el=document.getElementById("bookingRoom");
+ const previous=el.value;
+ el.innerHTML=rooms.map(r=>`<option value="${r.id}">${esc(r.name)} — ₹${r.price}/night</option>`).join("");
+ if(rooms.some(r=>String(r.id)===previous))el.value=previous;
+ updateEstimate();
+}
+
+function overlappingBookings(roomId,checkIn,checkOut,ignoreId=null){
+ return bookings.filter(b=>
+  b.roomId===Number(roomId)&&b.status!=="Cancelled"&&b.id!==ignoreId&&
+  b.checkIn<checkOut&&b.checkOut>checkIn
+ );
+}
+
+function availableCount(room,checkIn,checkOut,ignoreId=null){
+ if(!validDates(checkIn,checkOut))return 0;
+ const dates=[];
+ let cursor=new Date(checkIn+"T00:00:00");
+ const end=new Date(checkOut+"T00:00:00");
+ while(cursor<end){
+  dates.push(cursor.toISOString().slice(0,10));
+  cursor.setDate(cursor.getDate()+1);
+ }
+ let min=room.quantity;
+ for(const date of dates){
+  const used=bookings.filter(b=>b.roomId===room.id&&b.status!=="Cancelled"&&b.id!==ignoreId&&b.checkIn<=date&&b.checkOut>date).length;
+  min=Math.min(min,room.quantity-used);
+ }
+ return Math.max(0,min);
+}
+
+function checkAvailability(){
+ const ci=document.getElementById("availIn").value;
+ const co=document.getElementById("availOut").value;
+ const guests=Number(document.getElementById("availGuests").value);
+ const box=document.getElementById("availabilityResult");
+ if(!validDates(ci,co)){
+  box.innerHTML='<p class="error">Select a valid check-in and check-out date. Check-out must be after check-in.</p>';
+  return;
+ }
+ const matches=rooms.filter(r=>r.guests>=guests&&availableCount(r,ci,co)>0);
+ box.innerHTML=matches.length?
+  `<h3>Available Rooms (${nightsBetween(ci,co)} night(s))</h3><div class="cards">${matches.map(r=>
+  `<div class="card-content panel"><h3>${esc(r.name)}</h3><p>Available rooms: ${availableCount(r,ci,co)}</p>
+  <p class="price">₹${(r.price*nightsBetween(ci,co)).toLocaleString("en-IN")} total</p>
+  <button class="btn" onclick="startBooking(${r.id},'${ci}','${co}',${guests})">Book Room</button></div>`).join("")}</div>`:
+  "<p>No rooms are available for the selected dates and guest count.</p>";
+}
+
+function startBooking(id,ci,co,guests){
+ if(!currentUser){alert("Please log in before booking.");showPage("login");return;}
+ showPage("book");
+ document.getElementById("bookingRoom").value=String(id);
+ document.getElementById("bookingIn").value=ci;
+ document.getElementById("bookingOut").value=co;
+ document.getElementById("bookingGuests").value=String(guests);
+ updateEstimate();
+}
+
+function searchFromHome(){
+ const ci=document.getElementById("homeIn").value;
+ const co=document.getElementById("homeOut").value;
+ if(!validDates(ci,co)){alert("Choose valid check-in and check-out dates.");return;}
+ document.getElementById("availIn").value=ci;
+ document.getElementById("availOut").value=co;
+ document.getElementById("availGuests").value=document.getElementById("homeGuests").value;
+ showPage("availability");
+ checkAvailability();
+}
+
+function updateEstimate(){
+ const r=rooms.find(r=>r.id===Number(document.getElementById("bookingRoom").value));
+ const ci=document.getElementById("bookingIn").value;
+ const co=document.getElementById("bookingOut").value;
+ const box=document.getElementById("bookingEstimate");
+ if(!r){box.textContent="No room types available.";return;}
+ if(!validDates(ci,co)){box.textContent="Choose valid check-in and check-out dates to calculate your total.";return;}
+ const nights=nightsBetween(ci,co);
+ box.textContent=nights+" night(s) × ₹"+r.price+" = ₹"+(nights*r.price).toLocaleString("en-IN");
+}
+
+["bookingRoom","bookingIn","bookingOut"].forEach(id=>
+ document.getElementById(id).addEventListener("change",updateEstimate)
+);
+
+document.getElementById("bookingForm").addEventListener("submit",function(e){
+ e.preventDefault();
+ if(!currentUser){message("bookingMessage","Please log in before booking.",true);return;}
+ const room=rooms.find(r=>r.id===Number(document.getElementById("bookingRoom").value));
+ const ci=document.getElementById("bookingIn").value;
+ const co=document.getElementById("bookingOut").value;
+ const guests=Number(document.getElementById("bookingGuests").value);
+ if(!room||!validDates(ci,co)){message("bookingMessage","Select a room and valid dates.",true);return;}
+ if(guests>room.guests){message("bookingMessage","This room does not support that many guests.",true);return;}
+ if(availableCount(room,ci,co)<1){message("bookingMessage","Sorry, no rooms are available for those dates.",true);return;}
+
+ const nights=nightsBetween(ci,co);
+ const user=users.find(u=>u.email===currentUser);
+ const booking={
+  id:"GS"+Date.now().toString().slice(-8),
+  email:currentUser,
+  guestName:user.name,
+  phone:user.phone,
+  roomId:room.id,
+  roomName:room.name,
+  checkIn:ci,
+  checkOut:co,
+  guests:guests,
+  nights:nights,
+  total:room.price*nights,
+  requests:document.getElementById("specialRequests").value.trim(),
+  payment:document.getElementById("paymentMethod").value,
+  status:"Confirmed",
+  created:new Date().toLocaleString()
+ };
+ bookings.push(booking);
+ saveData();
+ message("bookingMessage","Booking confirmed! Reference: "+booking.id+
+  ". Total: ₹"+booking.total.toLocaleString("en-IN")+". This is a demo booking; no actual payment or email was processed.");
+ this.reset();
+ document.getElementById("bookingIn").value=today;
+ populateRoomSelect();
+});
+
+function renderProfile(){
+ const user=users.find(u=>u.email===currentUser);
+ if(!user){document.getElementById("profileForm").classList.add("hidden");message("profileMessage","Please log in to view your profile.",true);return;}
+ document.getElementById("profileForm").classList.remove("hidden");
+ document.getElementById("profileName").value=user.name;
+ document.getElementById("profileEmail").value=user.email;
+ document.getElementById("profileEmail").readOnly=true;
+ document.getElementById("profilePhone").value=user.phone;
+ document.getElementById("profileAddress").value=user.address||"";
+}
+
+document.getElementById("profileForm").addEventListener("submit",function(e){
+ e.preventDefault();
+ const user=users.find(u=>u.email===currentUser);
+ if(!user){message("profileMessage","Please log in first.",true);return;}
+ user.name=document.getElementById("profileName").value.trim();
+ user.phone=document.getElementById("profilePhone").value.trim();
+ user.address=document.getElementById("profileAddress").value.trim();
+ saveData();message("profileMessage","Profile updated successfully.");
+});
+
+function bookingCard(b,admin=false){
+ return `<div class="panel"><h3>${esc(b.roomName)}</h3>
+ <p><b>Reference:</b> ${esc(b.id)}</p>
+ ${admin?`<p><b>Guest:</b> ${esc(b.guestName)} (${esc(b.email)})</p>`:""}
+ <p><b>Check-in:</b> ${esc(b.checkIn)} | <b>Check-out:</b> ${esc(b.checkOut)}</p>
+ <p><b>Guests:</b> ${b.guests} | <b>Nights:</b> ${b.nights}</p>
+ <p><b>Total:</b> ₹${Number(b.total).toLocaleString("en-IN")}</p>
+ <p><b>Status:</b> ${esc(b.status)}</p>
+ ${b.requests?`<p><b>Requests:</b> ${esc(b.requests)}</p>`:""}
+ ${b.status!=="Cancelled"?`<button class="btn secondary" onclick="modifyBooking('${esc(b.id)}',${admin})">Modify Booking</button>
+ <button class="btn danger" onclick="cancelBooking('${esc(b.id)}',${admin})">Cancel Booking</button>`:""}
+ </div>`;
+}
+
+function renderHistory(){
+ const box=document.getElementById("bookingHistory");
+ if(!currentUser){box.innerHTML="<p>Please log in to see your bookings.</p>";return;}
+ const list=bookings.filter(b=>b.email===currentUser).slice().reverse();
+ box.innerHTML=list.length?list.map(b=>bookingCard(b)).join():"<p>No booking history available.</p>";
+}
+
+function modifyBooking(id,admin=false){
+ const b=bookings.find(b=>b.id===id);
+ if(!b||b.status==="Cancelled")return;
+ if(!admin&&b.email!==currentUser)return;
+ const days=dayDifference(today,b.checkIn);
+ if(!admin&&days<3){
+  alert("Bookings can only be modified at least 3 days before arrival.");
+  return;
+ }
+ const newIn=prompt("Enter new check-in date (YYYY-MM-DD):",b.checkIn);
+ if(newIn===null)return;
+ const newOut=prompt("Enter new check-out date (YYYY-MM-DD):",b.checkOut);
+ if(newOut===null)return;
+ if(!validDates(newIn,newOut)){alert("Invalid dates.");return;}
+ const room=rooms.find(r=>r.id===b.roomId);
+ if(!room||availableCount(room,newIn,newOut,b.id)<1){alert("No rooms available for the changed dates.");return;}
+ b.checkIn=newIn;b.checkOut=newOut;b.nights=nightsBetween(newIn,newOut);b.total=b.nights*room.price;
+ saveData();renderHistory();renderAdmin();
+ alert("Booking updated successfully.");
+}
+
+function cancelBooking(id,admin=false){
+ const b=bookings.find(b=>b.id===id);
+ if(!b||b.status==="Cancelled")return;
+ if(!admin&&b.email!==currentUser)return;
+ const days=dayDifference(today,b.checkIn);
+ if(!admin&&days<3){
+  alert("Bookings can only be cancelled at least 3 days before arrival.");
+  return;
+ }
+ if(!confirm("Cancel booking "+id+"?"))return;
+ b.status="Cancelled";
+ saveData();renderHistory();renderAdmin();
+ alert("Booking cancelled successfully. No real refund is processed in this demo.");
+}
+
+function renderReviews(){
+ document.getElementById("reviewList").innerHTML=reviews.map(r=>
+ `<div class="panel"><b>${esc(r.name)}</b> — ${"★".repeat(r.rating)}
+ <p>${esc(r.text)}</p></div>`).join("")||"<p>No reviews submitted yet.</p>";
+}
+
+document.getElementById("reviewForm").addEventListener("submit",function(e){
+ e.preventDefault();
+ reviews.push({
+ name:document.getElementById("reviewName").value.trim(),
+ rating:Number(document.getElementById("reviewRating").value),
+ text:document.getElementById("reviewText").value.trim()
+ });
+ saveData();this.reset();renderReviews();
+ message("reviewMessage","Thank you for your review!");
+});
+
+document.getElementById("registerForm").addEventListener("submit",function(e){
+ e.preventDefault();
+ const email=document.getElementById("regEmail").value.trim().toLowerCase();
+ if(users.some(u=>u.email===email)){message("registerMessage","This email is already registered.",true);return;}
+ users.push({
+ name:document.getElementById("regName").value.trim(),
+ email:email,
+ phone:document.getElementById("regPhone").value.trim(),
+ password:document.getElementById("regPassword").value,
+ address:""
+ });
+ currentUser=email;saveData();this.reset();
+ message("registerMessage","Registration successful. You are now logged in.");
+});
+
+document.getElementById("loginForm").addEventListener("submit",function(e){
+ e.preventDefault();
+ const email=document.getElementById("loginEmail").value.trim().toLowerCase();
+ const password=document.getElementById("loginPassword").value;
+ const user=users.find(u=>u.email===email&&u.password===password);
+ if(!user){message("loginMessage","Invalid email or password.",true);return;}
+ currentUser=email;saveData();
+ message("loginMessage","Welcome back, "+user.name+"!");
+});
+
+function logout(){
+ currentUser=null;isAdmin=false;saveData();
+ alert("You have logged out.");
+ showPage("home");
+}
+
+function adminLogin(){
+ const username=document.getElementById("adminUser").value;
+ const password=document.getElementById("adminPassword").value;
+ if(username==="admin"&&password==="admin123"){
+  isAdmin=true;message("adminMessage","Administrator login successful.");
+  renderAdmin();
+ }else{
+  isAdmin=false;message("adminMessage","Invalid username or password.",true);
+ }
+}
+
+function renderAdmin(){
+ if(!isAdmin){
+  document.getElementById("adminDashboard").textContent="Log in as administrator to manage the hotel.";
+  document.getElementById("adminBookings").textContent="Administrator access required.";
+  return;
+ }
+ document.getElementById("adminDashboard").innerHTML=
+ `<div class="stats">
+ <div class="stat"><h3>Room Types</h3><p>${rooms.length}</p></div>
+ <div class="stat"><h3>Registered Users</h3><p>${users.length}</p></div>
+ <div class="stat"><h3>Total Bookings</h3><p>${bookings.length}</p></div>
+ <div class="stat"><h3>Active Bookings</h3><p>${bookings.filter(b=>b.status!=="Cancelled").length}</p></div>
+ </div>`;
+
+ document.getElementById("adminRoom").innerHTML=rooms.map(r=>
+ `<option value="${r.id}">${esc(r.name)}</option>`).join("");
+ document.getElementById("adminBookings").innerHTML=bookings.length?
+ bookings.slice().reverse().map(b=>bookingCard(b,true)).join():"<p>No bookings yet.</p>";
+ renderStaticPages();
+}
+
+document.getElementById("adminRoom").addEventListener("change",loadRoomAdmin);
+
+function loadRoomAdmin(){
+ const r=rooms.find(r=>r.id===Number(document.getElementById("adminRoom").value));
+ if(!r)return;
+ document.getElementById("adminQuantity").value=r.quantity;
+ document.getElementById("adminPrice").value=r.price;
+ document.getElementById("adminDescription").value=r.description;
+}
+document.getElementById("roomAdminForm").addEventListener("submit",function(e){
+ e.preventDefault();
+ if(!isAdmin){message("roomAdminMessage","Please log in as admin first.",true);return;}
+ const r=rooms.find(r=>r.id===Number(document.getElementById("adminRoom").value));
+ if(!r)return;
+ r.quantity=Number(document.getElementById("adminQuantity").value);
+ r.price=Number(document.getElementById("adminPrice").value);
+ r.description=document.getElementById("adminDescription").value.trim();
+ saveData();renderRooms();renderAdmin();
+ message("roomAdminMessage","Room details updated successfully.");
+});
+
+function renderStaticPages(){
+ ["about","contact","faq","travel","privacy"].forEach(key=>{
+  const el=document.getElementById(key+"Content");
+  if(el)el.textContent=pageContent[key]||"Information will be updated soon.";
+ });
+ if(document.getElementById("staticPage")){
+  const key=document.getElementById("staticPage").value;
+  document.getElementById("staticText").value=pageContent[key]||"";
+ }
+}
+
+document.getElementById("staticPage").addEventListener("change",function(){
+ document.getElementById("staticText").value=pageContent[this.value]||"";
+});
+
+function saveStaticPage(){
+ if(!isAdmin){message("staticMessage","Please log in as administrator first.",true);return;}
+ const key=document.getElementById("staticPage").value;
+ pageContent[key]=document.getElementById("staticText").value;
+ saveData();renderStaticPages();
+ message("staticMessage","Page content saved successfully.");
+}
+
+saveData();
+renderRooms();
+renderStaticPages();
+renderReviews();
+populateRoomSelect();
+loadRoomAdmin();
+</script>
+</body>
+</html>
