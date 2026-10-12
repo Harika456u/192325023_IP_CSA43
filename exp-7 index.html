@@ -1,0 +1,817 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlowUp - Beauty Parlour Booking</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#fff7fa;color:#382936}
+header{background:#542342;color:white;padding:20px 6%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+header h2{margin:0;color:#ffc7df}
+nav{background:#753657;padding:12px;display:flex;justify-content:center;flex-wrap:wrap;gap:7px}
+nav button{background:transparent;border:1px solid #d99bb9;color:white;padding:10px;border-radius:5px;cursor:pointer}
+nav button:hover{background:#a64d78}
+main{max-width:1150px;margin:26px auto;padding:0 16px}
+.hero{background:linear-gradient(120deg,#542342,#c15e91);color:white;padding:38px 28px;border-radius:14px;margin-bottom:22px}
+.hero h1{font-size:32px}
+.panel{background:white;padding:23px;border-radius:12px;box-shadow:0 4px 16px #54234212;margin-bottom:20px}
+h2{color:#753657}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px}
+label{display:block;font-weight:bold;margin:12px 0 6px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #e2cbd7;border-radius:6px;font-size:15px;background:white}
+.btn{background:#923f68;color:white;border:0;padding:11px 16px;border-radius:6px;cursor:pointer;margin-top:12px}
+.btn:hover{background:#542342}
+.btn.secondary{background:#f3e5ec;color:#753657}
+.btn.danger{background:#b52d4b}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px}
+.card{border:1px solid #f0dce6;border-radius:12px;overflow:hidden;background:white}
+.card img{width:100%;height:165px;object-fit:cover;background:#f7e6ef}
+.card-content{padding:15px}
+.card h3{color:#753657}
+.price{font-size:20px;font-weight:bold;color:#923f68}
+.muted{color:#806d79;font-size:14px}
+.notice{background:#e7f7e9;color:#226b35;padding:12px;border-radius:6px;margin-top:12px;overflow-wrap:anywhere}
+.error{background:#ffeded;color:#9a293a;padding:12px;border-radius:6px;margin-top:12px}
+.hidden{display:none!important}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin-top:15px;min-width:550px}
+th,td{border:1px solid #ecdce4;padding:11px;text-align:left}
+th{background:#f7e8ef}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
+.stat{padding:15px;background:#fff0f6;border-radius:8px}
+.stat h3{font-size:14px;margin:0 0 10px}
+.stat p{font-size:24px;font-weight:bold;color:#923f68;margin:0}
+.slot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:9px;margin-top:12px}
+.slot{padding:12px;border:1px solid #d7b5c7;background:#fff6fa;border-radius:7px;cursor:pointer}
+.slot.selected{background:#923f68;color:white}
+.slot:disabled{background:#eee;color:#999;cursor:not-allowed;border-color:#ddd}
+footer{background:#542342;color:white;text-align:center;padding:24px;margin-top:35px}
+@media(max-width:600px){.hero{padding:23px}.hero h1{font-size:25px}.panel{padding:15px}}
+</style>
+</head>
+<body>
+
+<header>
+  <h2>✨ GlowUp Beauty Studio</h2>
+  <span>Your Beauty, Our Passion</span>
+</header>
+
+<nav>
+  <button onclick="showPage('home')">Home</button>
+  <button onclick="showPage('services')">Services</button>
+  <button onclick="showPage('book')">Book Appointment</button>
+  <button onclick="showPage('calendar')">Calendar</button>
+  <button onclick="showPage('account')">My Account</button>
+  <button onclick="showPage('feedback')">Feedback</button>
+  <button onclick="showPage('register')">Register</button>
+  <button onclick="showPage('login')">Login</button>
+  <button onclick="logout()">Logout</button>
+  <button onclick="showPage('admin')">Salon Admin</button>
+</nav>
+
+<main>
+
+<section id="home" class="page">
+  <div class="hero">
+    <h1>Feel Beautiful. Look Confident.</h1>
+    <p>Discover beauty treatments, choose your stylist and book a convenient appointment.</p>
+    <button class="btn" onclick="showPage('services')">Explore Services</button>
+    <button class="btn" onclick="showPage('book')">Book Now</button>
+  </div>
+  <div class="panel">
+    <h2>Our Beauty Services</h2>
+    <div id="featuredServices" class="cards"></div>
+  </div>
+  <div class="panel">
+    <h2>Meet Our Stylists</h2>
+    <div id="featuredStylists" class="cards"></div>
+  </div>
+</section>
+
+<section id="services" class="page hidden">
+  <div class="panel">
+    <h2>Explore Beauty Services</h2>
+    <div class="grid">
+      <div><label>Search</label><input id="serviceSearch" placeholder="Search services"></div>
+      <div><label>Category</label>
+        <select id="serviceCategory">
+          <option value="">All Categories</option>
+          <option>Hair</option><option>Skin</option><option>Makeup</option>
+          <option>Nails</option><option>Spa</option>
+        </select>
+      </div>
+      <div><label>Maximum Price</label>
+        <select id="servicePrice">
+          <option value="100000">All Prices</option>
+          <option value="500">Up to ₹500</option>
+          <option value="1000">Up to ₹1000</option>
+          <option value="2000">Up to ₹2000</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn" onclick="renderServices()">Apply Filters</button>
+    <div id="serviceList" class="cards"></div>
+  </div>
+</section>
+
+<section id="book" class="page hidden">
+  <div class="panel">
+    <h2>Book an Appointment</h2>
+    <p class="muted">Select a service, stylist, date and available time.</p>
+    <form id="bookingForm">
+      <label>Beauty Service</label><select id="bookService" required></select>
+      <label>Stylist</label><select id="bookStylist" required></select>
+      <label>Appointment Date</label><input id="bookDate" type="date" required>
+      <label>Available Time Slots</label>
+      <div id="availableSlots" class="slot-grid"></div>
+      <input type="hidden" id="selectedTime">
+      <label>Customer Name</label><input id="bookName" required>
+      <label>Email Address</label><input id="bookEmail" type="email" required>
+      <label>Phone Number</label><input id="bookPhone" type="tel" required>
+      <label>Payment Option</label>
+      <select id="paymentOption">
+        <option value="Full Payment">Full Payment (Demo)</option>
+        <option value="50% Deposit">50% Deposit (Demo)</option>
+        <option value="Pay at Salon">Pay at Salon</option>
+      </select>
+      <div id="bookingPrice" class="notice">Select a service to see the price.</div>
+      <button class="btn" type="submit">Confirm Appointment</button>
+    </form>
+    <div id="bookingMessage"></div>
+  </div>
+</section>
+
+<section id="calendar" class="page hidden">
+  <div class="panel">
+    <h2>Reservations Calendar</h2>
+    <div class="grid">
+      <div><label>Select Date</label><input type="date" id="calendarDate"></div>
+      <div><label>Stylist</label><select id="calendarStylist"><option value="">All Stylists</option></select></div>
+    </div>
+    <button class="btn" onclick="renderCalendar()">View Reservations</button>
+    <div id="calendarResult"></div>
+  </div>
+</section>
+
+<section id="account" class="page hidden">
+  <div class="panel">
+    <h2>My Personal Account</h2>
+    <div id="accountInfo">Please log in to view your account.</div>
+  </div>
+  <div class="panel">
+    <h2>Upcoming Appointments</h2>
+    <div id="upcomingAppointments"></div>
+  </div>
+  <div class="panel">
+    <h2>Appointment History</h2>
+    <div id="appointmentHistory"></div>
+  </div>
+</section>
+
+<section id="feedback" class="page hidden">
+  <div class="panel">
+    <h2>Customer Feedback</h2>
+    <form id="feedbackForm">
+      <label>Your Name</label><input id="feedbackName" required>
+      <label>Email</label><input id="feedbackEmail" type="email" required>
+      <label>Service</label><select id="feedbackService"></select>
+      <label>Rating</label>
+      <select id="feedbackRating">
+        <option>5 - Excellent</option><option>4 - Very Good</option>
+        <option>3 - Good</option><option>2 - Average</option><option>1 - Poor</option>
+      </select>
+      <label>Comments and Suggestions</label><textarea id="feedbackComments" rows="4" required></textarea>
+      <button class="btn" type="submit">Submit Feedback</button>
+    </form>
+    <div id="feedbackMessage"></div>
+  </div>
+</section>
+
+<section id="register" class="page hidden">
+  <div class="panel">
+    <h2>Create Customer Account</h2>
+    <form id="registerForm">
+      <label>Full Name</label><input id="regName" required>
+      <label>Email</label><input id="regEmail" type="email" required>
+      <label>Phone</label><input id="regPhone" type="tel" required>
+      <label>Password</label><input id="regPassword" type="password" minlength="6" required>
+      <button class="btn" type="submit">Register</button>
+    </form>
+    <div id="registerMessage"></div>
+  </div>
+</section>
+
+<section id="login" class="page hidden">
+  <div class="panel">
+    <h2>Customer Login</h2>
+    <form id="loginForm">
+      <label>Email</label><input id="loginEmail" type="email" required>
+      <label>Password</label><input id="loginPassword" type="password" required>
+      <button class="btn" type="submit">Login</button>
+    </form>
+    <div id="loginMessage"></div>
+  </div>
+</section>
+
+<section id="admin" class="page hidden">
+  <div class="panel">
+    <h2>Salon Manager Login</h2>
+    <label>Username</label><input id="adminUser">
+    <label>Password</label><input id="adminPassword" type="password">
+    <button class="btn" onclick="adminLogin()">Login as Admin</button>
+    <div id="adminMessage"></div>
+    <p class="muted">Demo credentials: admin / admin123</p>
+  </div>
+
+  <div class="panel">
+    <h2>Manager Dashboard</h2>
+    <div id="adminDashboard">Login as administrator to manage the salon.</div>
+    <button class="btn" onclick="renderAdmin()">Refresh Dashboard</button>
+  </div>
+
+  <div class="panel">
+    <h2>Add New Service</h2>
+    <form id="serviceForm">
+      <label>Service Name</label><input id="newServiceName" required>
+      <div class="grid">
+        <div><label>Category</label>
+          <select id="newServiceCategory">
+            <option>Hair</option><option>Skin</option><option>Makeup</option>
+            <option>Nails</option><option>Spa</option>
+          </select>
+        </div>
+        <div><label>Price (₹)</label><input id="newServicePrice" type="number" min="1" required></div>
+        <div><label>Duration (minutes)</label><input id="newServiceDuration" type="number" min="15" value="30" required></div>
+      </div>
+      <label>Description</label><textarea id="newServiceDescription" required></textarea>
+      <button class="btn" type="submit">Add Service</button>
+    </form>
+    <div id="serviceAdminMessage"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Manage Stylists</h2>
+    <form id="stylistForm">
+      <label>Stylist Name</label><input id="newStylistName" required>
+      <label>Specialization</label><input id="newStylistSpeciality" required>
+      <button class="btn" type="submit">Add Stylist</button>
+    </form>
+    <div id="stylistAdminMessage"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Lock or Unlock a Time Slot</h2>
+    <p class="muted">Locked slots cannot be booked.</p>
+    <div class="grid">
+      <div><label>Stylist</label><select id="lockStylist"></select></div>
+      <div><label>Date</label><input type="date" id="lockDate"></div>
+      <div><label>Time</label><select id="lockTime"></select></div>
+    </div>
+    <button class="btn danger" onclick="toggleLock(true)">Lock Slot</button>
+    <button class="btn secondary" onclick="toggleLock(false)">Unlock Slot</button>
+    <div id="lockMessage"></div>
+  </div>
+</section>
+
+</main>
+<footer>© 2026 GlowUp Beauty Studio | Internet Programming Lab Experiment</footer>
+
+<script>
+"use strict";
+
+const defaultServices = [
+{id:1,name:"Haircut and Styling",category:"Hair",price:400,duration:45,description:"Professional haircut, styling and finishing for your preferred look.",image:"https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=700&q=80"},
+{id:2,name:"Hair Spa",category:"Hair",price:900,duration:60,description:"A relaxing hair treatment designed to condition and nourish your hair.",image:"https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=700&q=80"},
+{id:3,name:"Facial Treatment",category:"Skin",price:1200,duration:60,description:"A refreshing facial treatment for a clean and glowing appearance.",image:"https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=700&q=80"},
+{id:4,name:"Party Makeup",category:"Makeup",price:1800,duration:90,description:"Professional party makeup tailored to your occasion and preferences.",image:"https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=700&q=80"},
+{id:5,name:"Manicure",category:"Nails",price:500,duration:40,description:"Nail shaping, cuticle care and a polished finish.",image:"https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=700&q=80"},
+{id:6,name:"Relaxing Spa",category:"Spa",price:1500,duration:60,description:"A calming wellness session in a relaxing salon environment.",image:"https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=700&q=80"}
+];
+
+const defaultStylists = [
+{id:1,name:"Ananya",speciality:"Hair Styling"},
+{id:2,name:"Priya",speciality:"Skin and Facials"},
+{id:3,name:"Meera",speciality:"Makeup Artist"},
+{id:4,name:"Kavya",speciality:"Nails and Spa"}
+];
+
+function load(key,fallback){
+  try{
+    const value=localStorage.getItem(key);
+    return value?JSON.parse(value):fallback;
+  }catch(e){return fallback;}
+}
+
+let services=load("glow_services",defaultServices);
+let stylists=load("glow_stylists",defaultStylists);
+let users=load("glow_users",[]);
+let appointments=load("glow_appointments",[]);
+let feedbacks=load("glow_feedback",[]);
+let lockedSlots=load("glow_lockedSlots",[]);
+let currentUser=load("glow_currentUser",null);
+let isAdmin=false;
+let selectedTime="";
+
+function saveData(){
+  localStorage.setItem("glow_services",JSON.stringify(services));
+  localStorage.setItem("glow_stylists",JSON.stringify(stylists));
+  localStorage.setItem("glow_users",JSON.stringify(users));
+  localStorage.setItem("glow_appointments",JSON.stringify(appointments));
+  localStorage.setItem("glow_feedback",JSON.stringify(feedbacks));
+  localStorage.setItem("glow_lockedSlots",JSON.stringify(lockedSlots));
+  localStorage.setItem("glow_currentUser",JSON.stringify(currentUser));
+}
+
+function esc(v){
+  return String(v??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+function msg(id,text,error=false){
+  const box=document.getElementById(id);
+  box.innerHTML="";
+  const div=document.createElement("div");
+  div.className=error?"error":"notice";
+  div.textContent=text;
+  box.appendChild(div);
+}
+
+const dateNow=new Date();
+const today=dateNow.getFullYear()+"-"+String(dateNow.getMonth()+1).padStart(2,"0")+"-"+String(dateNow.getDate()).padStart(2,"0");
+
+document.getElementById("bookDate").min=today;
+document.getElementById("bookDate").value=today;
+document.getElementById("calendarDate").value=today;
+document.getElementById("calendarDate").min=today;
+document.getElementById("lockDate").min=today;
+document.getElementById("lockDate").value=today;
+
+const times=["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00"];
+
+function showPage(id){
+  document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+  if(id==="services")renderServices();
+  if(id==="calendar")renderCalendar();
+  if(id==="account")renderAccount();
+  if(id==="admin")renderAdmin();
+  if(id==="home")renderHome();
+  if(id==="book")populateBookingOptions();
+  if(id==="feedback")populateFeedbackServices();
+  if(id==="lockStylist")populateLockOptions();
+  window.scrollTo(0,0);
+}
+
+function serviceCard(s){
+  return `<div class="card">
+    <img src="${esc(s.image||"https://placehold.co/600x400/f7e6ef/753657?text=Beauty+Service")}"
+    alt="${esc(s.name)}" onerror="this.onerror=null;this.src='https://placehold.co/600x400/f7e6ef/753657?text=Beauty+Service'">
+    <div class="card-content">
+    <p class="muted">${esc(s.category)} · ${s.duration} minutes</p>
+    <h3>${esc(s.name)}</h3><p>${esc(s.description)}</p>
+    <p class="price">₹${Number(s.price).toLocaleString("en-IN")}</p>
+    <button class="btn" onclick="bookService(${s.id})">Book Service</button>
+    </div></div>`;
+}
+
+function renderHome(){
+  document.getElementById("featuredServices").innerHTML=services.slice(0,3).map(serviceCard).join("");
+  document.getElementById("featuredStylists").innerHTML=stylists.map(s=>
+    `<div class="card-content panel"><h3>💇 ${esc(s.name)}</h3><p>${esc(s.speciality)}</p></div>`
+  ).join("");
+}
+
+function renderServices(){
+  const q=document.getElementById("serviceSearch").value.trim().toLowerCase();
+  const cat=document.getElementById("serviceCategory").value;
+  const price=Number(document.getElementById("servicePrice").value);
+  const list=services.filter(s=>
+    s.name.toLowerCase().includes(q)&&(!cat||s.category===cat)&&s.price<=price
+  );
+  document.getElementById("serviceList").innerHTML=
+    list.length?list.map(serviceCard).join(""):"<p>No services match your search.</p>";
+}
+
+function populateBookingOptions(){
+  const serviceSelect=document.getElementById("bookService");
+  const stylistSelect=document.getElementById("bookStylist");
+  const previousService=serviceSelect.value;
+  const previousStylist=stylistSelect.value;
+  serviceSelect.innerHTML=services.map(s=>
+    `<option value="${s.id}">${esc(s.name)} — ₹${s.price} (${s.duration} min)</option>`
+  ).join("");
+  stylistSelect.innerHTML=stylists.map(s=>
+    `<option value="${s.id}">${esc(s.name)} — ${esc(s.speciality)}</option>`
+  ).join("");
+  if(services.some(s=>String(s.id)===previousService))serviceSelect.value=previousService;
+  if(stylists.some(s=>String(s.id)===previousStylist))stylistSelect.value=previousStylist;
+  updateBookingPrice();
+  renderSlots();
+}
+
+function bookService(id){
+  showPage("book");
+  document.getElementById("bookService").value=String(id);
+  updateBookingPrice();
+  renderSlots();
+}
+
+function updateBookingPrice(){
+  const service=services.find(s=>s.id===Number(document.getElementById("bookService").value));
+  document.getElementById("bookingPrice").textContent=service?
+    service.name+" | Duration: "+service.duration+" minutes | Price: ₹"+service.price:
+    "No services available.";
+}
+
+function slotKey(stylist,date,time){
+  return String(stylist)+"|"+date+"|"+time;
+}
+
+function isBooked(stylist,date,time,ignoreId=null){
+  return appointments.some(a=>
+    String(a.stylistId)===String(stylist)&&a.date===date&&a.time===time&&
+    a.status!=="Cancelled"&&a.status!=="Rejected"&&a.id!==ignoreId
+  );
+}
+
+function renderSlots(){
+  const date=document.getElementById("bookDate").value;
+  const stylist=document.getElementById("bookStylist").value;
+  const box=document.getElementById("availableSlots");
+  selectedTime="";
+  document.getElementById("selectedTime").value="";
+  if(!date||!stylist){box.innerHTML="<p>Select a stylist and date.</p>";return;}
+
+  box.innerHTML=times.map(time=>{
+    const locked=lockedSlots.includes(slotKey(stylist,date,time));
+    const booked=isBooked(stylist,date,time);
+    const past=date===today&&time<=
+      String(dateNow.getHours()).padStart(2,"0")+":"+String(dateNow.getMinutes()).padStart(2,"0");
+    const disabled=locked||booked||past||date<today;
+    const label=locked?"Unavailable":booked?"Booked":past?"Past":time;
+    return `<button type="button" class="slot" ${disabled?"disabled":""}
+      onclick="selectTime('${time}',this)">${label}</button>`;
+  }).join("");
+}
+
+function selectTime(time,button){
+  selectedTime=time;
+  document.getElementById("selectedTime").value=time;
+  document.querySelectorAll("#availableSlots .slot").forEach(b=>b.classList.remove("selected"));
+  button.classList.add("selected");
+}
+
+document.getElementById("bookDate").addEventListener("change",renderSlots);
+document.getElementById("bookStylist").addEventListener("change",renderSlots);
+document.getElementById("bookService").addEventListener("change",updateBookingPrice);
+
+document.getElementById("bookingForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  if(!currentUser){
+    msg("bookingMessage","Please register or log in before booking.",true);
+    return;
+  }
+  if(!selectedTime){
+    msg("bookingMessage","Please select an available time slot.",true);
+    return;
+  }
+
+  const service=services.find(s=>s.id===Number(document.getElementById("bookService").value));
+  const stylist=stylists.find(s=>s.id===Number(document.getElementById("bookStylist").value));
+  const date=document.getElementById("bookDate").value;
+  const time=selectedTime;
+
+  if(!service||!stylist){msg("bookingMessage","Select a valid service and stylist.",true);return;}
+  if(date<today||lockedSlots.includes(slotKey(stylist.id,date,time))||
+    isBooked(stylist.id,date,time)){
+    msg("bookingMessage","This time slot is no longer available. Choose another.",true);
+    renderSlots();return;
+  }
+
+  const email=document.getElementById("bookEmail").value.trim().toLowerCase();
+  if(email!==currentUser){
+    msg("bookingMessage","Use the email address of your logged-in account.",true);
+    return;
+  }
+
+  const payment=document.getElementById("paymentOption").value;
+  const deposit=payment==="50% Deposit"?Math.ceil(service.price/2):
+    payment==="Pay at Salon"?0:service.price;
+
+  const appointment={
+    id:"GU"+Date.now().toString().slice(-8),
+    user:currentUser,
+    name:document.getElementById("bookName").value.trim(),
+    email:email,
+    phone:document.getElementById("bookPhone").value.trim(),
+    serviceId:service.id,
+    service:service.name,
+    stylistId:stylist.id,
+    stylist:stylist.name,
+    date:date,
+    time:time,
+    price:service.price,
+    payment:payment,
+    paidAmount:deposit,
+    status:"Confirmed",
+    created:new Date().toLocaleString()
+  };
+
+  appointments.push(appointment);
+  saveData();
+  msg("bookingMessage","Appointment booked successfully! Reference: "+appointment.id+
+    ". Amount due/paid in this demo: ₹"+deposit+".");
+  this.reset();
+  selectedTime="";
+  document.getElementById("bookDate").value=today;
+  populateBookingOptions();
+});
+
+function appointmentCard(a,admin=false){
+  return `<div class="panel">
+    <h3>${esc(a.service)}</h3>
+    <p><b>Reference:</b> ${esc(a.id)}</p>
+    <p><b>Customer:</b> ${esc(a.name)}</p>
+    <p><b>Stylist:</b> ${esc(a.stylist)}</p>
+    <p><b>Date and Time:</b> ${esc(a.date)} at ${esc(a.time)}</p>
+    <p><b>Price:</b> ₹${a.price} | <b>Payment:</b> ${esc(a.payment)}</p>
+    <p><b>Status:</b> ${esc(a.status)}</p>
+    ${a.status!=="Cancelled"&&a.status!=="Completed"?
+      `<button class="btn secondary" onclick="editAppointment('${esc(a.id)}')">Reschedule</button>
+       <button class="btn danger" onclick="cancelAppointment('${esc(a.id)}')">Cancel</button>`:""}
+    ${admin&&a.status!=="Cancelled"?
+      `<button class="btn" onclick="completeAppointment('${esc(a.id)}')">Mark Completed</button>`:""}
+    ${admin?`<button class="btn" onclick="contactCustomer('${esc(a.id)}')">Contact Customer</button>`:""}
+    </div>`;
+}
+
+function renderAccount(){
+  const info=document.getElementById("accountInfo");
+  if(!currentUser){
+    info.textContent="Please log in to view your personal account.";
+    document.getElementById("upcomingAppointments").innerHTML="";
+    document.getElementById("appointmentHistory").innerHTML="";
+    return;
+  }
+
+  const user=users.find(u=>u.email===currentUser);
+  info.innerHTML=`<p><b>Name:</b> ${esc(user?.name)}</p>
+    <p><b>Email:</b> ${esc(user?.email)}</p>
+    <p><b>Phone:</b> ${esc(user?.phone)}</p>`;
+
+  const mine=appointments.filter(a=>a.user===currentUser);
+  const upcoming=mine.filter(a=>a.status==="Confirmed"&&a.date>=today);
+  const history=mine.filter(a=>!upcoming.includes(a));
+
+  document.getElementById("upcomingAppointments").innerHTML=
+    upcoming.length?upcoming.map(a=>appointmentCard(a)).join(""):"<p>No upcoming appointments.</p>";
+  document.getElementById("appointmentHistory").innerHTML=
+    history.length?history.map(a=>appointmentCard(a)).join(""):"<p>No appointment history.</p>";
+}
+
+function editAppointment(id){
+  const a=appointments.find(a=>a.id===id);
+  if(!a||a.user!==currentUser||a.status!=="Confirmed")return;
+  showPage("book");
+  document.getElementById("bookService").value=String(a.serviceId);
+  document.getElementById("bookStylist").value=String(a.stylistId);
+  document.getElementById("bookDate").value=a.date;
+  document.getElementById("bookName").value=a.name;
+  document.getElementById("bookEmail").value=a.email;
+  document.getElementById("bookPhone").value=a.phone;
+  document.getElementById("bookingMessage").innerHTML="";
+  msg("bookingMessage","To reschedule, cancel the old reservation first and book a new slot.");
+  renderSlots();
+}
+
+function cancelAppointment(id){
+  const a=appointments.find(a=>a.id===id);
+  if(!a||(!isAdmin&&a.user!==currentUser))return;
+  if(!confirm("Cancel this appointment?"))return;
+  a.status="Cancelled";
+  saveData();
+  renderAccount();
+  renderCalendar();
+  alert("Appointment cancelled.");
+}
+
+function completeAppointment(id){
+  if(!isAdmin)return;
+  const a=appointments.find(a=>a.id===id);
+  if(!a)return;
+  a.status="Completed";
+  saveData();renderAdmin();renderAccount();
+}
+
+function renderCalendar(){
+  const date=document.getElementById("calendarDate").value||today;
+  const stylist=document.getElementById("calendarStylist").value;
+  const list=appointments.filter(a=>a.date===date&&(!stylist||String(a.stylistId)===stylist));
+  const box=document.getElementById("calendarResult");
+
+  let html=`<h3>Reservations for ${esc(date)}</h3><div class="slot-grid">`;
+  times.forEach(time=>{
+    const taken=appointments.find(a=>a.date===date&&a.time===time&&
+      (!stylist||String(a.stylistId)===stylist)&&a.status==="Confirmed");
+    const locked=lockedSlots.some(k=>k.split("|")[1]===date&&k.split("|")[2]===time&&
+      (!stylist||k.split("|")[0]===stylist));
+    html+=`<div class="slot"><b>${time}</b><br>${locked?"Locked":taken?"Booked":"Available"}</div>`;
+  });
+  html+="</div><h3>Appointment Details</h3>";
+  html+=list.length?list.map(a=>appointmentCard(a,isAdmin)).join(""):"<p>No reservations for this date.</p>";
+  if(!isAdmin)html='<p class="muted">Customer view displays appointment availability. Full customer details are visible only to the salon manager.</p>'+html;
+  box.innerHTML=html;
+}
+
+document.getElementById("calendarDate").addEventListener("change",renderCalendar);
+document.getElementById("calendarStylist").addEventListener("change",renderCalendar);
+
+function populateFeedbackServices(){
+  document.getElementById("feedbackService").innerHTML=services.map(s=>
+    `<option>${esc(s.name)}</option>`).join("");
+}
+
+document.getElementById("feedbackForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  feedbacks.push({
+    name:document.getElementById("feedbackName").value.trim(),
+    email:document.getElementById("feedbackEmail").value.trim().toLowerCase(),
+    service:document.getElementById("feedbackService").value,
+    rating:document.getElementById("feedbackRating").value,
+    comments:document.getElementById("feedbackComments").value.trim()
+  });
+  saveData();this.reset();
+  msg("feedbackMessage","Thank you! Your feedback has been recorded.");
+});
+
+document.getElementById("registerForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  const name=document.getElementById("regName").value.trim();
+  const email=document.getElementById("regEmail").value.trim().toLowerCase();
+  const phone=document.getElementById("regPhone").value.trim();
+  const password=document.getElementById("regPassword").value;
+
+  if(users.some(u=>u.email===email)){
+    msg("registerMessage","An account with this email already exists.",true);
+    return;
+  }
+  users.push({name,email,phone,password});
+  currentUser=email;
+  saveData();this.reset();
+  msg("registerMessage","Registration successful. You are now logged in.");
+  populateBookingOptions();
+});
+
+document.getElementById("loginForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  const email=document.getElementById("loginEmail").value.trim().toLowerCase();
+  const password=document.getElementById("loginPassword").value;
+  const user=users.find(u=>u.email===email&&u.password===password);
+
+  if(!user){
+    msg("loginMessage","Invalid email or password.",true);
+    return;
+  }
+  currentUser=email;
+  saveData();
+  document.getElementById("bookName").value=user.name;
+  document.getElementById("bookEmail").value=user.email;
+  document.getElementById("bookPhone").value=user.phone;
+  msg("loginMessage","Welcome back, "+user.name+"!");
+});
+
+function logout(){
+  currentUser=null;
+  isAdmin=false;
+  saveData();
+  alert("You have logged out.");
+  showPage("home");
+}
+
+function adminLogin(){
+  const username=document.getElementById("adminUser").value;
+  const password=document.getElementById("adminPassword").value;
+
+  if(username==="admin"&&password==="admin123"){
+    isAdmin=true;
+    msg("adminMessage","Administrator login successful.");
+    renderAdmin();
+  }else{
+    isAdmin=false;
+    msg("adminMessage","Invalid username or password.",true);
+  }
+}
+
+function renderAdmin(){
+  const box=document.getElementById("adminDashboard");
+  if(!isAdmin){
+    box.textContent="Please log in as administrator first.";
+    return;
+  }
+
+  const confirmed=appointments.filter(a=>a.status==="Confirmed").length;
+  const completed=appointments.filter(a=>a.status==="Completed").length;
+  const cancelled=appointments.filter(a=>a.status==="Cancelled").length;
+
+  let html=`<div class="stats">
+    <div class="stat"><h3>Total Appointments</h3><p>${appointments.length}</p></div>
+    <div class="stat"><h3>Upcoming / Confirmed</h3><p>${confirmed}</p></div>
+    <div class="stat"><h3>Completed</h3><p>${completed}</p></div>
+    <div class="stat"><h3>Cancelled</h3><p>${cancelled}</p></div>
+    </div><h3>Manage Appointments</h3>`;
+
+  html+=appointments.length?appointments.map(a=>appointmentCard(a,true)).join(""):"<p>No appointments yet.</p>";
+  html+="<h3>Customer Feedback</h3>";
+  html+=feedbacks.map(f=>`<div class="panel"><b>${esc(f.name)}</b> — ${esc(f.rating)}
+    <p>${esc(f.service)}</p><p>${esc(f.comments)}</p></div>`).join("")||"<p>No feedback yet.</p>";
+
+  box.innerHTML=html;
+}
+
+document.getElementById("serviceForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  if(!isAdmin){msg("serviceAdminMessage","Please log in as admin first.",true);return;}
+
+  services.push({
+    id:Date.now(),
+    name:document.getElementById("newServiceName").value.trim(),
+    category:document.getElementById("newServiceCategory").value,
+    price:Number(document.getElementById("newServicePrice").value),
+    duration:Number(document.getElementById("newServiceDuration").value),
+    description:document.getElementById("newServiceDescription").value.trim(),
+    image:"https://placehold.co/600x400/f7e6ef/753657?text=Beauty+Service"
+  });
+
+  saveData();this.reset();
+  msg("serviceAdminMessage","Service added successfully.");
+  populateBookingOptions();renderServices();renderHome();populateFeedbackServices();
+});
+
+document.getElementById("stylistForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  if(!isAdmin){msg("stylistAdminMessage","Please log in as admin first.",true);return;}
+
+  stylists.push({
+    id:Date.now(),
+    name:document.getElementById("newStylistName").value.trim(),
+    speciality:document.getElementById("newStylistSpeciality").value.trim()
+  });
+
+  saveData();this.reset();
+  msg("stylistAdminMessage","Stylist added successfully.");
+  populateBookingOptions();populateLockOptions();renderHome();
+});
+
+function populateLockOptions(){
+  const options=stylists.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join("");
+  document.getElementById("lockStylist").innerHTML=options;
+  document.getElementById("calendarStylist").innerHTML='<option value="">All Stylists</option>'+options;
+  document.getElementById("lockTime").innerHTML=times.map(t=>`<option>${t}</option>`).join("");
+}
+
+function toggleLock(lock){
+  if(!isAdmin){msg("lockMessage","Please log in as admin first.",true);return;}
+
+  const stylist=document.getElementById("lockStylist").value;
+  const date=document.getElementById("lockDate").value;
+  const time=document.getElementById("lockTime").value;
+  const key=slotKey(stylist,date,time);
+
+  if(!date||date<today){msg("lockMessage","Select today or a future date.",true);return;}
+
+  if(lock){
+    if(isBooked(stylist,date,time)){
+      msg("lockMessage","This slot is already booked. You cannot lock it.",true);
+      return;
+    }
+    if(!lockedSlots.includes(key))lockedSlots.push(key);
+  }else{
+    lockedSlots=lockedSlots.filter(k=>k!==key);
+  }
+
+  saveData();renderSlots();renderCalendar();
+  msg("lockMessage",lock?"Time slot locked successfully.":"Time slot unlocked successfully.");
+}
+
+function contactCustomer(id){
+  if(!isAdmin)return;
+  const a=appointments.find(a=>a.id===id);
+  if(!a)return;
+  const phone=a.phone.replace(/[^\d+]/g,"");
+  const action=confirm("Customer: "+a.name+"\nPhone: "+a.phone+
+    "\n\nPress OK to open the phone dialer, or Cancel to return.");
+  if(action&&phone)window.location.href="tel:"+phone;
+}
+
+saveData();
+populateBookingOptions();
+populateLockOptions();
+populateFeedbackServices();
+renderServices();
+renderHome();
+</script>
+</body>
+</html>
