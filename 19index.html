@@ -1,0 +1,546 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VetCure - Veterinary Consultation</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f7f5;color:#24352b}
+header{background:#176b50;color:white;text-align:center;padding:22px}
+nav{background:#104b38;display:flex;justify-content:center;flex-wrap:wrap}
+nav button{border:0;background:transparent;color:white;padding:13px 17px;cursor:pointer}
+nav button:hover{background:#278465}
+.container{max-width:1100px;margin:25px auto;padding:15px}
+.card{background:white;padding:20px;margin-bottom:20px;border-radius:10px;box-shadow:0 2px 8px #0001}
+h2,h3{color:#176b50}
+input,select,textarea{width:100%;padding:10px;margin:7px 0 14px;border:1px solid #cbd5ce;border-radius:5px}
+button.action{background:#197653;color:white;border:0;border-radius:5px;padding:10px 15px;margin:4px;cursor:pointer}
+button.action:hover{background:#104b38}
+button.red{background:#c0392b}
+.hidden{display:none!important}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+.item{border:1px solid #d7e3dc;border-radius:8px;padding:15px;margin:10px 0}
+table{width:100%;border-collapse:collapse;margin-top:12px}
+th,td{border:1px solid #cbd5ce;padding:10px;text-align:left}
+th{background:#e1f1e8}
+.notice{background:#fff7df;padding:12px;border-left:4px solid #e3ad32}
+footer{text-align:center;background:#104b38;color:white;padding:15px}
+</style>
+</head>
+<body>
+
+<header>
+<h1>🐾 VetCure</h1>
+<p>Online Veterinary Consultation and Animal Healthcare</p>
+</header>
+
+<nav>
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('register')">Register</button>
+<button onclick="showPage('login')">Login</button>
+<button onclick="showPage('complaints')">My Complaints</button>
+<button onclick="showPage('doctors')">View Doctors</button>
+<button onclick="showPage('news')">News & Cures</button>
+<button onclick="showPage('reports')">Disease Reports</button>
+<button onclick="showPage('payment')">Payment</button>
+<button onclick="showPage('doctor')">Doctor Panel</button>
+<button onclick="showPage('profile')">My Profile</button>
+</nav>
+
+<div class="container">
+
+<section id="home" class="page">
+<div class="card">
+<h2>Welcome to VetCure</h2>
+<p>Connect farmers with veterinary doctors to discuss animal health problems and receive guidance.</p>
+<div class="notice">Educational demo only. Do not use this prototype for emergencies or as a replacement for examination by a qualified veterinarian.</div>
+<button class="action" onclick="showPage('register')">Get Started</button>
+<button class="action" onclick="showPage('complaints')">Post Animal Complaint</button>
+</div>
+<div class="card">
+<h2>Common Animal Health Topics</h2>
+<div class="grid">
+<div class="item"><h3>Cattle</h3><p>Feeding, vaccination and common health concerns.</p></div>
+<div class="item"><h3>Goats & Sheep</h3><p>General health and preventive care.</p></div>
+<div class="item"><h3>Poultry</h3><p>Flock health and farm hygiene.</p></div>
+<div class="item"><h3>Pets</h3><p>General animal wellness and veterinary care.</p></div>
+</div>
+</div>
+</section>
+
+<section id="register" class="page hidden">
+<div class="card">
+<h2>Registration</h2>
+<label>Full Name</label><input id="regName" placeholder="Enter full name">
+<label>Email</label><input id="regEmail" type="email" placeholder="Enter email">
+<label>Password</label><input id="regPassword" type="password" placeholder="Create password">
+<label>Register As</label>
+<select id="regRole" onchange="toggleDoctorFields()">
+<option value="farmer">Farmer</option>
+<option value="doctor">Veterinary Doctor</option>
+</select>
+<div id="doctorFields" class="hidden">
+<label>Clinic Name</label><input id="regClinic" placeholder="Clinic or hospital name">
+<label>Clinic Type</label>
+<select id="regClinicType"><option>Government CVH</option><option>Private Clinic</option></select>
+<label>Consultation Fee (₹)</label><input id="regFee" type="number" min="0" value="0">
+<label>Bank / EasyPaisa Payment Details</label><input id="regPaymentDetails" placeholder="Optional demo payment details">
+</div>
+<button class="action" onclick="register()">Register</button>
+<p id="regMessage"></p>
+</div>
+</section>
+
+<section id="login" class="page hidden">
+<div class="card">
+<h2>Login</h2>
+<label>Email</label><input id="loginEmail" type="email" placeholder="Registered email">
+<label>Password</label><input id="loginPassword" type="password" placeholder="Password">
+<button class="action" onclick="login()">Login and Request OTP</button>
+<div id="otpArea" class="hidden">
+<p id="otpHint"></p>
+<label>Enter OTP</label><input id="otpInput" placeholder="6-digit OTP">
+<button class="action" onclick="verifyOTP()">Verify OTP</button>
+</div>
+<p id="loginMessage"></p>
+<p><small>Demo OTP is displayed on this page; no SMS or email is sent.</small></p>
+</div>
+</section>
+
+<section id="complaints" class="page hidden">
+<div class="card">
+<h2>Post Animal Health Complaint</h2>
+<p id="complaintLoginNotice">Login as a farmer to submit a complaint.</p>
+<label>Animal Type</label>
+<select id="animalType"><option>Cattle</option><option>Buffalo</option><option>Goat</option><option>Sheep</option><option>Poultry</option><option>Dog</option><option>Cat</option><option>Other</option></select>
+<label>Area / Village</label><input id="animalArea" placeholder="Village, town or area">
+<label>Signs and Symptoms</label><textarea id="symptoms" rows="4" placeholder="Describe the animal's signs and symptoms"></textarea>
+<label>Upload Image, Audio or Video (optional)</label><input id="complaintFile" type="file" accept="image/*,audio/*,video/*">
+<button class="action" onclick="postComplaint()">Submit Complaint</button>
+<p id="complaintMessage"></p>
+</div>
+<div class="card">
+<h2>My Complaint Status</h2>
+<div id="myComplaints"></div>
+</div>
+</section>
+
+<section id="doctors" class="page hidden">
+<div class="card">
+<h2>Veterinary Doctors</h2>
+<div id="doctorList" class="grid"></div>
+</div>
+</section>
+
+<section id="news" class="page hidden">
+<div class="card">
+<h2>Veterinary News</h2>
+<div id="newsList"></div>
+</div>
+<div class="card">
+<h2>Animal Diseases and General Care</h2>
+<div id="cureList"></div>
+<p class="notice">These are general educational notes, not individual prescriptions. A veterinarian must diagnose the animal and determine appropriate treatment.</p>
+</div>
+</section>
+
+<section id="reports" class="page hidden">
+<div class="card">
+<h2>Animal Disease Reports</h2>
+<p>Summary of submitted complaints by animal type, reported area and symptom description.</p>
+<button class="action" onclick="renderReports()">Refresh Report</button>
+<div id="reportContent"></div>
+</div>
+</section>
+
+<section id="payment" class="page hidden">
+<div class="card">
+<h2>Doctor Subscription / Consultation Payment</h2>
+<label>Select Doctor</label><select id="paymentDoctor"></select>
+<p id="paymentFee"></p>
+<label>Payment Method</label>
+<select id="paymentMethod"><option>Bank Transfer</option><option>EasyPaisa</option></select>
+<p id="doctorBankInfo"></p>
+<label>Transaction Reference (demo)</label><input id="paymentReference" placeholder="Enter reference number">
+<button class="action" onclick="makePayment()">Submit Payment Record</button>
+<p id="paymentMessage"></p>
+</div>
+<div class="card">
+<h2>My Payment Records</h2>
+<div id="myPayments"></div>
+</div>
+</section>
+
+<section id="profile" class="page hidden">
+<div class="card">
+<h2>My Profile</h2>
+<div id="profileInfo">Please log in to view your profile.</div>
+<button class="action" onclick="logout()">Logout</button>
+</div>
+</section>
+
+<section id="doctor" class="page hidden">
+<div class="card">
+<h2>Doctor Dashboard</h2>
+<div id="doctorNotice">Login using a Veterinary Doctor account to manage consultations.</div>
+</div>
+<div id="doctorTools" class="hidden">
+<div class="card">
+<h2>View Complaints and Post Solutions</h2>
+<div id="doctorComplaints"></div>
+</div>
+<div class="card">
+<h2>Manage Veterinary Cures</h2>
+<label>Cure / Topic Title</label><input id="cureTitle" placeholder="Topic title">
+<label>General Guidance</label><textarea id="cureText" placeholder="Enter educational information"></textarea>
+<button class="action" onclick="addCure()">Publish Guidance</button>
+<div id="doctorCures"></div>
+</div>
+<div class="card">
+<h2>Manage News</h2>
+<label>News Title</label><input id="newsTitle" placeholder="News title">
+<label>News Details</label><textarea id="newsText" placeholder="Enter news or awareness details"></textarea>
+<button class="action" onclick="addNews()">Publish News</button>
+<div id="doctorNews"></div>
+</div>
+<div class="card">
+<h2>User Details</h2><div id="userDetails"></div>
+</div>
+<div class="card">
+<h2>Payment Details</h2><div id="doctorPayments"></div>
+</div>
+<div class="card">
+<h2>Feedback Details</h2><div id="feedbackDetails"></div>
+</div>
+</div>
+</section>
+
+<section id="feedback" class="page hidden">
+<div class="card">
+<h2>Post Feedback</h2>
+<label>Rating</label>
+<select id="feedbackRating"><option>5 - Excellent</option><option>4 - Very Good</option><option>3 - Good</option><option>2 - Fair</option><option>1 - Poor</option></select>
+<label>Comments</label><textarea id="feedbackText" placeholder="Write your feedback"></textarea>
+<button class="action" onclick="postFeedback()">Submit Feedback</button>
+<p id="feedbackMessage"></p>
+</div>
+</section>
+
+</div>
+
+<footer><p>VetCure | Internet Programming Lab Experiment</p></footer>
+
+<script>
+// Demo data is stored in the browser using localStorage.
+let users=JSON.parse(localStorage.getItem("vc_users")||"[]");
+let complaints=JSON.parse(localStorage.getItem("vc_complaints")||"[]");
+let payments=JSON.parse(localStorage.getItem("vc_payments")||"[]");
+let feedback=JSON.parse(localStorage.getItem("vc_feedback")||"[]");
+let cures=JSON.parse(localStorage.getItem("vc_cures")||"null");
+let news=JSON.parse(localStorage.getItem("vc_news")||"null");
+let currentUser=null,pendingUser=null,otp=null;
+
+if(!cures)cures=[
+ {title:"Preventive Care for Cattle",text:"Provide clean water, suitable feed, hygiene and regular veterinary check-ups."},
+ {title:"Animal Vaccination",text:"Consult a local veterinarian about the appropriate vaccination schedule for the animal and region."},
+ {title:"Signs Requiring Veterinary Attention",text:"Seek prompt veterinary assessment for breathing difficulty, severe weakness, inability to stand or rapid deterioration."}
+];
+if(!news)news=[
+ {title:"Animal Health Awareness",text:"Maintain clean housing and isolate sick animals while arranging veterinary advice."},
+ {title:"Vaccination Awareness",text:"Keep vaccination records and consult a qualified veterinarian about local disease risks."}
+];
+saveData();
+
+function saveData(){
+ localStorage.setItem("vc_users",JSON.stringify(users));
+ localStorage.setItem("vc_complaints",JSON.stringify(complaints));
+ localStorage.setItem("vc_payments",JSON.stringify(payments));
+ localStorage.setItem("vc_feedback",JSON.stringify(feedback));
+ localStorage.setItem("vc_cures",JSON.stringify(cures));
+ localStorage.setItem("vc_news",JSON.stringify(news));
+}
+
+function showPage(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
+ document.getElementById(id).classList.remove("hidden");
+ if(id==="complaints")renderMyComplaints();
+ if(id==="doctors")renderDoctors();
+ if(id==="news"){renderNews();renderCures();}
+ if(id==="reports")renderReports();
+ if(id==="payment"){renderPaymentDoctors();renderPayments();}
+ if(id==="profile")renderProfile();
+ if(id==="doctor")renderDoctorPanel();
+}
+
+function toggleDoctorFields(){
+ document.getElementById("doctorFields").classList.toggle("hidden",
+ document.getElementById("regRole").value!=="doctor");
+}
+
+function register(){
+ const name=document.getElementById("regName").value.trim();
+ const email=document.getElementById("regEmail").value.trim().toLowerCase();
+ const password=document.getElementById("regPassword").value;
+ const role=document.getElementById("regRole").value;
+ if(!name||!email||!password){alert("Fill in all required fields.");return;}
+ if(users.some(u=>u.email===email)){alert("Email already registered.");return;}
+ const user={id:Date.now(),name,email,password,role,clinic:"",clinicType:"",fee:0,paymentDetails:"",area:""};
+ if(role==="doctor"){
+  user.clinic=document.getElementById("regClinic").value.trim();
+  user.clinicType=document.getElementById("regClinicType").value;
+  user.fee=Number(document.getElementById("regFee").value)||0;
+  user.paymentDetails=document.getElementById("regPaymentDetails").value.trim();
+  if(!user.clinic){alert("Enter clinic name.");return;}
+ }
+ users.push(user);saveData();
+ document.getElementById("regMessage").textContent="Registration successful. Please log in.";
+ ["regName","regEmail","regPassword","regClinic","regPaymentDetails"].forEach(id=>document.getElementById(id).value="");
+}
+
+function login(){
+ const email=document.getElementById("loginEmail").value.trim().toLowerCase();
+ const password=document.getElementById("loginPassword").value;
+ const user=users.find(u=>u.email===email&&u.password===password);
+ if(!user){document.getElementById("loginMessage").textContent="Invalid email or password.";return;}
+ pendingUser=user;
+ otp=String(Math.floor(100000+Math.random()*900000));
+ document.getElementById("otpArea").classList.remove("hidden");
+ document.getElementById("otpHint").textContent="Demo OTP: "+otp;
+ document.getElementById("loginMessage").textContent="Enter the OTP to finish login.";
+}
+
+function verifyOTP(){
+ if(!pendingUser||document.getElementById("otpInput").value.trim()!==otp){
+  document.getElementById("loginMessage").textContent="Incorrect OTP.";return;
+ }
+ currentUser=pendingUser;pendingUser=null;otp=null;
+ document.getElementById("otpArea").classList.add("hidden");
+ document.getElementById("otpInput").value="";
+ document.getElementById("loginMessage").textContent="Login successful.";
+ renderProfile();renderDoctorPanel();renderMyComplaints();
+}
+
+function requireUser(role){
+ if(!currentUser){alert("Please log in first.");showPage("login");return false;}
+ if(role&&currentUser.role!==role){alert("This feature is available to "+role+" accounts.");return false;}
+ return true;
+}
+
+function postComplaint(){
+ if(!requireUser("farmer"))return;
+ const animal=document.getElementById("animalType").value;
+ const area=document.getElementById("animalArea").value.trim();
+ const symptoms=document.getElementById("symptoms").value.trim();
+ const file=document.getElementById("complaintFile").files[0];
+ if(!area||!symptoms){alert("Enter the area and symptoms.");return;}
+ const createComplaint=attachment=>{
+  complaints.push({id:"VC"+Date.now(),userEmail:currentUser.email,userName:currentUser.name,
+   animal,area,symptoms,attachment:attachment||"",fileName:file?file.name:"",status:"Pending",
+   solution:"",doctorEmail:"",date:new Date().toLocaleString()});
+  saveData();renderMyComplaints();renderReports();renderDoctorPanel();
+  document.getElementById("complaintMessage").textContent="Complaint submitted successfully.";
+  document.getElementById("symptoms").value="";
+  document.getElementById("complaintFile").value="";
+ };
+ if(file){
+  if(file.size>500000){alert("Choose a file smaller than 500 KB for this demo.");return;}
+  const reader=new FileReader();
+  reader.onload=e=>createComplaint(e.target.result);
+  reader.readAsDataURL(file);
+ }else createComplaint("");
+}
+
+function renderMyComplaints(){
+ const area=document.getElementById("myComplaints");if(!area)return;
+ area.innerHTML="";
+ if(!currentUser||currentUser.role!=="farmer"){area.textContent="Log in as a farmer to view complaints.";return;}
+ const mine=complaints.filter(c=>c.userEmail===currentUser.email);
+ if(!mine.length){area.textContent="No complaints submitted yet.";return;}
+ mine.forEach(c=>{
+  const box=document.createElement("div");box.className="item";
+  const title=document.createElement("h3");title.textContent=c.id+" — "+c.animal;box.appendChild(title);
+  const details=document.createElement("p");details.textContent="Area: "+c.area+" | Date: "+c.date;box.appendChild(details);
+  const symptoms=document.createElement("p");symptoms.textContent="Symptoms: "+c.symptoms;box.appendChild(symptoms);
+  const status=document.createElement("p");status.textContent="Status: "+c.status;box.appendChild(status);
+  if(c.fileName){const f=document.createElement("p");f.textContent="Attachment: "+c.fileName;box.appendChild(f);}
+  if(c.attachment){
+   let media;
+   if(c.fileName.match(/\.(jpg|jpeg|png|gif|webp)$/i)){media=document.createElement("img");media.src=c.attachment;media.style.maxWidth="220px";}
+   else if(c.fileName.match(/\.(mp3|wav|ogg)$/i)){media=document.createElement("audio");media.controls=true;media.src=c.attachment;}
+   else if(c.fileName.match(/\.(mp4|webm|mov)$/i)){media=document.createElement("video");media.controls=true;media.src=c.attachment;media.style.maxWidth="260px";}
+   if(media)box.appendChild(media);
+  }
+  if(c.solution){const sol=document.createElement("p");sol.textContent="Doctor's response: "+c.solution;box.appendChild(sol);}
+  area.appendChild(box);
+ });
+}
+
+function renderDoctors(){
+ const area=document.getElementById("doctorList");area.innerHTML="";
+ const doctors=users.filter(u=>u.role==="doctor");
+ if(!doctors.length){area.textContent="No doctors registered yet.";return;}
+ doctors.forEach(d=>{
+  const box=document.createElement("div");box.className="item";
+  const h=document.createElement("h3");h.textContent=d.name;box.appendChild(h);
+  const p=document.createElement("p");p.textContent="Clinic: "+d.clinic+" | Type: "+d.clinicType;box.appendChild(p);
+  const fee=document.createElement("p");fee.textContent=d.clinicType==="Government CVH"?"Subscription: Free (demo)":"Consultation fee: ₹"+d.fee;box.appendChild(fee);
+  const btn=document.createElement("button");btn.className="action";btn.textContent="Make Payment / Subscribe";
+  btn.onclick=()=>{showPage("payment");document.getElementById("paymentDoctor").value=d.email;updatePaymentInfo();};
+  box.appendChild(btn);area.appendChild(box);
+ });
+}
+
+function renderPaymentDoctors(){
+ const select=document.getElementById("paymentDoctor");select.innerHTML="";
+ users.filter(u=>u.role==="doctor").forEach(d=>{
+  const opt=document.createElement("option");opt.value=d.email;opt.textContent=d.name+" — "+d.clinic;
+  select.appendChild(opt);
+ });
+ select.onchange=updatePaymentInfo;updatePaymentInfo();
+}
+
+function updatePaymentInfo(){
+ const email=document.getElementById("paymentDoctor").value;
+ const d=users.find(u=>u.email===email&&u.role==="doctor");
+ document.getElementById("paymentFee").textContent=d?(d.clinicType==="Government CVH"?"Government CVH: no subscription fee in this demo.":"Private clinic fee: ₹"+d.fee):"No doctor selected.";
+ document.getElementById("doctorBankInfo").textContent=d?(d.paymentDetails?"Doctor payment details: "+d.paymentDetails:"Doctor has not provided payment details."):"";
+}
+
+function makePayment(){
+ if(!requireUser("farmer"))return;
+ const email=document.getElementById("paymentDoctor").value;
+ const d=users.find(u=>u.email===email&&u.role==="doctor");
+ if(!d){alert("Select a registered doctor.");return;}
+ if(d.clinicType==="Government CVH"){
+  document.getElementById("paymentMessage").textContent="Government CVH subscription is free in this demo.";
+  payments.push({id:"PAY"+Date.now(),farmer:currentUser.email,doctor:d.email,amount:0,method:"Free Government CVH",reference:"No payment required",date:new Date().toLocaleString(),status:"Free subscription"});
+ }else{
+  const reference=document.getElementById("paymentReference").value.trim();
+  if(!reference){alert("Enter a demo transaction reference.");return;}
+  payments.push({id:"PAY"+Date.now(),farmer:currentUser.email,doctor:d.email,amount:d.fee,method:document.getElementById("paymentMethod").value,reference,date:new Date().toLocaleString(),status:"Submitted for verification"});
+  document.getElementById("paymentMessage").textContent="Payment record saved for review. No real money was transferred.";
+ }
+ saveData();renderPayments();renderDoctorPanel();
+}
+
+function renderPayments(){
+ const area=document.getElementById("myPayments");if(!area)return;
+ area.innerHTML="";
+ if(!currentUser){area.textContent="Log in to view payments.";return;}
+ const mine=payments.filter(p=>p.farmer===currentUser.email);
+ if(!mine.length){area.textContent="No payment records.";return;}
+ mine.forEach(p=>{
+  const d=users.find(u=>u.email===p.doctor);
+  const div=document.createElement("div");div.className="item";
+  div.textContent=p.id+" | Doctor: "+(d?d.name:p.doctor)+" | Amount: ₹"+p.amount+" | "+p.method+" | "+p.status+" | "+p.date;
+  area.appendChild(div);
+ });
+}
+
+function renderNews(){
+ const area=document.getElementById("newsList");area.innerHTML="";
+ news.forEach(n=>{const box=document.createElement("div");box.className="item";const h=document.createElement("h3");h.textContent=n.title;const p=document.createElement("p");p.textContent=n.text;box.append(h,p);area.appendChild(box);});
+}
+function renderCures(){
+ const area=document.getElementById("cureList");area.innerHTML="";
+ cures.forEach(c=>{const box=document.createElement("div");box.className="item";const h=document.createElement("h3");h.textContent=c.title;const p=document.createElement("p");p.textContent=c.text;box.append(h,p);area.appendChild(box);});
+}
+
+function renderReports(){
+ const area=document.getElementById("reportContent");if(!area)return;
+ area.innerHTML="";
+ if(!complaints.length){area.textContent="No complaint data available yet.";return;}
+ const animalCounts={},areaCounts={},symptomCounts={};
+ complaints.forEach(c=>{
+  animalCounts[c.animal]=(animalCounts[c.animal]||0)+1;
+  areaCounts[c.area]=(areaCounts[c.area]||0)+1;
+  c.symptoms.toLowerCase().split(/[,.!;:\s]+/).filter(w=>w.length>3).forEach(w=>symptomCounts[w]=(symptomCounts[w]||0)+1);
+ });
+ function addTable(title,obj){
+  const h=document.createElement("h3");h.textContent=title;area.appendChild(h);
+  const table=document.createElement("table");
+  const tr=table.insertRow();tr.insertCell().textContent="Category";tr.insertCell().textContent="Complaint Count";
+  Object.entries(obj).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{const row=table.insertRow();row.insertCell().textContent=k;row.insertCell().textContent=v;});
+  area.appendChild(table);
+ }
+ addTable("Complaints by Animal Type",animalCounts);
+ addTable("Complaints by Area",areaCounts);
+ addTable("Common Symptom Keywords",symptomCounts);
+ const note=document.createElement("p");note.className="notice";
+ note.textContent="This report summarizes only complaints entered in this browser demo. It cannot determine a disease diagnosis or establish actual regional disease prevalence.";
+ area.appendChild(note);
+}
+
+function renderDoctorPanel(){
+ const notice=document.getElementById("doctorNotice"),tools=document.getElementById("doctorTools");
+ if(!currentUser||currentUser.role!=="doctor"){notice.textContent="Login using a Veterinary Doctor account to manage consultations.";tools.classList.add("hidden");return;}
+ notice.textContent="Doctor logged in: "+currentUser.name+" — "+currentUser.clinic;
+ tools.classList.remove("hidden");
+ const list=document.getElementById("doctorComplaints");list.innerHTML="";
+ complaints.forEach(c=>{
+  const box=document.createElement("div");box.className="item";
+  const h=document.createElement("h3");h.textContent=c.id+" — "+c.animal+" | "+c.status;box.appendChild(h);
+  const p=document.createElement("p");p.textContent="Farmer: "+c.userName+" | Area: "+c.area+" | Symptoms: "+c.symptoms;box.appendChild(p);
+  const solution=document.createElement("textarea");solution.placeholder="Enter veterinary response / next steps";solution.value=c.solution;box.appendChild(solution);
+  const status=document.createElement("select");
+  ["Pending","Under Review","Responded","Closed"].forEach(s=>{const opt=document.createElement("option");opt.value=s;opt.textContent=s;status.appendChild(opt);});
+  status.value=c.status;box.appendChild(status);
+  const btn=document.createElement("button");btn.className="action";btn.textContent="Save Response";
+  btn.onclick=()=>{c.solution=solution.value.trim();c.status=status.value;c.doctorEmail=currentUser.email;saveData();renderMyComplaints();alert("Complaint response saved.");};
+  box.appendChild(btn);list.appendChild(box);
+ });
+ if(!complaints.length)list.textContent="No complaints received.";
+ renderCures();renderNews();
+ document.getElementById("doctorCures").textContent="Published cure topics: "+cures.length;
+ document.getElementById("doctorNews").textContent="Published news items: "+news.length;
+ const usersArea=document.getElementById("userDetails");usersArea.innerHTML="";
+ users.filter(u=>u.role==="farmer").forEach(u=>{const p=document.createElement("p");p.textContent=u.name+" — "+u.email;usersArea.appendChild(p);});
+ const paymentArea=document.getElementById("doctorPayments");paymentArea.innerHTML="";
+ payments.filter(p=>p.doctor===currentUser.email).forEach(p=>{const div=document.createElement("p");div.textContent=p.id+" | Farmer: "+p.farmer+" | ₹"+p.amount+" | "+p.method+" | "+p.status;paymentArea.appendChild(div);});
+ const feedbackArea=document.getElementById("feedbackDetails");feedbackArea.innerHTML="";
+ feedback.forEach(f=>{const div=document.createElement("p");div.textContent=f.name+" | "+f.rating+" | "+f.text;feedbackArea.appendChild(div);});
+}
+
+function addCure(){
+ if(!requireUser("doctor"))return;
+ const title=document.getElementById("cureTitle").value.trim(),text=document.getElementById("cureText").value.trim();
+ if(!title||!text){alert("Enter the title and guidance.");return;}
+ cures.push({title,text});saveData();renderCures();renderDoctorPanel();
+ document.getElementById("cureTitle").value="";document.getElementById("cureText").value="";
+}
+function addNews(){
+ if(!requireUser("doctor"))return;
+ const title=document.getElementById("newsTitle").value.trim(),text=document.getElementById("newsText").value.trim();
+ if(!title||!text){alert("Enter news title and details.");return;}
+ news.push({title,text});saveData();renderNews();renderDoctorPanel();
+ document.getElementById("newsTitle").value="";document.getElementById("newsText").value="";
+}
+function renderProfile(){
+ const area=document.getElementById("profileInfo");area.innerHTML="";
+ if(!currentUser){area.textContent="Please log in to view your profile.";return;}
+ const p=document.createElement("p");p.textContent="Name: "+currentUser.name+" | Email: "+currentUser.email+" | Role: "+currentUser.role;area.appendChild(p);
+ if(currentUser.role==="doctor"){
+  const d=document.createElement("p");d.textContent="Clinic: "+currentUser.clinic+" | Type: "+currentUser.clinicType+" | Fee: ₹"+currentUser.fee;area.appendChild(d);
+ }
+}
+function postFeedback(){
+ if(!requireUser("farmer"))return;
+ const text=document.getElementById("feedbackText").value.trim();
+ if(!text){alert("Enter feedback.");return;}
+ feedback.push({email:currentUser.email,name:currentUser.name,rating:document.getElementById("feedbackRating").value,text});
+ saveData();document.getElementById("feedbackMessage").textContent="Feedback submitted.";
+}
+function logout(){
+ currentUser=null;pendingUser=null;otp=null;
+ document.getElementById("loginEmail").value="";
+ document.getElementById("loginPassword").value="";
+ document.getElementById("otpArea").classList.add("hidden");
+ showPage("home");
+}
+
+renderDoctors();renderNews();renderCures();renderReports();
+</script>
+</body>
+</html>
