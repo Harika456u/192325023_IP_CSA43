@@ -1,0 +1,217 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EasyToll - Online Toll Payment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- QR code generation library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <!-- QR code scanning library -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f0f5fa;
+        }
+
+        header {
+            background: #123d70;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        nav {
+            background: #087e8b;
+            text-align: center;
+            padding: 12px;
+        }
+
+        nav button {
+            padding: 10px 13px;
+            margin: 4px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        input, select {
+            padding: 10px;
+            margin: 6px;
+            max-width: 95%;
+        }
+
+        button.action {
+            background: #087e8b;
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            margin: 4px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #d7eaf5;
+        }
+
+        .section {
+            display: none;
+        }
+
+        #home {
+            display: block;
+        }
+
+        #message {
+            color: #087e8b;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        #qrCode {
+            margin: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🚘 EasyToll</h1>
+    <p>Pay Online • Travel Faster • Avoid Toll Queues</p>
+</header>
+
+<nav>
+    <button onclick="show('home')">Home</button>
+    <button onclick="show('register')">Register</button>
+    <button onclick="show('userLogin')">User Login</button>
+    <button onclick="show('admin')">Admin</button>
+    <button onclick="show('tollGate')">Toll Gate</button>
+</nav>
+
+<div class="container section" id="home">
+    <h2>Welcome to EasyToll</h2>
+    <p>Recharge your eWallet, buy toll e-tickets, apply for toll passes,
+       and generate QR codes before travelling.</p>
+    <h3>Benefits</h3>
+    <ul>
+        <li>Online toll payments</li>
+        <li>Digital toll passes and QR codes</li>
+        <li>Wallet balance and transaction history</li>
+        <li>Faster toll verification</li>
+    </ul>
+</div>
+
+<div class="container section" id="register">
+    <h2>User Registration</h2>
+    <input id="regName" placeholder="Full Name">
+    <input id="regEmail" type="email" placeholder="Email">
+    <input id="regPassword" type="password" placeholder="Password">
+    <button class="action" onclick="registerUser()">Register</button>
+</div>
+
+<div class="container section" id="userLogin">
+    <h2>User Login</h2>
+    <input id="loginEmail" type="email" placeholder="Email">
+    <input id="loginPassword" type="password" placeholder="Password">
+    <button class="action" onclick="userLogin()">Login</button>
+</div>
+
+<div class="container section" id="userDashboard">
+    <h2>User Dashboard</h2>
+    <p id="welcome"></p>
+    <h3>eWallet Balance: ₹<span id="balance">0</span></h3>
+
+    <input id="addAmount" type="number" min="1" placeholder="Amount to Add">
+    <button class="action" onclick="addMoney()">Add Money</button>
+
+    <h3>Vehicle Details</h3>
+    <input id="vehicleNumber" placeholder="Vehicle Number">
+    <select id="vehicleType">
+        <option>Car</option>
+        <option>Bike</option>
+        <option>Bus</option>
+        <option>Truck</option>
+    </select>
+    <button class="action" onclick="saveVehicle()">Save Vehicle</button>
+    <p id="vehicleInfo"></p>
+
+    <h3>Buy Toll e-Ticket</h3>
+    <select id="tollSelect"></select>
+    <button class="action" onclick="buyTicket()">Buy Ticket</button>
+
+    <h3>Apply for Toll Pass</h3>
+    <select id="passType">
+        <option value="Monthly">Monthly Pass - ₹1000</option>
+        <option value="Quarterly">Quarterly Pass - ₹2700</option>
+        <option value="Annual">Annual Pass - ₹10000</option>
+    </select>
+    <button class="action" onclick="applyPass()">Apply for Pass</button>
+    <button class="action" onclick="renewPass()">Renew Toll Pass</button>
+
+    <h3>My Toll Passes and Tickets</h3>
+    <table>
+        <thead>
+            <tr><th>ID</th><th>Type</th><th>Details</th><th>Status</th><th>QR Code</th></tr>
+        </thead>
+        <tbody id="myPasses"></tbody>
+    </table>
+
+    <h3>Transaction History</h3>
+    <table>
+        <thead>
+            <tr><th>Date</th><th>Description</th><th>Amount</th></tr>
+        </thead>
+        <tbody id="transactions"></tbody>
+    </table>
+</div>
+
+<div class="container section" id="admin">
+    <h2>Admin Login</h2>
+    <input id="adminName" placeholder="Username">
+    <input id="adminPassword" type="password" placeholder="Password">
+    <button class="action" onclick="adminLogin()">Login</button>
+
+    <div id="adminPanel" style="display:none">
+        <h3>Manage Toll Details</h3>
+        <input id="newTollName" placeholder="Toll Gate Name">
+        <input id="newTollPrice" type="number" min="1" placeholder="Toll Fee">
+        <input id="newTollLocation" placeholder="Toll Location">
+        <button class="action" onclick="addToll()">Create Toll</button>
+
+        <table>
+            <thead>
+                <tr><th>Toll Gate</th><th>Location</th><th>Fee</th><th>Action</th></tr>
+            </thead>
+            <tbody id="tollTable"></tbody>
+        </table>
+
+        <h3>Approve Toll Passes</h3>
+        <table>
+            <thead>
+                <tr><th>User</th><th>Pass ID</th
