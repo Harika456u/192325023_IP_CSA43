@@ -1,0 +1,313 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BlossomGifts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #fff5f7;
+        }
+
+        header {
+            background: #c2185b;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        nav {
+            background: #880e4f;
+            text-align: center;
+            padding: 12px;
+        }
+
+        nav button {
+            padding: 10px 15px;
+            margin: 4px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .container {
+            width: 90%;
+            margin: 20px auto;
+        }
+
+        .categories, .products {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .category, .product {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px #ddd;
+            flex: 1 1 180px;
+            text-align: center;
+        }
+
+        .product img {
+            width: 100%;
+            max-width: 180px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        button.action {
+            background: #c2185b;
+            color: white;
+            padding: 9px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 4px;
+        }
+
+        input, select {
+            padding: 10px;
+            margin: 5px;
+            max-width: 90%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #f8bbd0;
+        }
+
+        .section {
+            display: none;
+        }
+
+        #home {
+            display: block;
+        }
+
+        #message {
+            color: #880e4f;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🌸 BlossomGifts 🌸</h1>
+    <p>Flowers, Gifts and Happiness Delivered</p>
+</header>
+
+<nav>
+    <button onclick="show('home')">Home</button>
+    <button onclick="show('shop')">Shop</button>
+    <button onclick="show('cart')">Cart</button>
+    <button onclick="show('checkout')">Checkout</button>
+    <button onclick="show('admin')">Admin</button>
+</nav>
+
+<div class="container section" id="home">
+    <h2>Shop by Category</h2>
+    <div class="categories">
+        <div class="category">
+            <h3>🌹 Flowers</h3>
+            <p>Roses, Bouquets, Lilies</p>
+            <button class="action" onclick="filterCategory('Flowers')">Shop Now</button>
+        </div>
+        <div class="category">
+            <h3>🎁 Gift Baskets</h3>
+            <p>Chocolate, Fruit, Gift Hampers</p>
+            <button class="action" onclick="filterCategory('Gift Baskets')">Shop Now</button>
+        </div>
+        <div class="category">
+            <h3>🎂 Special Occasions</h3>
+            <p>Birthday, Anniversary, Wedding</p>
+            <button class="action" onclick="filterCategory('Special Occasions')">Shop Now</button>
+        </div>
+        <div class="category">
+            <h3>💝 Personalized Gifts</h3>
+            <p>Mugs, Photo Frames, Greeting Cards</p>
+            <button class="action" onclick="filterCategory('Personalized Gifts')">Shop Now</button>
+        </div>
+    </div>
+    <h2>Popular Gifts</h2>
+    <div id="homeProducts" class="products"></div>
+</div>
+
+<div class="container section" id="shop">
+    <h2>Our Products</h2>
+    <label for="categoryFilter">Category:</label>
+    <select id="categoryFilter" onchange="renderProducts()">
+        <option value="All">All Categories</option>
+        <option>Flowers</option>
+        <option>Gift Baskets</option>
+        <option>Special Occasions</option>
+        <option>Personalized Gifts</option>
+    </select>
+    <label for="subcategoryFilter">Subcategory:</label>
+    <select id="subcategoryFilter" onchange="renderProducts()">
+        <option value="All">All Subcategories</option>
+        <option>Roses</option>
+        <option>Bouquets</option>
+        <option>Chocolates</option>
+        <option>Birthday</option>
+        <option>Anniversary</option>
+        <option>Mugs</option>
+        <option>Photo Frames</option>
+    </select>
+    <div id="productList" class="products"></div>
+</div>
+
+<div class="container section" id="cart">
+    <h2>Shopping Cart</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th><th>Price</th><th>Quantity</th><th>Subtotal</th><th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="cartTable"></tbody>
+        <tfoot>
+            <tr><th colspan="3">Total</th><th id="cartTotal">₹0</th><th></th></tr>
+        </tfoot>
+    </table>
+</div>
+
+<div class="container section" id="checkout">
+    <h2>Customer Checkout</h2>
+    <input id="customerName" placeholder="Customer Name">
+    <input id="customerEmail" type="email" placeholder="Email Address">
+    <input id="customerPhone" placeholder="Phone Number">
+    <input id="deliveryDate" type="date">
+    <input id="deliveryTime" type="time">
+    <input id="address" placeholder="Delivery Address" style="width:300px">
+    <br>
+    <button class="action" onclick="checkout()">Place Order</button>
+</div>
+
+<div class="container section" id="admin">
+    <h2>Admin Login</h2>
+    <input id="adminUser" placeholder="Username">
+    <input id="adminPass" type="password" placeholder="Password">
+    <button class="action" onclick="adminLogin()">Login</button>
+
+    <div id="adminPanel" style="display:none">
+        <h3>Add New Product</h3>
+        <input id="newName" placeholder="Product Name">
+        <select id="newCategory">
+            <option>Flowers</option>
+            <option>Gift Baskets</option>
+            <option>Special Occasions</option>
+            <option>Personalized Gifts</option>
+        </select>
+        <input id="newSubcategory" placeholder="Subcategory">
+        <input id="newPrice" type="number" min="1" placeholder="Price">
+        <button class="action" onclick="addProduct()">Add Product</button>
+
+        <h3>Manage Products</h3>
+        <table>
+            <thead>
+                <tr><th>Product</th><th>Category</th><th>Price</th><th>Modify Price</th><th>Remove</th></tr>
+            </thead>
+            <tbody id="adminProducts"></tbody>
+        </table>
+
+        <h3>Customer Checkout Details</h3>
+        <table>
+            <thead>
+                <tr><th>Customer</th><th>Email</th><th>Phone</th><th>Order</th><th>Total</th><th>Delivery</th><th>Address</th></tr>
+            </thead>
+            <tbody id="customerOrders"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container">
+    <p id="message"></p>
+</div>
+
+<script>
+    let products = [
+        {id:1, name:"Rose Bouquet", category:"Flowers", sub:"Roses", price:499, emoji:"🌹"},
+        {id:2, name:"Lily Bouquet", category:"Flowers", sub:"Bouquets", price:699, emoji:"💐"},
+        {id:3, name:"Chocolate Hamper", category:"Gift Baskets", sub:"Chocolates", price:599, emoji:"🍫"},
+        {id:4, name:"Birthday Gift Box", category:"Special Occasions", sub:"Birthday", price:799, emoji:"🎂"},
+        {id:5, name:"Anniversary Roses", category:"Special Occasions", sub:"Anniversary", price:999, emoji:"❤️"},
+        {id:6, name:"Personalized Mug", category:"Personalized Gifts", sub:"Mugs", price:299, emoji:"☕"},
+        {id:7, name:"Photo Frame", category:"Personalized Gifts", sub:"Photo Frames", price:399, emoji:"🖼️"}
+    ];
+
+    let cart = [];
+    let orders = [];
+    let nextId = 8;
+
+    function show(id) {
+        document.querySelectorAll(".section").forEach(
+            s => s.style.display = "none"
+        );
+        document.getElementById(id).style.display = "block";
+
+        if (id === "shop") renderProducts();
+        if (id === "cart") renderCart();
+        if (id === "home") renderHome();
+    }
+
+    function notify(text) {
+        document.getElementById("message").textContent = text;
+    }
+
+    function safe(text) {
+        return String(text).replace(/[&<>"']/g, c => ({
+            "&":"&amp;", "<":"&lt;", ">":"&gt;",
+            '"':"&quot;", "'":"&#39;"
+        })[c]);
+    }
+
+    function renderHome() {
+        document.getElementById("homeProducts").innerHTML =
+            products.slice(0, 4).map(p => `
+                <div class="product">
+                    <h2>${p.emoji}</h2>
+                    <h3>${safe(p.name)}</h3>
+                    <p>₹${p.price}</p>
+                    <button class="action" onclick="addToCart(${p.id})">Add to Cart</button>
+                </div>
+            `).join("");
+    }
+
+    function filterCategory(category) {
+        show("shop");
+        document.getElementById("categoryFilter").value = category;
+        document.getElementById("subcategoryFilter").value = "All";
+        renderProducts();
+    }
+
+    function renderProducts() {
+        let category = document.getElementById("categoryFilter").value;
+        let sub = document.getElementById("subcategoryFilter").value;
+
+        let filtered = products.filter(p =>
+            (category === "All" || p.category === category) &&
+            (sub === "All" || p.sub === sub)
+        );
+
+        document.getElementById("productList").innerHTML =
+            filtered.length ? filtered.map(p => `
+                <div class="product">
+                    <h2>${p.emoji || "🎁"}</h2>
+                    <h3>${safe
