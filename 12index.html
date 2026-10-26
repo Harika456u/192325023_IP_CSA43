@@ -1,0 +1,408 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>InsureEasy Insurance Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef3f8;
+            margin: 0;
+        }
+
+        header {
+            background: #123b63;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        nav {
+            background: #176b87;
+            padding: 12px;
+            text-align: center;
+        }
+
+        nav button {
+            margin: 5px;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .container {
+            width: 85%;
+            margin: 25px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        input, select {
+            padding: 10px;
+            margin: 6px;
+            width: 220px;
+            max-width: 90%;
+        }
+
+        button.action {
+            background: #176b87;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #dceaf5;
+        }
+
+        .section {
+            display: none;
+        }
+
+        #home {
+            display: block;
+        }
+
+        #message {
+            color: #176b43;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>InsureEasy</h1>
+    <p>Insurance Management System</p>
+</header>
+
+<nav>
+    <button onclick="show('home')">Home</button>
+    <button onclick="show('admin')">Admin</button>
+    <button onclick="show('agent')">Agent</button>
+    <button onclick="show('customer')">Customer</button>
+</nav>
+
+<div class="container section" id="home">
+    <h2>Welcome to InsureEasy</h2>
+    <p>Manage insurance policies, customers, premium payments
+       and renewal reminders from one platform.</p>
+
+    <h3>Available Insurance Policies</h3>
+    <ul>
+        <li>Health Insurance</li>
+        <li>Vehicle Insurance</li>
+        <li>Home Insurance</li>
+    </ul>
+</div>
+
+<div class="container section" id="admin">
+    <h2>Admin Login</h2>
+    <input id="adminUser" placeholder="Username">
+    <input id="adminPass" type="password" placeholder="Password">
+    <button class="action" onclick="adminLogin()">Login</button>
+
+    <div id="adminPanel" style="display:none">
+        <h3>Agent Approval</h3>
+        <table>
+            <thead>
+                <tr><th>Agent Name</th><th>Status</th><th>Action</th></tr>
+            </thead>
+            <tbody id="agentTable"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container section" id="agent">
+    <h2>Agent Registration</h2>
+    <input id="agentName" placeholder="Agent Name">
+    <input id="agentEmail" type="email" placeholder="Email">
+    <input id="agentPassword" type="password" placeholder="Password">
+    <button class="action" onclick="registerAgent()">Register</button>
+
+    <h3>Agent Login</h3>
+    <input id="loginAgentName" placeholder="Agent Name">
+    <input id="loginAgentPassword" type="password" placeholder="Password">
+    <button class="action" onclick="agentLogin()">Login</button>
+
+    <div id="agentPanel" style="display:none">
+        <h3>Create Customer</h3>
+        <input id="custName" placeholder="Customer Name">
+        <input id="custPhone" placeholder="Phone Number">
+        <button class="action" onclick="addCustomer()">Add Customer</button>
+
+        <h3>Add Insurance Policy</h3>
+        <input id="policyCustomer" placeholder="Customer Name">
+        <select id="policyType">
+            <option>Health Insurance</option>
+            <option>Vehicle Insurance</option>
+            <option>Home Insurance</option>
+        </select>
+        <input id="premium" type="number" min="1" placeholder="Premium Amount">
+        <input id="dueDate" type="date">
+        <button class="action" onclick="addPolicy()">Add Policy</button>
+
+        <h3>Customer Details</h3>
+        <table>
+            <thead><tr><th>Name</th><th>Phone</th></tr></thead>
+            <tbody id="customerTable"></tbody>
+        </table>
+
+        <h3>Policy Details</h3>
+        <table>
+            <thead>
+                <tr><th>Customer</th><th>Policy</th><th>Premium</th><th>Due Date</th><th>Reminder</th></tr>
+            </thead>
+            <tbody id="policyTable"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container section" id="customer">
+    <h2>Customer Login</h2>
+    <input id="customerLoginName" placeholder="Customer Name">
+    <button class="action" onclick="customerLogin()">View My Policies</button>
+
+    <div id="customerPanel" style="display:none">
+        <h3>My Insurance Policies</h3>
+        <table>
+            <thead>
+                <tr><th>Policy</th><th>Premium</th><th>Due Date</th><th>Status</th></tr>
+            </thead>
+            <tbody id="myPolicies"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container">
+    <p id="message"></p>
+</div>
+
+<script>
+    // Demo data
+    let agents = [];
+    let customers = [];
+    let policies = [];
+
+    function show(id) {
+        document.querySelectorAll(".section").forEach(
+            section => section.style.display = "none"
+        );
+        document.getElementById(id).style.display = "block";
+        document.getElementById("message").textContent = "";
+    }
+
+    function notify(message) {
+        document.getElementById("message").textContent = message;
+    }
+
+    function adminLogin() {
+        if (
+            document.getElementById("adminUser").value === "admin" &&
+            document.getElementById("adminPass").value === "admin123"
+        ) {
+            document.getElementById("adminPanel").style.display = "block";
+            renderAgents();
+            notify("Admin login successful.");
+        } else {
+            notify("Invalid admin username or password.");
+        }
+    }
+
+    function registerAgent() {
+        let name = document.getElementById("agentName").value.trim();
+        let email = document.getElementById("agentEmail").value.trim();
+        let password = document.getElementById("agentPassword").value;
+
+        if (!name || !email || !password) {
+            notify("Please complete all agent registration fields.");
+            return;
+        }
+
+        if (agents.some(a => a.email === email)) {
+            notify("This email is already registered.");
+            return;
+        }
+
+        agents.push({
+            name, email, password, approved: false
+        });
+
+        renderAgents();
+        notify("Registration successful. Wait for admin approval.");
+    }
+
+    function renderAgents() {
+        document.getElementById("agentTable").innerHTML = agents.map(
+            (a, i) => `
+                <tr>
+                    <td>${escapeHTML(a.name)}</td>
+                    <td>${a.approved ? "Approved" : "Pending"}</td>
+                    <td>
+                        ${a.approved ? "Approved" :
+                        `<button class="action" onclick="approveAgent(${i})">
+                            Approve
+                        </button>`}
+                    </td>
+                </tr>`
+        ).join("");
+    }
+
+    function approveAgent(index) {
+        agents[index].approved = true;
+        renderAgents();
+        notify("Agent approved successfully.");
+    }
+
+    function agentLogin() {
+        let name = document.getElementById("loginAgentName").value.trim();
+        let password = document.getElementById("loginAgentPassword").value;
+
+        let agent = agents.find(a =>
+            a.name === name && a.password === password
+        );
+
+        if (!agent) {
+            notify("Invalid agent login.");
+        } else if (!agent.approved) {
+            notify("Your account is awaiting admin approval.");
+        } else {
+            document.getElementById("agentPanel").style.display = "block";
+            notify("Agent login successful.");
+        }
+    }
+
+    function addCustomer() {
+        let name = document.getElementById("custName").value.trim();
+        let phone = document.getElementById("custPhone").value.trim();
+
+        if (!name || !/^[0-9]{10}$/.test(phone)) {
+            notify("Enter a customer name and a valid 10-digit phone number.");
+            return;
+        }
+
+        customers.push({ name, phone });
+        renderCustomers();
+        notify("Customer added successfully.");
+    }
+
+    function renderCustomers() {
+        document.getElementById("customerTable").innerHTML =
+            customers.map(c => `
+                <tr>
+                    <td>${escapeHTML(c.name)}</td>
+                    <td>${escapeHTML(c.phone)}</td>
+                </tr>
+            `).join("");
+    }
+
+    function addPolicy() {
+        let customer = document.getElementById("policyCustomer").value.trim();
+        let type = document.getElementById("policyType").value;
+        let premium = Number(document.getElementById("premium").value);
+        let dueDate = document.getElementById("dueDate").value;
+
+        if (!customers.some(c => c.name.toLowerCase() === customer.toLowerCase())) {
+            notify("Add this customer before assigning a policy.");
+            return;
+        }
+
+        if (!Number.isFinite(premium) || premium <= 0 || !dueDate) {
+            notify("Enter a valid premium amount and due date.");
+            return;
+        }
+
+        policies.push({ customer, type, premium, dueDate });
+        renderPolicies();
+        notify("Insurance policy added successfully.");
+    }
+
+    function renderPolicies() {
+        document.getElementById("policyTable").innerHTML =
+            policies.map((p, i) => `
+                <tr>
+                    <td>${escapeHTML(p.customer)}</td>
+                    <td>${escapeHTML(p.type)}</td>
+                    <td>₹${p.premium.toFixed(2)}</td>
+                    <td>${escapeHTML(p.dueDate)}</td>
+                    <td>
+                        <button class="action" onclick="sendReminder(${i})">
+                            Send Alert
+                        </button>
+                    </td>
+                </tr>
+            `).join("");
+    }
+
+    function sendReminder(index) {
+        let p = policies[index];
+        let customer = customers.find(
+            c => c.name.toLowerCase() === p.customer.toLowerCase()
+        );
+
+        // Simulates sending an SMS; does not send a real message.
+        notify(
+            "SMS demo alert for " + customer.name + " (" + customer.phone +
+            "): Premium ₹" + p.premium.toFixed(2) +
+            " is due on " + p.dueDate + "."
+        );
+    }
+
+    function customerLogin() {
+        let name = document.getElementById("customerLoginName").value.trim();
+
+        if (!customers.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+            notify("Customer not found. Please contact your agent.");
+            return;
+        }
+
+        let myPolicies = policies.filter(
+            p => p.customer.toLowerCase() === name.toLowerCase()
+        );
+
+        document.getElementById("myPolicies").innerHTML =
+            myPolicies.map(p => `
+                <tr>
+                    <td>${escapeHTML(p.type)}</td>
+                    <td>₹${p.premium.toFixed(2)}</td>
+                    <td>${escapeHTML(p.dueDate)}</td>
+                    <td>${p.dueDate < new Date().toISOString().slice(0, 10)
+                        ? "Due date passed" : "Upcoming / Current"}</td>
+                </tr>
+            `).join("");
+
+        document.getElementById("customerPanel").style.display = "block";
+        notify("Customer policies loaded.");
+    }
+
+    function escapeHTML(value) {
+        return String(value).replace(/[&<>"']/g, char => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[char]);
+    }
+</script>
+
+</body>
+</html>
+```
