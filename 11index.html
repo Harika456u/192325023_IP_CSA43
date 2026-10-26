@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Finder | Find Your Dream Property</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f7f8fc;color:#20283b}
+header{background:#fff;padding:18px 7%;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 12px #ddd;position:sticky;top:0;z-index:5}
+.logo{font-size:25px;font-weight:bold;color:#3157d5}
+nav a{margin-left:20px;text-decoration:none;color:#333;font-weight:600;cursor:pointer}
+button{cursor:pointer;border:none;border-radius:7px;padding:11px 17px;background:#3157d5;color:white;font-weight:bold}
+.hero{padding:70px 7%;background:linear-gradient(100deg,#e6ecff,#f5f7ff);text-align:center}
+.hero h1{font-size:42px;margin-bottom:15px}
+.hero p{color:#626b7e;margin-bottom:28px}
+.search{display:flex;gap:10px;max-width:950px;margin:auto;background:white;padding:15px;border-radius:12px;box-shadow:0 5px 25px #ccd2e5;flex-wrap:wrap}
+.search input,.search select{padding:13px;border:1px solid #ddd;border-radius:7px;flex:1;min-width:140px}
+section{padding:45px 7%}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;gap:12px;flex-wrap:wrap}
+.section-title h2{font-size:27px}
+.properties{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.card{background:white;border-radius:13px;overflow:hidden;box-shadow:0 3px 15px #e2e5ef;transition:.2s}
+.card:hover{transform:translateY(-4px)}
+.card img{width:100%;height:205px;object-fit:cover}
+.details{padding:18px}
+.price{font-size:22px;font-weight:bold;color:#3157d5;margin:12px 0}
+.meta{color:#697386;font-size:14px;margin:10px 0}
+.tag{display:inline-block;background:#e9edff;color:#3157d5;padding:5px 9px;border-radius:5px;font-size:12px}
+.card-actions{display:flex;gap:8px;margin-top:14px}
+.card-actions button{flex:1}
+.fav{background:#f0f1f7;color:#30364a}
+.agent-box{background:#e9edff;border-radius:14px;padding:30px;text-align:center}
+.agent-box p{margin:12px}
+footer{background:#20283b;color:white;text-align:center;padding:25px}
+.modal{display:none;position:fixed;inset:0;background:#0008;z-index:10;justify-content:center;align-items:center;padding:15px}
+.modal-content{background:white;padding:28px;border-radius:13px;width:100%;max-width:420px;max-height:90vh;overflow:auto}
+.modal-content h2{margin-bottom:18px}
+.modal-content input,.modal-content select,.modal-content textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:7px}
+.modal-content button{margin-top:8px}
+.close{float:right;background:#eee;color:#333}
+.note{font-size:12px;color:#697386;margin-top:10px}
+.empty{text-align:center;padding:30px;color:#697386;grid-column:1/-1}
+@media(max-width:600px){header{padding:15px 4%;flex-wrap:wrap;gap:14px}nav a{margin-left:9px;font-size:13px}.hero h1{font-size:31px}.hero{padding:50px 5%}section{padding:35px 5%}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">🏡 Home Finder</div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#properties">Properties</a>
+    <a href="#agents">Agents</a>
+    <a onclick="openModal('loginModal')">Login</a>
+  </nav>
+</header>
+
+<div class="hero" id="home">
+  <h1>Find Your Dream Property</h1>
+  <p>Discover houses, apartments and plots that fit your lifestyle and budget.</p>
+  <div class="search">
+    <input id="location" placeholder="Enter city or area">
+    <select id="type">
+      <option value="">All property types</option>
+      <option>House</option><option>Apartment</option>
+      <option>Land</option><option>Commercial</option>
+    </select>
+    <input id="minPrice" type="number" placeholder="Min price (₹)">
+    <input id="maxPrice" type="number" placeholder="Max price (₹)">
+    <button onclick="searchProperties()">Search</button>
+  </div>
+</div>
+
+<section id="properties">
+  <div class="section-title">
+    <h2>Featured Properties</h2>
+    <button onclick="showAll()">Show All</button>
+  </div>
+  <div class="properties" id="propertyList"></div>
+</section>
+
+<section id="favorites">
+  <div class="section-title"><h2>❤️ Saved Properties</h2></div>
+  <div class="properties" id="favoriteList"></div>
+</section>
+
+<section id="agents">
+  <div class="agent-box">
+    <h2>Find Trusted Property Agents</h2>
+    <p>Connect with our property team for details and viewing appointments.</p>
+    <p><strong>Email:</strong> homes@example.com</p>
+    <p><strong>Phone:</strong> +91 98765 43210</p>
+    <button onclick="openModal('bookingModal')">Schedule a Property Visit</button>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Home Finder | Find a place to call home.</p>
+  <p style="margin-top:8px">Property details shown are sample listings for demonstration.</p>
+</footer>
+
+<div class="modal" id="loginModal">
+  <div class="modal-content">
+    <button class="close" onclick="closeModal('loginModal')">✕</button>
+    <h2 id="authTitle">User Login</h2>
+    <form onsubmit="authenticate(event)">
+      <input id="username" placeholder="Full name or username" required>
+      <input id="email" type="email" placeholder="Email address" required>
+      <input id="password" type="password" placeholder="Password" required minlength="6">
+      <button id="authButton" type="submit" style="width:100%">Login</button>
+    </form>
+    <p style="margin-top:15px">New user?
+      <a href="#" onclick="toggleAuth();return false">Create an account</a>
+    </p>
+    <p class="note">Demo only: account information is not sent to a server.</p>
+  </div>
+</div>
+
+<div class="modal" id="bookingModal">
+  <div class="modal-content">
+    <button class="close" onclick="closeModal('bookingModal')">✕</button>
+    <h2>Book a Property Visit</h2>
+    <form onsubmit="bookVisit(event)">
+      <input id="visitorName" placeholder="Your name" required>
+      <input id="visitorEmail" type="email" placeholder="Email address" required>
+      <select id="bookingProperty"></select>
+      <input id="visitDate" type="date" required>
+      <textarea id="message" placeholder="Message to the agent (optional)"></textarea>
+      <button type="submit" style="width:100%">Confirm Visit</button>
+    </form>
+  </div>
+</div>
+
+<script>
+const properties = [
+ {id:1,title:"Luxury Family Villa",location:"Anna Nagar, Chennai",type:"House",price:12500000,beds:4,area:"2400 sq.ft",image:"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"},
+ {id:2,title:"Modern City Apartment",location:"Velachery, Chennai",type:"Apartment",price:6500000,beds:3,area:"1450 sq.ft",image:"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80"},
+ {id:3,title:"Residential Plot",location:"Guduvanchery, Chennai",type:"Land",price:2800000,beds:0,area:"1200 sq.ft",image:"https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80"},
+ {id:4,title:"Premium Independent House",location:"Tambaram, Chennai",type:"House",price:8500000,beds:3,area:"1800 sq.ft",image:"https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=800&q=80"},
+ {id:5,title:"Office Commercial Space",location:"OMR, Chennai",type:"Commercial",price:9500000,beds:0,area:"2000 sq.ft",image:"https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=80"},
+ {id:6,title:"Elegant Apartment",location:"Porur, Chennai",type:"Apartment",price:4800000,beds:2,area:"1100 sq.ft",image:"https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=800&q=80"}
+];
+
+let visibleProperties = [...properties];
+let favorites = JSON.parse(localStorage.getItem("hf_favorites") || "[]");
+let registeredUsers = JSON.parse(localStorage.getItem("hf_users") || "[]");
+let currentUser = localStorage.getItem("hf_currentUser") || "";
+let savedSearch = JSON.parse(localStorage.getItem("hf_search") || "null");
+let isRegister = false;
+
+function money(value){
+ return "₹" + value.toLocaleString("en-IN");
+}
+
+function render(list, targetId, showEmpty=true){
+ const target = document.getElementById(targetId);
+ if(!list.length){
+  target.innerHTML = showEmpty ? '<div class="empty">No properties found. Try changing your filters.</div>' : "";
+  return;
+ }
+ target.innerHTML = list.map(p => `
+ <article class="card">
+   <img src="${p.image}" alt="${p.title}" loading="lazy"
+     onerror="this.src='https://placehold.co/600x400?text=Property'">
+   <div class="details">
+     <span class="tag">${p.type}</span>
+     <h3 style="margin-top:10px">${p.title}</h3>
+     <p class="meta">📍 ${p.location}</p>
+     <div class="price">${money(p.price)}</div>
+     <p class="meta">${p.beds ? p.beds+" bedrooms · " : ""}${p.area}</p>
+     <div class="card-actions">
+       <button onclick="bookProperty(${p.id})">Book Visit</button>
+       <button class="fav" onclick="toggleFavorite(${p.id})">
+        ${favorites.includes(p.id) ? "❤️ Saved" : "♡ Save"}
+       </button>
+     </div>
+     <p style="margin-top:12px"><a target="_blank" rel="noopener"
+       href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.location)}">📍 View on Google Maps</a></p>
+   </div>
+ </article>`).join("");
+}
+
+function refresh(){
+ render(visibleProperties,"propertyList");
+ render(properties.filter(p => favorites.includes(p.id)),"favoriteList");
+ document.getElementById("bookingProperty").innerHTML = properties.map(p =>
+ `<option value="${p.id}">${p.title} - ${money(p.price)}</option>`).join("");
+}
+
+function searchProperties(){
+ const loc = document.getElementById("location").value.trim().toLowerCase();
+ const type = document.getElementById("type").value;
+ const min = Number(document.getElementById("minPrice").value) || 0;
+ const max = Number(document.getElementById("maxPrice").value) || Infinity;
+ visibleProperties = properties.filter(p =>
+  p.location.toLowerCase().includes(loc) &&
+  (!type || p.type === type) &&
+  p.price >= min && p.price <= max
+ );
+ savedSearch = {
+  location:document.getElementById("location").value,
+  type, min:document.getElementById("minPrice").value,
+  max:document.getElementById("maxPrice").value
+ };
+ localStorage.setItem("hf_search",JSON.stringify(savedSearch));
+ refresh();
+ document.getElementById("properties").scrollIntoView({behavior:"smooth"});
+}
+
+function showAll(){
+ visibleProperties = [...properties];
+ document.getElementById("location").value="";
+ document.getElementById("type").value="";
+ document.getElementById("minPrice").value="";
+ document.getElementById("maxPrice").value="";
+ localStorage.removeItem("hf_search");
+ refresh();
+}
+
+function toggleFavorite(id){
+ if(!currentUser){
+  alert("Please log in to save favorite properties.");
+  openModal("loginModal");
+  return;
+ }
+ favorites = favorites.includes(id) ? favorites.filter(x=>x!==id) : [...favorites,id];
+ localStorage.setItem("hf_favorites",JSON.stringify(favorites));
+ refresh();
+}
+
+function openModal(id){
+ document.getElementById(id).style.display="flex";
+}
+function closeModal(id){
+ document.getElementById(id).style.display="none";
+}
+
+function toggleAuth(){
+ isRegister = !isRegister;
+ document.getElementById("authTitle").textContent = isRegister ? "Create Account" : "User Login";
+ document.getElementById("authButton").textContent = isRegister ? "Register" : "Login";
+}
+
+function authenticate(e){
+ e.preventDefault();
+ const username=document.getElementById("username").value.trim();
+ const email=document.getElementById("email").value.trim().toLowerCase();
+ const password=document.getElementById("password").value;
+
+ if(isRegister){
+  if(registeredUsers.some(u=>u.email===email)){
+   alert("An account with this email already exists.");
+   return;
+  }
+  registeredUsers.push({username,email,password});
+  localStorage.setItem("hf_users",JSON.stringify(registeredUsers));
+  alert("Registration successful! You can now log in.");
+  isRegister=false;
+  document.getElementById("authTitle").textContent="User Login";
+  document.getElementById("authButton").textContent="Login";
+  document.getElementById("password").value="";
+  return;
+ }
+
+ const user=registeredUsers.find(u=>u.email===email && u.password===password);
+ if(!user){
+  alert("Account not found or incorrect password. Please register first.");
+  return;
+ }
+ currentUser=user.email;
+ localStorage.setItem("hf_currentUser",currentUser);
+ alert("Welcome, "+user.username+"!");
+ closeModal("loginModal");
+}
+
+function bookProperty(id){
+ document.getElementById("bookingProperty").value=String(id);
+ openModal("bookingModal");
+}
+
+function bookVisit(e){
+ e.preventDefault();
+ const visit={
+  name:document.getElementById("visitorName").value,
+  email:document.getElementById("visitorEmail").value,
+  propertyId:Number(document.getElementById("bookingProperty").value),
+  date:document.getElementById("visitDate").value,
+  message:document.getElementById("message").value
+ };
+ const visits=JSON.parse(localStorage.getItem("hf_visits") || "[]");
+ visits.push(visit);
+ localStorage.setItem("hf_visits",JSON.stringify(visits));
+ alert("Visit request saved! This demo does not send it to an agent.");
+ closeModal("bookingModal");
+ e.target.reset();
+}
+
+window.addEventListener("click",e=>{
+ if(e.target.classList.contains("modal")) e.target.style.display="none";
+});
+
+if(savedSearch){
+ document.getElementById("location").value=savedSearch.location || "";
+ document.getElementById("type").value=savedSearch.type || "";
+ document.getElementById("minPrice").value=savedSearch.min || "";
+ document.getElementById("maxPrice").value=savedSearch.max || "";
+ visibleProperties=properties.filter(p=>
+  p.location.toLowerCase().includes((savedSearch.location||"").toLowerCase()) &&
+  (!savedSearch.type || p.type===savedSearch.type) &&
+  p.price >= (Number(savedSearch.min)||0) &&
+  p.price <= (Number(savedSearch.max)||Infinity)
+ );
+}
+refresh();
+</script>
+</body>
+</html>
