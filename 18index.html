@@ -1,0 +1,531 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgriMart - Agricultural Online Store</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f7ef;color:#243326}
+header{background:#246b35;color:white;text-align:center;padding:22px}
+nav{background:#174c28;display:flex;justify-content:center;flex-wrap:wrap}
+nav button{background:none;color:white;border:0;padding:14px 18px;cursor:pointer}
+nav button:hover{background:#38864a}
+.container{max-width:1100px;margin:25px auto;padding:15px}
+.card{background:white;padding:20px;margin-bottom:20px;border-radius:10px;box-shadow:0 2px 8px #0001}
+h2,h3{color:#246b35}
+input,select,textarea{width:100%;padding:10px;margin:7px 0 14px;border:1px solid #ccd6c9;border-radius:5px}
+button.action{background:#28763b;color:white;border:0;padding:10px 15px;border-radius:5px;cursor:pointer;margin:4px}
+button.action:hover{background:#174c28}
+button.red{background:#c0392b}
+.hidden{display:none!important}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+.product{border:1px solid #d7e3d2;border-radius:8px;padding:14px;background:#fff}
+.product img{width:100%;height:150px;object-fit:cover;border-radius:5px}
+table{width:100%;border-collapse:collapse;margin-top:12px}
+th,td{border:1px solid #d0d9ce;padding:10px;text-align:left}
+th{background:#e1efdc}
+.notice{background:#fff8dc;padding:12px;border-left:4px solid #e0a62b}
+footer{text-align:center;background:#174c28;color:white;padding:15px}
+.small{font-size:13px;color:#667466}
+</style>
+</head>
+<body>
+<header>
+<h1>🌾 AgriMart</h1>
+<p>Your Online Agricultural Shopping Store</p>
+</header>
+
+<nav>
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('register')">Register</button>
+<button onclick="showPage('login')">Login</button>
+<button onclick="showPage('shop')">Products</button>
+<button onclick="showPage('cart')">My Cart</button>
+<button onclick="showPage('account')">My Account</button>
+<button onclick="showPage('farmer')">Farmer Panel</button>
+<button onclick="showPage('orders')">My Orders</button>
+</nav>
+
+<div class="container">
+
+<section id="home" class="page">
+<div class="card">
+<h2>Welcome to AgriMart</h2>
+<p>Purchase seeds, fertilizers, farming tools, pesticides and other agricultural supplies online.</p>
+<div class="notice">Demo application for Internet Programming Lab. Payments and OTP verification are simulated.</div>
+<button class="action" onclick="showPage('shop')">Explore Products</button>
+<button class="action" onclick="showPage('register')">Create Account</button>
+</div>
+<div class="card">
+<h2>Product Categories</h2>
+<div class="grid">
+<div class="product">🌱 Seeds</div>
+<div class="product">🪴 Fertilizers</div>
+<div class="product">🛡️ Pesticides</div>
+<div class="product">🚜 Farming Equipment</div>
+<div class="product">🔧 Farming Tools</div>
+</div>
+</div>
+</section>
+
+<section id="register" class="page hidden">
+<div class="card">
+<h2>Create Account</h2>
+<label>Full Name</label><input id="regName" placeholder="Enter full name">
+<label>Email</label><input id="regEmail" type="email" placeholder="Enter email">
+<label>Password</label><input id="regPassword" type="password" placeholder="Create password">
+<label>Account Type</label>
+<select id="regRole"><option value="customer">Public / Customer</option><option value="farmer">Farmer / Seller</option></select>
+<button class="action" onclick="register()">Register</button>
+<p id="regMsg"></p>
+</div>
+</section>
+
+<section id="login" class="page hidden">
+<div class="card" id="loginBox">
+<h2>Login</h2>
+<label>Email</label><input id="loginEmail" type="email" placeholder="Registered email">
+<label>Password</label><input id="loginPassword" type="password" placeholder="Password">
+<button class="action" onclick="login()">Login and Get OTP</button>
+<div id="otpBox" class="hidden">
+<p id="otpHint"></p>
+<label>Enter OTP</label><input id="otpInput" placeholder="6-digit OTP">
+<button class="action" onclick="verifyOTP()">Verify OTP</button>
+</div>
+<p id="loginMsg"></p>
+<p class="small">Demo: OTP will be displayed on this page.</p>
+</div>
+</section>
+
+<section id="shop" class="page hidden">
+<div class="card">
+<h2>Search Products</h2>
+<input id="searchBox" placeholder="Search seeds, tools, fertilizer..." oninput="renderProducts()">
+<select id="categoryFilter" onchange="renderProducts()">
+<option value="">All Categories</option>
+<option>Seeds</option><option>Fertilizers</option><option>Pesticides</option><option>Equipment</option><option>Tools</option>
+</select>
+<div id="productList" class="grid"></div>
+</div>
+</section>
+
+<section id="cart" class="page hidden">
+<div class="card">
+<h2>My Cart</h2>
+<div id="cartContent"></div>
+<h3 id="cartTotal">Total: ₹0</h3>
+<button class="action" onclick="showPage('account')">Manage Address / Wallet</button>
+<button class="action" onclick="checkout()">Place Order</button>
+<p id="cartMsg"></p>
+</div>
+</section>
+
+<section id="account" class="page hidden">
+<div class="card">
+<h2>My Account</h2>
+<div id="accountInfo">Please log in to view your account.</div>
+</div>
+<div class="card">
+<h2>Manage Wallet Balance</h2>
+<p id="walletInfo">Wallet balance: ₹0</p>
+<label>Add demo wallet amount (₹)</label>
+<input id="walletAmount" type="number" min="1" placeholder="Enter amount">
+<button class="action" onclick="addWallet()">Add Wallet Balance</button>
+<p class="small">This is a simulated wallet, not a real payment service.</p>
+</div>
+<div class="card">
+<h2>Shipping Address</h2>
+<label>Address</label><textarea id="addressInput" placeholder="House number, street, area"></textarea>
+<label>City</label><input id="cityInput" placeholder="City">
+<label>PIN Code</label><input id="pinInput" placeholder="6-digit PIN code" maxlength="6">
+<button class="action" onclick="saveAddress()">Save / Update Address</button>
+<p id="addressMsg"></p>
+</div>
+</section>
+
+<section id="farmer" class="page hidden">
+<div class="card">
+<h2>Farmer Panel</h2>
+<div id="farmerNotice">Log in with a Farmer / Seller account to manage products.</div>
+</div>
+<div id="farmerTools" class="hidden">
+<div class="card">
+<h2>Add Product</h2>
+<label>Product Name</label><input id="pName" placeholder="e.g. Tomato Seeds">
+<label>Category</label>
+<select id="pCategory"><option>Seeds</option><option>Fertilizers</option><option>Pesticides</option><option>Equipment</option><option>Tools</option></select>
+<label>Price (₹)</label><input id="pPrice" type="number" min="1" placeholder="Price">
+<label>Stock Quantity</label><input id="pStock" type="number" min="0" placeholder="Quantity">
+<label>Description</label><textarea id="pDesc" placeholder="Product details"></textarea>
+<label>Upload Product Image</label><input id="pImage" type="file" accept="image/*">
+<button class="action" onclick="addProduct()">Add Product</button>
+<p id="productMsg"></p>
+</div>
+<div class="card">
+<h2>Update / Delete My Products</h2>
+<div id="farmerProducts"></div>
+</div>
+<div class="card">
+<h2>Manage Orders and Shipping Status</h2>
+<div id="farmerOrders"></div>
+</div>
+<div class="card">
+<h2>My Sales</h2>
+<div id="salesInfo"></div>
+</div>
+</div>
+</section>
+
+<section id="orders" class="page hidden">
+<div class="card">
+<h2>My Orders</h2>
+<div id="myOrders">Log in to view your orders.</div>
+</div>
+</section>
+
+</div>
+
+<footer><p>AgriMart | Internet Programming Lab Experiment</p></footer>
+
+<script>
+// Load demonstration data from browser storage.
+let users=JSON.parse(localStorage.getItem("ag_users")||"[]");
+let products=JSON.parse(localStorage.getItem("ag_products")||"null");
+let orders=JSON.parse(localStorage.getItem("ag_orders")||"[]");
+let carts=JSON.parse(localStorage.getItem("ag_carts")||"{}");
+let currentUser=null;
+let pendingUser=null;
+let loginOTP=null;
+
+if(!products){
+ products=[
+  {id:1,name:"Tomato Seeds",category:"Seeds",price:120,stock:30,desc:"Quality seeds for home and farm cultivation.",seller:"AgriMart",image:"",sales:0},
+  {id:2,name:"Organic Fertilizer",category:"Fertilizers",price:350,stock:20,desc:"Organic fertilizer for healthy plant growth.",seller:"AgriMart",image:"",sales:0},
+  {id:3,name:"Garden Sprayer",category:"Equipment",price:650,stock:12,desc:"Hand sprayer for agricultural use.",seller:"AgriMart",image:"",sales:0},
+  {id:4,name:"Hand Trowel",category:"Tools",price:180,stock:25,desc:"Useful tool for planting and gardening.",seller:"AgriMart",image:"",sales:0},
+  {id:5,name:"Neem-Based Pest Control",category:"Pesticides",price:220,stock:18,desc:"Neem-based product for garden pest management.",seller:"AgriMart",image:"",sales:0}
+ ];
+ saveData();
+}
+
+function saveData(){
+ localStorage.setItem("ag_users",JSON.stringify(users));
+ localStorage.setItem("ag_products",JSON.stringify(products));
+ localStorage.setItem("ag_orders",JSON.stringify(orders));
+ localStorage.setItem("ag_carts",JSON.stringify(carts));
+}
+
+function showPage(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
+ document.getElementById(id).classList.remove("hidden");
+ if(id==="shop")renderProducts();
+ if(id==="cart")renderCart();
+ if(id==="account")renderAccount();
+ if(id==="farmer")renderFarmer();
+ if(id==="orders")renderOrders();
+}
+
+function register(){
+ const name=document.getElementById("regName").value.trim();
+ const email=document.getElementById("regEmail").value.trim().toLowerCase();
+ const password=document.getElementById("regPassword").value;
+ const role=document.getElementById("regRole").value;
+ if(!name||!email||!password){alert("Please complete all fields.");return;}
+ if(users.some(u=>u.email===email)){alert("Email is already registered.");return;}
+ users.push({name,email,password,role,wallet:0,address:"",city:"",pin:""});
+ saveData();
+ document.getElementById("regMsg").textContent="Registration successful. Please log in.";
+ document.getElementById("regName").value="";
+ document.getElementById("regEmail").value="";
+ document.getElementById("regPassword").value="";
+}
+
+function login(){
+ const email=document.getElementById("loginEmail").value.trim().toLowerCase();
+ const password=document.getElementById("loginPassword").value;
+ const user=users.find(u=>u.email===email&&u.password===password);
+ if(!user){document.getElementById("loginMsg").textContent="Invalid email or password.";return;}
+ pendingUser=user;
+ loginOTP=String(Math.floor(100000+Math.random()*900000));
+ document.getElementById("otpBox").classList.remove("hidden");
+ document.getElementById("otpHint").textContent="Demo OTP: "+loginOTP;
+ document.getElementById("loginMsg").textContent="Enter the OTP to complete login.";
+}
+
+function verifyOTP(){
+ if(!pendingUser||document.getElementById("otpInput").value.trim()!==loginOTP){
+  document.getElementById("loginMsg").textContent="Incorrect OTP.";return;
+ }
+ currentUser=pendingUser;
+ pendingUser=null;loginOTP=null;
+ document.getElementById("otpBox").classList.add("hidden");
+ document.getElementById("otpInput").value="";
+ document.getElementById("loginMsg").textContent="Login successful. Welcome "+currentUser.name+"!";
+ renderAccount();
+ renderFarmer();
+ renderCart();
+ renderOrders();
+}
+
+function requireLogin(){
+ if(!currentUser){alert("Please log in first.");showPage("login");return false;}
+ return true;
+}
+
+function renderProducts(){
+ const list=document.getElementById("productList");
+ if(!list)return;
+ list.innerHTML="";
+ const term=(document.getElementById("searchBox").value||"").toLowerCase();
+ const category=document.getElementById("categoryFilter").value;
+ const found=products.filter(p=>(p.name+" "+p.desc+" "+p.category).toLowerCase().includes(term)&&(!category||p.category===category));
+ if(!found.length){list.textContent="No matching products found.";return;}
+ found.forEach(p=>{
+  const card=document.createElement("div");card.className="product";
+  if(p.image){const img=document.createElement("img");img.src=p.image;img.alt=p.name;card.appendChild(img);}
+  const title=document.createElement("h3");title.textContent=p.name;card.appendChild(title);
+  const categoryText=document.createElement("p");categoryText.textContent="Category: "+p.category;card.appendChild(categoryText);
+  const desc=document.createElement("p");desc.textContent=p.desc;card.appendChild(desc);
+  const price=document.createElement("b");price.textContent="₹"+p.price;card.appendChild(price);
+  const stock=document.createElement("p");stock.textContent="Available stock: "+p.stock;card.appendChild(stock);
+  const btn=document.createElement("button");btn.className="action";btn.textContent="Add to Cart";
+  btn.disabled=p.stock<=0;btn.onclick=()=>addToCart(p.id);card.appendChild(btn);
+  list.appendChild(card);
+ });
+}
+
+function getCart(){
+ if(!currentUser)return [];
+ return carts[currentUser.email]||(carts[currentUser.email]=[]);
+}
+
+function addToCart(id){
+ if(!requireLogin())return;
+ const p=products.find(x=>x.id===id);
+ if(!p||p.stock<1){alert("Product is out of stock.");return;}
+ const cart=getCart();
+ const item=cart.find(x=>x.id===id);
+ if(item){
+  if(item.quantity>=p.stock){alert("Maximum available stock reached.");return;}
+  item.quantity++;
+ }else cart.push({id,quantity:1});
+ saveData();renderCart();alert("Product added to cart.");
+}
+
+function renderCart(){
+ const area=document.getElementById("cartContent");
+ if(!area)return;
+ area.innerHTML="";
+ if(!currentUser){area.textContent="Please log in to manage your cart.";document.getElementById("cartTotal").textContent="Total: ₹0";return;}
+ const cart=getCart();let total=0;
+ if(!cart.length){area.textContent="Your cart is empty.";}
+ cart.forEach(item=>{
+  const p=products.find(x=>x.id===item.id);
+  if(!p)return;
+  total+=p.price*item.quantity;
+  const row=document.createElement("div");row.className="product";
+  const label=document.createElement("p");label.textContent=p.name+" — ₹"+p.price+" each";row.appendChild(label);
+  const qty=document.createElement("input");qty.type="number";qty.min="1";qty.max=String(p.stock);qty.value=item.quantity;qty.style.maxWidth="120px";row.appendChild(qty);
+  const update=document.createElement("button");update.className="action";update.textContent="Update Quantity";
+  update.onclick=()=>{
+   const q=Number(qty.value);
+   if(!Number.isInteger(q)||q<1||q>p.stock){alert("Enter a valid quantity within available stock.");return;}
+   item.quantity=q;saveData();renderCart();
+  };row.appendChild(update);
+  const remove=document.createElement("button");remove.className="action red";remove.textContent="Remove";
+  remove.onclick=()=>{carts[currentUser.email]=getCart().filter(x=>x.id!==item.id);saveData();renderCart();};
+  row.appendChild(remove);area.appendChild(row);
+ });
+ document.getElementById("cartTotal").textContent="Total: ₹"+total;
+}
+
+function checkout(){
+ if(!requireLogin())return;
+ const cart=getCart();
+ if(!cart.length){alert("Your cart is empty.");return;}
+ if(!currentUser.address||!currentUser.city||!currentUser.pin){alert("Please save your shipping address in My Account.");showPage("account");return;}
+ let total=0;
+ for(const item of cart){
+  const p=products.find(x=>x.id===item.id);
+  if(!p||item.quantity>p.stock){alert("Stock changed. Update your cart.");return;}
+  total+=p.price*item.quantity;
+ }
+ if(currentUser.wallet<total){
+  alert("Insufficient wallet balance. Add funds in My Account. Required: ₹"+total);
+  showPage("account");return;
+ }
+ currentUser.wallet-=total;
+ const order={id:"AG"+Date.now(),email:currentUser.email,customer:currentUser.name,items:cart.map(x=>({...x})),total,status:"Order Placed",shipping:"Not Shipped",date:new Date().toLocaleString()};
+ cart.forEach(item=>{
+  const p=products.find(x=>x.id===item.id);
+  p.stock-=item.quantity;
+  p.sales=(p.sales||0)+item.quantity;
+ });
+ orders.push(order);
+ carts[currentUser.email]=[];
+ saveData();
+ document.getElementById("cartMsg").textContent="Order placed successfully! Order ID: "+order.id;
+ renderCart();renderProducts();renderOrders();renderFarmer();renderAccount();
+}
+
+function renderAccount(){
+ const info=document.getElementById("accountInfo");
+ if(!currentUser){info.textContent="Please log in to view your account.";return;}
+ info.innerHTML="";
+ const p=document.createElement("p");
+ p.textContent="Name: "+currentUser.name+" | Email: "+currentUser.email+" | Account type: "+currentUser.role;
+ info.appendChild(p);
+ const logout=document.createElement("button");logout.className="action red";logout.textContent="Logout";
+ logout.onclick=logoutUser;info.appendChild(logout);
+ document.getElementById("walletInfo").textContent="Wallet balance: ₹"+currentUser.wallet;
+ document.getElementById("addressInput").value=currentUser.address||"";
+ document.getElementById("cityInput").value=currentUser.city||"";
+ document.getElementById("pinInput").value=currentUser.pin||"";
+}
+
+function addWallet(){
+ if(!requireLogin())return;
+ const amount=Number(document.getElementById("walletAmount").value);
+ if(!Number.isFinite(amount)||amount<=0){alert("Enter a valid amount.");return;}
+ currentUser.wallet+=amount;saveData();renderAccount();
+ document.getElementById("walletAmount").value="";
+ alert("Demo wallet balance updated.");
+}
+
+function saveAddress(){
+ if(!requireLogin())return;
+ const address=document.getElementById("addressInput").value.trim();
+ const city=document.getElementById("cityInput").value.trim();
+ const pin=document.getElementById("pinInput").value.trim();
+ if(!address||!city||!/^\d{6}$/.test(pin)){alert("Enter an address, city and valid 6-digit PIN code.");return;}
+ currentUser.address=address;currentUser.city=city;currentUser.pin=pin;
+ saveData();
+ document.getElementById("addressMsg").textContent="Shipping address saved successfully.";
+}
+
+function renderFarmer(){
+ const notice=document.getElementById("farmerNotice");
+ const tools=document.getElementById("farmerTools");
+ if(!currentUser||currentUser.role!=="farmer"){
+  notice.textContent="Log in with a Farmer / Seller account to manage products.";
+  tools.classList.add("hidden");return;
+ }
+ notice.textContent="Logged in as farmer: "+currentUser.name;
+ tools.classList.remove("hidden");
+ renderFarmerProducts();renderFarmerOrders();
+ const mine=products.filter(p=>p.seller===currentUser.email);
+ const sales=mine.reduce((sum,p)=>sum+(p.sales||0),0);
+ document.getElementById("salesInfo").textContent="Units sold across your products: "+sales;
+}
+
+function addProduct(){
+ if(!requireLogin()||currentUser.role!=="farmer"){alert("Farmer account required.");return;}
+ const name=document.getElementById("pName").value.trim();
+ const category=document.getElementById("pCategory").value;
+ const price=Number(document.getElementById("pPrice").value);
+ const stock=Number(document.getElementById("pStock").value);
+ const desc=document.getElementById("pDesc").value.trim();
+ const file=document.getElementById("pImage").files[0];
+ if(!name||!desc||!Number.isFinite(price)||price<=0||!Number.isInteger(stock)||stock<0){alert("Enter valid product details.");return;}
+ const saveProduct=image=>{
+  products.push({id:Date.now(),name,category,price,stock,desc,seller:currentUser.email,image:image||"",sales:0});
+  saveData();renderProducts();renderFarmer();
+  document.getElementById("productMsg").textContent="Product added successfully.";
+  ["pName","pPrice","pStock","pDesc"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("pImage").value="";
+ };
+ if(file){
+  if(!file.type.startsWith("image/")){alert("Please select an image file.");return;}
+  if(file.size>700000){alert("Please choose an image smaller than 700 KB for this demo.");return;}
+  const reader=new FileReader();
+  reader.onload=e=>saveProduct(e.target.result);
+  reader.readAsDataURL(file);
+ }else saveProduct("");
+}
+
+function renderFarmerProducts(){
+ const area=document.getElementById("farmerProducts");if(!area)return;
+ area.innerHTML="";
+ const mine=products.filter(p=>p.seller===currentUser.email);
+ if(!mine.length){area.textContent="You have not added any products yet.";return;}
+ mine.forEach(p=>{
+  const box=document.createElement("div");box.className="product";
+  const name=document.createElement("input");name.value=p.name;box.appendChild(name);
+  const price=document.createElement("input");price.type="number";price.min="1";price.value=p.price;box.appendChild(price);
+  const stock=document.createElement("input");stock.type="number";stock.min="0";stock.value=p.stock;box.appendChild(stock);
+  const desc=document.createElement("textarea");desc.value=p.desc;box.appendChild(desc);
+  const update=document.createElement("button");update.className="action";update.textContent="Update Product";
+  update.onclick=()=>{
+   if(!name.value.trim()||Number(price.value)<=0||!Number.isInteger(Number(stock.value))||Number(stock.value)<0){alert("Enter valid product details.");return;}
+   p.name=name.value.trim();p.price=Number(price.value);p.stock=Number(stock.value);p.desc=desc.value.trim();
+   saveData();renderProducts();alert("Product updated.");
+  };box.appendChild(update);
+  const del=document.createElement("button");del.className="action red";del.textContent="Delete Product";
+  del.onclick=()=>{
+   if(confirm("Delete this product?")){
+    products=products.filter(x=>x.id!==p.id);
+    Object.keys(carts).forEach(email=>{carts[email]=carts[email].filter(x=>x.id!==p.id);});
+    saveData();renderFarmer();renderProducts();
+   }
+  };box.appendChild(del);area.appendChild(box);
+ });
+}
+
+function renderFarmerOrders(){
+ const area=document.getElementById("farmerOrders");if(!area)return;
+ area.innerHTML="";
+ const mine=orders.filter(o=>o.items.some(item=>{
+  const p=products.find(x=>x.id===item.id);
+  return p&&p.seller===currentUser.email;
+ }));
+ if(!mine.length){area.textContent="No orders for your products yet.";return;}
+ mine.forEach(o=>{
+  const box=document.createElement("div");box.className="product";
+  const title=document.createElement("p");title.textContent="Order "+o.id+" | Customer: "+o.customer+" | Total: ₹"+o.total;box.appendChild(title);
+  const status=document.createElement("select");
+  ["Order Placed","Processing","Confirmed","Cancelled"].forEach(s=>{const opt=document.createElement("option");opt.value=s;opt.textContent=s;status.appendChild(opt);});
+  status.value=o.status;box.appendChild(status);
+  const shipping=document.createElement("select");
+  ["Not Shipped","Packed","Shipped","Out for Delivery","Delivered"].forEach(s=>{const opt=document.createElement("option");opt.value=s;opt.textContent=s;shipping.appendChild(opt);});
+  shipping.value=o.shipping;box.appendChild(shipping);
+  const btn=document.createElement("button");btn.className="action";btn.textContent="Update Order / Shipping";
+  btn.onclick=()=>{
+   o.status=status.value;o.shipping=shipping.value;saveData();renderOrders();alert("Order status updated.");
+  };box.appendChild(btn);area.appendChild(box);
+ });
+}
+
+function renderOrders(){
+ const area=document.getElementById("myOrders");if(!area)return;
+ area.innerHTML="";
+ if(!currentUser){area.textContent="Log in to view your orders.";return;}
+ const mine=orders.filter(o=>o.email===currentUser.email);
+ if(!mine.length){area.textContent="You have no orders yet.";return;}
+ mine.forEach(o=>{
+  const box=document.createElement("div");box.className="product";
+  const title=document.createElement("h3");title.textContent="Order "+o.id;box.appendChild(title);
+  const details=document.createElement("p");
+  details.textContent="Date: "+o.date+" | Total: ₹"+o.total+" | Status: "+o.status+" | Shipping: "+o.shipping;
+  box.appendChild(details);
+  o.items.forEach(item=>{
+   const p=products.find(x=>x.id===item.id);
+   const line=document.createElement("p");
+   line.textContent=(p?p.name:"Product") + " × " + item.quantity;
+   box.appendChild(line);
+  });
+  area.appendChild(box);
+ });
+}
+
+function logoutUser(){
+ currentUser=null;pendingUser=null;loginOTP=null;
+ document.getElementById("loginEmail").value="";
+ document.getElementById("loginPassword").value="";
+ document.getElementById("otpBox").classList.add("hidden");
+ alert("Logged out successfully.");
+ showPage("home");
+}
+
+renderProducts();
