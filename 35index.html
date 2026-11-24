@@ -1,0 +1,625 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Online Bus Pass System</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+body {
+    font-family: Arial;
+    margin: 0;
+    background: #eff6ff;
+    text-align: center;
+}
+header, footer {
+    background: #1e3a8a;
+    color: white;
+    padding: 25px;
+}
+nav {
+    background: #2563eb;
+    padding: 15px;
+}
+nav a {
+    color: white;
+    margin: 10px;
+    text-decoration: none;
+}
+section {
+    background: white;
+    margin: 20px;
+    padding: 25px;
+    border-radius: 10px;
+}
+input, select, textarea {
+    display: block;
+    width: 280px;
+    max-width: 90%;
+    padding: 10px;
+    margin: 10px auto;
+}
+button {
+    background: #2563eb;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+}
+table {
+    width: 95%;
+    margin: auto;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+th {
+    background: #1e3a8a;
+    color: white;
+}
+#qrcode {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+h2 {
+    color: #1e3a8a;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>ONLINE BUS PASS SYSTEM</h1>
+    <p>Travel Smart | Book Online | Go Digital</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#admin">Admin</a>
+    <a href="#user">User</a>
+    <a href="#wallet">eWallet</a>
+    <a href="#pass">Bus Pass</a>
+    <a href="#ticket">eTicket</a>
+    <a href="#conductor">Conductor</a>
+    <a href="#route">Routes</a>
+</nav>
+
+<section id="home">
+    <h1>Welcome to Digital Bus Services</h1>
+    <p>Apply for bus passes, renew passes and book tickets online.</p>
+</section>
+
+<section id="admin">
+
+    <h2>Administrator Login</h2>
+
+    <input id="adminemail" placeholder="Admin Email">
+    <input id="adminpass" type="password" placeholder="Password">
+
+    <button onclick="adminLogin()">Login</button>
+
+    <h3>Manage Conductor Login</h3>
+
+    <input id="newconductor" placeholder="Conductor Username">
+    <input id="newpassword" type="password" placeholder="Password">
+
+    <button onclick="createConductor()">Create Conductor</button>
+
+    <h3>Approve Bus Pass</h3>
+
+    <input id="approveid" placeholder="Bus Pass ID">
+
+    <button onclick="approve()">Approve Pass</button>
+
+    <h3>Create Bus and Route Details</h3>
+
+    <input id="busno" placeholder="Bus Number">
+    <input id="from" placeholder="From Location">
+    <input id="to" placeholder="To Location">
+    <input id="time" type="time">
+    <input id="stops" placeholder="Route Stopping Points">
+
+    <button onclick="addBus()">Create Bus</button>
+
+</section>
+
+<section id="user">
+
+    <h2>User Registration</h2>
+
+    <form onsubmit="register(event)">
+        <input id="uname" placeholder="Full Name" required>
+        <input id="uemail" type="email" placeholder="Email" required>
+        <input id="upass" type="password" placeholder="Password" required>
+        <button>Register</button>
+    </form>
+
+    <h2>User Login</h2>
+
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+
+    <button onclick="userLogin()">Login</button>
+
+</section>
+
+<section id="wallet">
+
+    <h2>eWallet</h2>
+
+    <h3>Available Balance: ₹<span id="balance">0</span></h3>
+
+    <input id="amount" type="number" min="1" placeholder="Enter Amount">
+
+    <button onclick="addMoney()">Add Money</button>
+
+</section>
+
+<section id="pass">
+
+    <h2>Apply for New Bus Pass</h2>
+
+    <form onsubmit="applyPass(event)">
+
+        <input id="name" placeholder="Candidate Name" required>
+
+        <textarea id="address" placeholder="Address" required></textarea>
+
+        <label>Date of Birth</label>
+        <input id="dob" type="date" required>
+
+        <input id="mail" type="email" placeholder="Email" required>
+
+        <select id="type">
+            <option value="Government Student">Government School Student - Free</option>
+            <option value="Private Student">Private School Student - ₹300</option>
+            <option value="Route Pass">Route Pass - ₹600</option>
+        </select>
+
+        <input id="school" placeholder="School / Organization Name" required>
+
+        <input id="months" type="number" min="1"
+               max="12" placeholder="Validity in Months" required>
+
+        <label>Upload Candidate Photo</label>
+        <input id="photo" type="file" accept="image/*" required>
+
+        <button>Apply Bus Pass</button>
+
+    </form>
+
+    <h3>Renew Bus Pass</h3>
+
+    <input id="renewid" placeholder="Bus Pass ID">
+    <input id="renewmonths" type="number" min="1"
+           max="12" placeholder="Number of Months">
+
+    <button onclick="renew()">Renew Pass</button>
+
+    <h3>Get Digital Bus Pass and QR Code</h3>
+
+    <input id="qrid" placeholder="Bus Pass ID">
+
+    <button onclick="generateQR()">Generate QR Code</button>
+
+    <div id="passdetails"></div>
+    <div id="qrcode"></div>
+
+</section>
+
+<section id="ticket">
+
+    <h2>Buy Bus eTicket</h2>
+
+    <input id="source" placeholder="From">
+    <input id="destination" placeholder="To">
+
+    <input id="tickets" type="number"
+           min="1" placeholder="Number of Tickets">
+
+    <p>Ticket Fare: ₹30 per person</p>
+
+    <button onclick="buyTicket()">Buy Ticket</button>
+
+    <h3 id="ticketresult"></h3>
+
+</section>
+
+<section id="conductor">
+
+    <h2>Conductor Login</h2>
+
+    <input id="cuser" placeholder="Username">
+    <input id="cpass" type="password" placeholder="Password">
+
+    <button onclick="conductorLogin()">Login</button>
+
+    <h3>Verify Bus Pass / Ticket</h3>
+
+    <input id="verifyid" placeholder="Enter Scanned QR ID or Ticket ID">
+
+    <button onclick="verify()">Verify</button>
+
+    <h3 id="verifyresult"></h3>
+
+    <h3>Update Bus Location</h3>
+
+    <input id="location" placeholder="Current Bus Location">
+
+    <button onclick="updateLocation()">Update Location</button>
+
+</section>
+
+<section id="route">
+
+    <h2>Bus Route Information</h2>
+
+    <table>
+        <tr>
+            <th>Bus Number</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Time</th>
+            <th>Stopping Points</th>
+        </tr>
+        <tbody id="routes"></tbody>
+    </table>
+
+    <h3>Current Bus Location</h3>
+
+    <p id="currentlocation">Not Updated</p>
+
+    <h3>Calculate Expected Arrival Time</h3>
+
+    <input id="distance" type="number"
+           min="1" placeholder="Remaining Distance in KM">
+
+    <input id="speed" type="number"
+           min="1" placeholder="Average Speed in KM/H">
+
+    <button onclick="calculateTime()">Calculate Time</button>
+
+    <p id="eta"></p>
+
+</section>
+
+<section>
+
+    <h2>Bus Pass Application Details</h2>
+
+    <table>
+        <tr>
+            <th>Pass ID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Valid Until</th>
+            <th>Amount Paid</th>
+            <th>Status</th>
+        </tr>
+        <tbody id="passlist"></tbody>
+    </table>
+
+</section>
+
+<footer>© Online Bus Pass Management System</footer>
+
+<script>
+const get = id => document.getElementById(id);
+
+let user = null;
+let userActive = false;
+let adminActive = false;
+let conductorActive = false;
+let conductors = {conductor: "bus123"};
+let balance = 0;
+let passes = {};
+let tickets = {};
+let count = 100;
+
+function adminLogin() {
+    adminActive =
+        get("adminemail").value === "admin@bus.com" &&
+        get("adminpass").value === "admin123";
+
+    alert(adminActive ? "Admin Login Successful!" : "Invalid Login!");
+}
+
+function register(e) {
+    e.preventDefault();
+
+    if(user) return alert("Demo account already registered!");
+
+    user = {
+        name: get("uname").value,
+        email: get("uemail").value,
+        password: get("upass").value
+    };
+
+    alert("Registration Successful!");
+    e.target.reset();
+}
+
+function userLogin() {
+    userActive = user &&
+        user.email === get("email").value &&
+        user.password === get("password").value;
+
+    alert(userActive ? "User Login Successful!" : "Invalid Login!");
+}
+
+function createConductor() {
+    if(!adminActive) return alert("Login as Admin!");
+
+    let name = get("newconductor").value;
+    let password = get("newpassword").value;
+
+    if(!name || !password)
+        return alert("Enter all details!");
+
+    conductors[name] = password;
+    alert("Conductor Account Created!");
+}
+
+function conductorLogin() {
+    let name = get("cuser").value;
+
+    conductorActive =
+        Object.hasOwn(conductors,name) &&
+        conductors[name] === get("cpass").value;
+
+    alert(conductorActive ? "Conductor Login Successful!" : "Invalid Login!");
+}
+
+function addMoney() {
+    if(!userActive) return alert("Login as User!");
+
+    let amount = Number(get("amount").value);
+
+    if(amount <= 0 || !Number.isFinite(amount))
+        return alert("Enter valid amount!");
+
+    balance += amount;
+    get("balance").textContent = balance;
+    alert("Money Added Successfully!");
+}
+
+function fare(type) {
+    if(type === "Government Student") return 0;
+    if(type === "Private Student") return 300;
+    return 600;
+}
+
+function expiry(date, months) {
+    let d = new Date(date);
+    let day = d.getDate();
+    d.setDate(1);
+    d.setMonth(d.getMonth()+months);
+
+    let last = new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
+    d.setDate(Math.min(day,last));
+
+    return d;
+}
+
+function applyPass(e) {
+    e.preventDefault();
+
+    if(!userActive) return alert("Login as User!");
+
+    let type = get("type").value;
+    let months = Number(get("months").value);
+    let cost = fare(type)*months;
+
+    if(cost > balance)
+        return alert("Insufficient Wallet Balance!");
+
+    balance -= cost;
+    get("balance").textContent = balance;
+
+    let id = "BP"+(++count);
+
+    passes[id] = {
+        name: get("name").value,
+        address: get("address").value,
+        dob: get("dob").value,
+        email: get("mail").value,
+        school: get("school").value,
+        type: type,
+        until: expiry(new Date(),months),
+        paid: cost,
+        status: "Pending",
+        photo: URL.createObjectURL(get("photo").files[0])
+    };
+
+    showPasses();
+    alert("Application Submitted! Pass ID: "+id);
+    e.target.reset();
+}
+
+function showPasses() {
+    get("passlist").innerHTML = "";
+
+    Object.entries(passes).forEach(([id,p]) => {
+        let row = get("passlist").insertRow();
+
+        [id,p.name,p.type,p.until.toLocaleDateString(),
+         "₹"+p.paid,p.status].forEach(v => {
+            row.insertCell().textContent = v;
+        });
+    });
+}
+
+function approve() {
+    if(!adminActive) return alert("Login as Admin!");
+
+    let p = passes[get("approveid").value];
+
+    if(!p) return alert("Pass Not Found!");
+
+    p.status = "Approved";
+    showPasses();
+    alert("Bus Pass Approved!");
+}
+
+function renew() {
+    if(!userActive) return alert("Login as User!");
+
+    let p = passes[get("renewid").value];
+    let months = Number(get("renewmonths").value);
+
+    if(!p || p.status !== "Approved")
+        return alert("Invalid or Unapproved Pass!");
+
+    if(!Number.isInteger(months) || months < 1 || months > 12)
+        return alert("Enter valid months!");
+
+    let cost = fare(p.type)*months;
+
+    if(cost > balance)
+        return alert("Insufficient Balance!");
+
+    balance -= cost;
+    p.paid += cost;
+
+    let start = p.until > new Date() ? p.until : new Date();
+    p.until = expiry(start,months);
+
+    get("balance").textContent = balance;
+    showPasses();
+
+    alert("Bus Pass Renewed Successfully!");
+}
+
+function generateQR() {
+    if(!userActive && !adminActive)
+        return alert("Please Login!");
+
+    let id = get("qrid").value;
+    let p = passes[id];
+
+    if(!p || p.status !== "Approved" || p.until < new Date())
+        return alert("Pass Not Approved or Expired!");
+
+    let details = get("passdetails");
+    details.innerHTML = "";
+
+    let img = document.createElement("img");
+    img.src = p.photo;
+    img.width = 100;
+    details.appendChild(img);
+
+    let info = document.createElement("p");
+    info.textContent = id+" | "+p.name+" | "+p.type+
+        " | Valid Until: "+p.until.toLocaleDateString();
+
+    details.appendChild(info);
+
+    let extra = document.createElement("p");
+    extra.textContent = p.school+" | Amount Paid: ₹"+p.paid;
+    details.appendChild(extra);
+
+    get("qrcode").innerHTML = "";
+
+    if(typeof QRCode === "undefined")
+        return alert("Internet required to load QR library!");
+
+    new QRCode(get("qrcode"),{
+        text: id,
+        width: 150,
+        height: 150
+    });
+}
+
+function buyTicket() {
+    if(!userActive) return alert("Login as User!");
+
+    let n = Number(get("tickets").value);
+    let cost = n*30;
+
+    if(!get("source").value || !get("destination").value ||
+       !Number.isInteger(n) || n <= 0 || cost > balance)
+        return alert("Invalid Details or Insufficient Balance!");
+
+    balance -= cost;
+    get("balance").textContent = balance;
+
+    let id = "TK"+(++count);
+
+    tickets[id] = {
+        from: get("source").value,
+        to: get("destination").value,
+        quantity: n,
+        used: false
+    };
+
+    get("ticketresult").textContent =
+        "Ticket Booked! ID: "+id+" | Amount: ₹"+cost;
+}
+
+function verify() {
+    if(!conductorActive)
+        return alert("Login as Conductor!");
+
+    let id = get("verifyid").value;
+    let p = passes[id];
+    let t = tickets[id];
+
+    if(p && p.status === "Approved" && p.until >= new Date()) {
+        get("verifyresult").textContent = "Valid Bus Pass!";
+    }
+    else if(t && !t.used) {
+        t.used = true;
+        get("verifyresult").textContent = "Valid Ticket - Verified!";
+    }
+    else {
+        get("verifyresult").textContent = "Invalid or Expired Pass/Ticket!";
+    }
+}
+
+function addBus() {
+    if(!adminActive) return alert("Login as Admin!");
+
+    let values = ["busno","from","to","time","stops"]
+        .map(id => get(id).value);
+
+    if(values.some(v => !v))
+        return alert("Enter all bus details!");
+
+    let row = get("routes").insertRow();
+
+    values.forEach(v => row.insertCell().textContent = v);
+
+    alert("Bus Route Created!");
+}
+
+function updateLocation() {
+    if(!conductorActive)
+        return alert("Login as Conductor!");
+
+    get("currentlocation").textContent = get("location").value;
+    alert("Location Updated!");
+}
+
+function calculateTime() {
+    let d = Number(get("distance").value);
+    let s = Number(get("speed").value);
+
+    if(d <= 0 || s <= 0)
+        return alert("Enter Valid Distance and Speed!");
+
+    let minutes = Math.round(d/s*60);
+
+    get("eta").textContent =
+        "Expected Arrival in "+minutes+" Minutes";
+}
+</script>
+
+</body>
+</html>
