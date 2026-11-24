@@ -1,0 +1,120 @@
+
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+    text-align: center;
+}
+
+header {
+    background: linear-gradient(120deg,#172554,#2563eb);
+    color: white;
+    padding: 60px 20px;
+}
+
+header h1 {
+    font-size: 45px;
+}
+
+nav {
+    background: #172554;
+    padding: 20px;
+}
+
+nav a {
+    color: white;
+    margin: 15px;
+    text-decoration: none;
+}
+
+section {
+    background: white;
+    margin: 25px;
+    padding: 35px;
+    border-radius: 12px;
+}
+
+h2 {
+    color: #1d4ed8;
+}
+
+.speakers {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.card {
+    background: #eff6ff;
+    padding: 25px;
+    width: 230px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px #ddd;
+}
+
+.card img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+table {
+    width: 90%;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background: #2563eb;
+    color: white;
+}
+
+.btn, button {
+    display: inline-block;
+    background: #2563eb;
+    color: white;
+    padding: 14px 25px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+header .btn {
+    background: #f59e0b;
+    color: black;
+}
+
+form {
+    background: white;
+    width: 350px;
+    max-width: 85%;
+    padding: 30px;
+    margin: 30px auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px #ccc;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+footer {
+    background: #172554;
+    color: white;
+    padding: 20px;
+}
