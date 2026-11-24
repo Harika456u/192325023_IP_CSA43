@@ -1,0 +1,547 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>KodaikanalEats</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #f0fdf4;
+    text-align: center;
+}
+header, footer {
+    background: #14532d;
+    color: white;
+    padding: 25px;
+}
+nav {
+    background: #166534;
+    padding: 15px;
+}
+nav a {
+    display: inline-block;
+    color: white;
+    margin: 10px;
+    text-decoration: none;
+}
+section {
+    background: white;
+    margin: 20px;
+    padding: 25px;
+    border-radius: 10px;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.card {
+    background: #dcfce7;
+    padding: 20px;
+    width: 230px;
+    border-radius: 10px;
+}
+input, select, textarea {
+    display: block;
+    width: 280px;
+    max-width: 90%;
+    padding: 10px;
+    margin: 10px auto;
+}
+button {
+    background: #166534;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+table {
+    width: 95%;
+    margin: auto;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #ccc;
+    padding: 12px;
+}
+th {
+    background: #166534;
+    color: white;
+}
+h2 {
+    color: #14532d;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>KODAIKANAL EATS</h1>
+    <p>Explore | Dine | Stay | Enjoy</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#admin">Admin</a>
+    <a href="#restaurants">Restaurants</a>
+    <a href="#rooms">Rooms</a>
+    <a href="#booking">Booking</a>
+    <a href="#staff">Room Boys</a>
+    <a href="#customers">Customers</a>
+    <a href="#offers">Offers</a>
+    <a href="#contact">Contact</a>
+</nav>
+
+<section id="home">
+    <h1>Welcome to KodaikanalEats</h1>
+    <p>Discover delicious food and comfortable rooms
+    in the beautiful hills of Kodaikanal.</p>
+</section>
+
+<section id="admin">
+
+    <h2>Admin Registration</h2>
+
+    <form onsubmit="register(event)">
+        <input id="aname" placeholder="Admin Name" required>
+        <input id="aemail" type="email"
+               placeholder="Email" required>
+        <input id="apass" type="password"
+               placeholder="Password" required>
+        <button>Register</button>
+    </form>
+
+    <h2>Admin Login</h2>
+
+    <form onsubmit="login(event)">
+        <input id="email" type="email"
+               placeholder="Email" required>
+        <input id="password" type="password"
+               placeholder="Password" required>
+        <button>Login</button>
+    </form>
+
+</section>
+
+<section id="restaurants">
+
+    <h2>Explore Restaurants</h2>
+
+    <input id="search" placeholder="Search name or location"
+           oninput="showRestaurants()">
+
+    <select id="cuisine" onchange="showRestaurants()">
+        <option value="">All Cuisines</option>
+        <option>South Indian</option>
+        <option>Chinese</option>
+        <option>Continental</option>
+    </select>
+
+    <select id="rating" onchange="showRestaurants()">
+        <option value="0">All Ratings</option>
+        <option value="4">4 Stars and Above</option>
+        <option value="4.5">4.5 Stars and Above</option>
+    </select>
+
+    <div class="container" id="restaurantlist"></div>
+
+    <h2>Restaurant Table Booking</h2>
+
+    <form onsubmit="bookTable(event)">
+
+        <input id="tname" placeholder="Customer Name" required>
+
+        <select id="restaurant">
+            <option>Hill View Restaurant</option>
+            <option>Green Valley Cafe</option>
+            <option>Lake View Dining</option>
+        </select>
+
+        <input id="tdate" type="date" required>
+
+        <select id="ttime">
+            <option>12:00 PM</option>
+            <option>01:00 PM</option>
+            <option>07:00 PM</option>
+            <option>08:00 PM</option>
+        </select>
+
+        <input id="guests" type="number"
+               placeholder="Number of Guests"
+               min="1" max="6" required>
+
+        <button>Reserve Table</button>
+
+    </form>
+
+</section>
+
+<section id="rooms">
+
+    <h2>Room Details and Availability</h2>
+
+    <div class="container">
+
+        <div class="card">
+            <h1>🛏️</h1>
+            <h3>Single Room</h3>
+            <p>Non-seasonal: ₹1,000</p>
+            <p>Seasonal: ₹1,500</p>
+        </div>
+
+        <div class="card">
+            <h1>🏨</h1>
+            <h3>Double Room</h3>
+            <p>Non-seasonal: ₹2,000</p>
+            <p>Seasonal: ₹3,000</p>
+        </div>
+
+        <div class="card">
+            <h1>🏡</h1>
+            <h3>Deluxe Room</h3>
+            <p>Non-seasonal: ₹3,500</p>
+            <p>Seasonal: ₹5,250</p>
+        </div>
+
+    </div>
+
+    <br>
+
+    <table>
+        <tr>
+            <th>Room Type</th>
+            <th>Available Rooms</th>
+        </tr>
+        <tbody id="roomtable"></tbody>
+    </table>
+
+</section>
+
+<section id="booking">
+
+    <h2>Online Room Booking</h2>
+
+    <form onsubmit="bookRoom(event)">
+
+        <input id="cname" placeholder="Customer Name" required>
+
+        <input id="phone" placeholder="Phone Number"
+               pattern="[0-9]{10}" required>
+
+        <select id="room">
+            <option value="0">Single Room</option>
+            <option value="1">Double Room</option>
+            <option value="2">Deluxe Room</option>
+        </select>
+
+        <select id="season">
+            <option value="1">Non-seasonal</option>
+            <option value="1.5">Seasonal</option>
+        </select>
+
+        <label>Check-in Date</label>
+        <input id="checkin" type="date" required>
+
+        <input id="days" type="number"
+               placeholder="Number of Days" min="1" required>
+
+        <button>Book Room</button>
+
+    </form>
+
+    <h3 id="result"></h3>
+
+</section>
+
+<section id="staff">
+
+    <h2>Room Boys Availability</h2>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+
+        <tr>
+            <td>Ravi</td>
+            <td id="staff0">Available</td>
+            <td><button onclick="assign(0)">Change Status</button></td>
+        </tr>
+
+        <tr>
+            <td>Kumar</td>
+            <td id="staff1">Available</td>
+            <td><button onclick="assign(1)">Change Status</button></td>
+        </tr>
+
+        <tr>
+            <td>Arun</td>
+            <td id="staff2">Available</td>
+            <td><button onclick="assign(2)">Change Status</button></td>
+        </tr>
+
+    </table>
+
+</section>
+
+<section id="customers">
+
+    <h2>Customer Booking Details</h2>
+
+    <table>
+        <tr>
+            <th>Booking ID</th>
+            <th>Customer</th>
+            <th>Booking Type</th>
+            <th>Details</th>
+            <th>Status</th>
+        </tr>
+        <tbody id="customerlist"></tbody>
+    </table>
+
+</section>
+
+<section id="offers">
+
+    <h2>Special Offers</h2>
+
+    <div class="container">
+        <div class="card">
+            <h3>Weekend Offer</h3>
+            <p>Sample 10% dining discount</p>
+        </div>
+        <div class="card">
+            <h3>Family Package</h3>
+            <p>Special family accommodation package</p>
+        </div>
+    </div>
+
+</section>
+
+<section id="contact">
+
+    <h2>Contact Us</h2>
+
+    <form onsubmit="contact(event)">
+        <input placeholder="Your Name" required>
+        <input type="email" placeholder="Email" required>
+        <textarea placeholder="Your Message" required></textarea>
+        <button>Send Message</button>
+    </form>
+
+</section>
+
+<footer>
+    <p>© 2026 KodaikanalEats | All Rights Reserved</p>
+</footer>
+
+<script>
+
+let admin = null;
+let loggedIn = false;
+let count = 100;
+
+let rooms = ["Single Room", "Double Room", "Deluxe Room"];
+let prices = [1000, 2000, 3500];
+let available = [5, 4, 3];
+
+let tables = {};
+
+let restaurants = [
+    {
+        name: "Hill View Restaurant",
+        cuisine: "South Indian",
+        location: "Hill Road",
+        rating: 4.5,
+        menu: "Dosa, Idli, Meals"
+    },
+    {
+        name: "Green Valley Cafe",
+        cuisine: "Chinese",
+        location: "Town Center",
+        rating: 4.2,
+        menu: "Noodles, Fried Rice"
+    },
+    {
+        name: "Lake View Dining",
+        cuisine: "Continental",
+        location: "Lake Road",
+        rating: 4.8,
+        menu: "Pizza, Pasta, Sandwich"
+    }
+];
+
+function register(e) {
+    e.preventDefault();
+
+    admin = {
+        email: document.getElementById("aemail").value,
+        password: document.getElementById("apass").value
+    };
+
+    loggedIn = false;
+    alert("Registration Successful!");
+    e.target.reset();
+}
+
+function login(e) {
+    e.preventDefault();
+
+    if(admin &&
+       document.getElementById("email").value === admin.email &&
+       document.getElementById("password").value === admin.password) {
+
+        loggedIn = true;
+        alert("Login Successful!");
+
+    } else {
+        alert("Invalid Login!");
+    }
+}
+
+function showRestaurants() {
+
+    let search = document.getElementById("search").value.toLowerCase();
+    let cuisine = document.getElementById("cuisine").value;
+    let rating = Number(document.getElementById("rating").value);
+
+    let list = document.getElementById("restaurantlist");
+    list.innerHTML = "";
+
+    restaurants.forEach(r => {
+
+        if((r.name + r.location).toLowerCase().includes(search) &&
+           (!cuisine || r.cuisine === cuisine) &&
+           r.rating >= rating) {
+
+            list.innerHTML += `
+            <div class="card">
+                <h1>🍽️</h1>
+                <h3>${r.name}</h3>
+                <p>${r.cuisine}</p>
+                <p>${r.location}</p>
+                <p>Rating: ⭐ ${r.rating}</p>
+                <p>Menu: ${r.menu}</p>
+            </div>`;
+        }
+    });
+}
+
+function record(name, type, details) {
+
+    let id = "KB" + (++count);
+
+    let row = document.getElementById("customerlist").insertRow();
+
+    [id, name, type, details, "Confirmed"].forEach(value => {
+        row.insertCell().textContent = value;
+    });
+
+    return id;
+}
+
+function bookTable(e) {
+    e.preventDefault();
+
+    let name = document.getElementById("tname").value;
+    let restaurant = document.getElementById("restaurant").value;
+    let date = document.getElementById("tdate").value;
+    let time = document.getElementById("ttime").value;
+    let guests = document.getElementById("guests").value;
+
+    let slot = restaurant + date + time;
+
+    if((tables[slot] || 0) >= 5) {
+        alert("No Tables Available!");
+        return;
+    }
+
+    tables[slot] = (tables[slot] || 0) + 1;
+
+    let id = record(name, "Restaurant",
+        restaurant + " | " + date + " | " + time +
+        " | Guests: " + guests);
+
+    alert("Table Booked Successfully! ID: " + id);
+
+    e.target.reset();
+}
+
+function showRooms() {
+
+    let table = document.getElementById("roomtable");
+    table.innerHTML = "";
+
+    rooms.forEach((name, i) => {
+
+        table.innerHTML += `
+        <tr>
+            <td>${name}</td>
+            <td>${available[i]}</td>
+        </tr>`;
+    });
+}
+
+function bookRoom(e) {
+    e.preventDefault();
+
+    let i = Number(document.getElementById("room").value);
+    let name = document.getElementById("cname").value;
+    let phone = document.getElementById("phone").value;
+    let date = document.getElementById("checkin").value;
+    let days = Number(document.getElementById("days").value);
+    let season = Number(document.getElementById("season").value);
+
+    if(available[i] <= 0) {
+        alert("Room Not Available!");
+        return;
+    }
+
+    let total = prices[i] * days * season;
+
+    available[i]--;
+
+    let id = record(name, "Room",
+        rooms[i] + " | " + date + " | " +
+        days + " Days | Phone: " + phone + " | ₹" + total);
+
+    document.getElementById("result").textContent =
+        "Booking Confirmed! ID: " + id + " | Total: ₹" + total;
+
+    showRooms();
+    e.target.reset();
+}
+
+function assign(i) {
+
+    if(!loggedIn) {
+        alert("Please Login as Admin!");
+        return;
+    }
+
+    let status = document.getElementById("staff" + i);
+
+    status.textContent =
+        status.textContent === "Available" ? "Busy" : "Available";
+}
+
+function contact(e) {
+    e.preventDefault();
+    alert("Demo Message Submitted!");
+    e.target.reset();
+}
+
+showRestaurants();
+showRooms();
+
+</script>
+
+</body>
+</html>
