@@ -1,0 +1,31 @@
+
+body {
+    font-family: Arial;
+    text-align: center;
+    background: lightyellow;
+}
+
+h1 {
+    color: darkblue;
+}
+
+h3 {
+    color: darkred;
+}
+
+input {
+    padding: 10px;
+    margin: 8px;
+}
+
+button {
+    padding: 10px;
+    background: darkblue;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+p {
+    font-size: 16px;
+}

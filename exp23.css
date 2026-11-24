@@ -1,0 +1,26 @@
+
+body {
+    font-family: Arial;
+    text-align: center;
+    background: lightpink;
+}
+
+h1 {
+    color: darkred;
+}
+
+input {
+    padding: 10px;
+    margin: 8px;
+}
+
+button {
+    padding: 10px;
+    background: darkred;
+    color: white;
+    border: none;
+}
+
+p {
+    font-weight: bold;
+}

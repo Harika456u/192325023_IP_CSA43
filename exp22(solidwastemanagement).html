@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Solid Waste Management System</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f0f5f0;
+            margin: 25px;
+        }
+        h1 { color: green; }
+        .box {
+            background: white;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 8px;
+        }
+        button {
+            padding: 8px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        input, select {
+            padding: 8px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Solid Waste Management System</h1>
+
+<h2>Select User</h2>
+<select id="role" onchange="showRole()">
+    <option value="public">General Public</option>
+    <option value="admin">Administrator</option>
+    <option value="driver">Driver</option>
+</select>
+
+<div id="content"></div>
+
+<script>
+var bins = [];
+var complaints = [];
+var garbageLoad = 0;
+
+function showRole() {
+    var role = document.getElementById("role").value;
+    var content = document.getElementById("content");
+
+    if (role == "admin") {
+        content.innerHTML = `
+            <div class="box">
+                <h2>Administrator Dashboard</h2>
+                <input id="binName" placeholder="Garbage bin name">
+                <input id="binLocation" placeholder="Bin location">
+                <button onclick="createBin()">Create Bin</button>
+                <button onclick="viewBins()">View Bins</button>
+                <button onclick="viewComplaints()">View Complaints</button>
+                <button onclick="showReport()">Garbage Report</button>
+                <div id="adminResult"></div>
+            </div>`;
+    }
+    else if (role == "public") {
+        content.innerHTML = `
+            <div class="box">
+                <h2>General Public Dashboard</h2>
+                <input id="person" placeholder="Your name">
+                <input id="complaint" placeholder="Enter complaint">
+                <button onclick="registerComplaint()">Register Complaint</button>
+                <button onclick="myComplaints()">My Complaints</button>
+                <div id="publicResult"></div>
+            </div>`;
+    }
+    else {
+        content.innerHTML = `
+            <div class="box">
+                <h2>Driver Dashboard</h2>
+                <p>Daily Work: Collect garbage from assigned bins.</p>
+                <p>Suggested Route: Bin 1 → Bin 2 → Dumping Site</p>
+                <button onclick="chooseRoute()">Choose Route</button><br>
+                <input id="load" type="number" placeholder="Garbage load in kg">
+                <button onclick="updateLoad()">Update Load</button>
+                <div id="driverResult"></div>
+            </div>`;
+    }
+}
+
+function createBin() {
+    var name = document.getElementById("binName").value;
+    var location = document.getElementById("binLocation").value;
+
+    if (name == "" || location == "") {
+        alert("Enter bin name and location");
+        return;
+    }
+
+    bins.push({name: name, location: location});
+    alert("Garbage bin created successfully!");
+}
+
+function viewBins() {
+    var output = "";
+
+    for (var i = 0; i < bins.length; i++) {
+        output += "<p>" + bins[i].name + " - " +
+                  bins[i].location +
+                  " <button onclick='deleteBin(" + i + ")'>Delete</button></p>";
+    }
+
+    document.getElementById("adminResult").innerHTML =
+        output || "No garbage bins available.";
+}
+
+function deleteBin(index) {
+    bins.splice(index, 1);
+    viewBins();
+}
+
+function registerComplaint() {
+    var person = document.getElementById("person").value;
+    var complaint = document.getElementById("complaint").value;
+
+    if (person == "" || complaint == "") {
+        alert("Enter your name and complaint");
+        return;
+    }
+
+    complaints.push({
+        person: person,
+        complaint: complaint,
+        status: "Pending"
+    });
+
+    alert("Complaint registered successfully!");
+}
+
+function myComplaints() {
+    var person = document.getElementById("person").value;
+    var output = "";
+
+    for (var i = 0; i < complaints.length; i++) {
+        if (complaints[i].person == person) {
+            output += "<p>" + complaints[i].complaint +
+                      " - Status: " + complaints[i].status + "</p>";
+        }
+    }
+
+    document.getElementById("publicResult").innerHTML =
+        output || "No complaints found.";
+}
+
+function viewComplaints() {
+    var output = "";
+
+    for (var i = 0; i < complaints.length; i++) {
+        output += "<p>" + complaints[i].person + ": " +
+                  complaints[i].complaint + " - " +
+                  complaints[i].status + "</p>";
+    }
+
+    document.getElementById("adminResult").innerHTML =
+        output || "No complaints received.";
+}
+
+function showReport() {
+    document.getElementById("adminResult").innerHTML =
+        "Total Garbage Bins: " + bins.length +
+        "<br>Total Complaints: " + complaints.length +
+        "<br>Garbage Load Report: " + garbageLoad + " kg";
+}
+
+function chooseRoute() {
+    document.getElementById("driverResult").innerHTML =
+        "Route selected: Visit assigned bins and then the dumping site.";
+}
+
+function updateLoad() {
+    var load = Number(document.getElementById("load").value);
+
+    if (load < 0 || document.getElementById("load").value == "") {
+        alert("Enter a valid garbage load");
+        return;
+    }
+
+    garbageLoad = load;
+    document.getElementById("driverResult").innerHTML =
+        "Garbage load updated: " + garbageLoad + " kg";
+}
+
+showRole();
+</script>
+
+</body>
+</html>

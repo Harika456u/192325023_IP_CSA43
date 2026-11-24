@@ -1,0 +1,26 @@
+
+body {
+    font-family: Arial;
+    text-align: center;
+    background: lightgreen;
+}
+
+h1 {
+    color: darkgreen;
+}
+
+input {
+    padding: 10px;
+    margin: 10px;
+}
+
+button {
+    padding: 10px;
+    background: darkgreen;
+    color: white;
+    border: none;
+}
+
+p {
+    font-weight: bold;
+}
