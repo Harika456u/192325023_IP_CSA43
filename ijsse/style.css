@@ -1,0 +1,116 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    color: #17365d;
+    text-align: center;
+}
+
+header {
+    background: #17365d;
+    color: white;
+    padding: 30px;
+}
+
+header h1 {
+    font-size: 40px;
+}
+
+nav {
+    background: #254d7c;
+    padding: 18px;
+}
+
+nav a {
+    display: inline-block;
+    color: white;
+    margin: 8px;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: gold;
+}
+
+.banner {
+    background: #dbeafe;
+    padding: 60px 20px;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    padding: 30px;
+}
+
+.card {
+    background: white;
+    width: 280px;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px #ccc;
+}
+
+.panel {
+    background: white;
+    max-width: 850px;
+    margin: 25px auto;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+form {
+    background: white;
+    width: 380px;
+    max-width: 85%;
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px #ccc;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button, .btn {
+    display: inline-block;
+    background: #17365d;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    margin: 5px;
+}
+
+table {
+    width: 95%;
+    margin: 25px auto;
+    border-collapse: collapse;
+    background: white;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 12px;
+}
+
+th {
+    background: #17365d;
+    color: white;
+}
+
+footer {
+    background: #17365d;
+    color: white;
+    padding: 20px;
+}
