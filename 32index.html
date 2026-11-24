@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Ram Infotech</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #eef2f7;
+    text-align: center;
+}
+header, footer {
+    background: #142850;
+    color: white;
+    padding: 25px;
+}
+nav {
+    background: #27496d;
+    padding: 15px;
+}
+nav a {
+    color: white;
+    margin: 12px;
+    text-decoration: none;
+}
+section {
+    background: white;
+    margin: 20px;
+    padding: 25px;
+    border-radius: 10px;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.card {
+    background: #e3edf7;
+    padding: 20px;
+    width: 230px;
+    border-radius: 10px;
+}
+input, select, textarea {
+    display: block;
+    width: 280px;
+    max-width: 90%;
+    padding: 10px;
+    margin: 10px auto;
+}
+button {
+    background: #142850;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+table {
+    width: 90%;
+    margin: auto;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #ccc;
+    padding: 12px;
+}
+th {
+    background: #142850;
+    color: white;
+}
+h2 {
+    color: #142850;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>RAM INFOTECH</h1>
+    <p>Laptop Sales | Services | Rentals</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#admin">Admin</a>
+    <a href="#sales">Sales</a>
+    <a href="#service">Services</a>
+    <a href="#customer">Customers</a>
+    <a href="#rental">Rental</a>
+    <a href="#stock">Stock</a>
+    <a href="#about">About Us</a>
+    <a href="#faq">FAQ</a>
+    <a href="#contact">Contact</a>
+</nav>
+
+<section id="home">
+    <h1>Welcome to Ram Infotech</h1>
+    <p>Your trusted destination for laptop sales,
+    repairs and rental services.</p>
+</section>
+
+<section id="admin">
+    <h2>Admin Registration</h2>
+    <form onsubmit="registerAdmin(event)">
+        <input id="aname" placeholder="Admin Name" required>
+        <input id="aemail" type="email"
+               placeholder="Email" required>
+        <input id="apass" type="password"
+               placeholder="Password" required>
+        <button>Register</button>
+    </form>
+
+    <h2>Admin Login</h2>
+    <form onsubmit="login(event)">
+        <input id="email" type="email"
+               placeholder="Email" required>
+        <input id="password" type="password"
+               placeholder="Password" required>
+        <button>Login</button>
+    </form>
+</section>
+
+<section id="sales">
+    <h2>Online Laptop Store</h2>
+
+    <div class="container">
+
+        <div class="card">
+            <h1>💻</h1>
+            <h3>Dell Inspiron</h3>
+            <p>Intel Core i5</p>
+            <p>8GB RAM | 512GB SSD</p>
+            <p>Rating: ★★★★☆</p>
+            <h3>₹45,000</h3>
+            <button onclick="buy(0)">Buy Now</button>
+        </div>
+
+        <div class="card">
+            <h1>💻</h1>
+            <h3>HP Pavilion</h3>
+            <p>Intel Core i7</p>
+            <p>16GB RAM | 512GB SSD</p>
+            <p>Rating: ★★★★★</p>
+            <h3>₹65,000</h3>
+            <button onclick="buy(1)">Buy Now</button>
+        </div>
+
+        <div class="card">
+            <h1>💻</h1>
+            <h3>Lenovo IdeaPad</h3>
+            <p>AMD Ryzen 5</p>
+            <p>8GB RAM | 512GB SSD</p>
+            <p>Rating: ★★★★☆</p>
+            <h3>₹40,000</h3>
+            <button onclick="buy(2)">Buy Now</button>
+        </div>
+
+    </div>
+</section>
+
+<section id="service">
+    <h2>Laptop Service Center</h2>
+
+    <form onsubmit="service(event)">
+        <input id="sname" placeholder="Customer Name" required>
+        <input id="model" placeholder="Laptop Model" required>
+
+        <select id="problem">
+            <option>Screen Replacement</option>
+            <option>Battery Replacement</option>
+            <option>Software Installation</option>
+            <option>Keyboard Repair</option>
+            <option>General Service</option>
+        </select>
+
+        <input id="sdate" type="date" required>
+        <button>Book Service</button>
+    </form>
+
+    <h3>Track Service Status</h3>
+    <input id="sid" placeholder="Service ID">
+    <button onclick="track()">Track Status</button>
+    <p id="status"></p>
+
+    <h3>Troubleshooting Guide</h3>
+    <p>Check the charger, restart the laptop and
+    update your operating system.</p>
+</section>
+
+<section id="customer">
+    <h2>Customer Purchase and Service Details</h2>
+
+    <table>
+        <tr>
+            <th>Customer</th>
+            <th>Laptop</th>
+            <th>Type</th>
+            <th>Details</th>
+        </tr>
+        <tbody id="records"></tbody>
+    </table>
+</section>
+
+<section id="rental">
+    <h2>Laptop Rental Agreement</h2>
+
+    <form onsubmit="rent(event)">
+        <input id="rname" placeholder="Customer Name" required>
+
+        <select id="rlaptop">
+            <option>Dell Inspiron</option>
+            <option>HP Pavilion</option>
+            <option>Lenovo IdeaPad</option>
+        </select>
+
+        <input id="days" type="number"
+               placeholder="Number of Days" min="1" required>
+
+        <p>Rental Charge: ₹500 per day</p>
+        <p>Return the laptop in good condition.</p>
+
+        <label>
+            <input type="checkbox" required
+                   style="display:inline;width:auto">
+            I accept the rental agreement.
+        </label>
+        <br><br>
+
+        <button>Confirm Rental</button>
+    </form>
+
+    <p id="rentresult"></p>
+</section>
+
+<section id="stock">
+    <h2>Stock Maintenance</h2>
+
+    <table>
+        <tr>
+            <th>Laptop</th>
+            <th>Price</th>
+            <th>Available Stock</th>
+        </tr>
+        <tbody id="stocktable"></tbody>
+    </table>
+
+    <h3>Add Stock</h3>
+
+    <select id="stockmodel">
+        <option value="0">Dell Inspiron</option>
+        <option value="1">HP Pavilion</option>
+        <option value="2">Lenovo IdeaPad</option>
+    </select>
+
+    <input id="qty" type="number"
+           placeholder="Quantity" min="1">
+
+    <button onclick="addStock()">Add Stock</button>
+</section>
+
+<section id="about">
+    <h2>About Us</h2>
+    <p>Ram Infotech provides quality laptops,
+    professional repair services and affordable
+    laptop rental solutions.</p>
+</section>
+
+<section id="faq">
+    <h2>Frequently Asked Questions</h2>
+
+    <details>
+        <summary>Do you provide laptop repair?</summary>
+        <p>Yes, we provide hardware and software services.</p>
+    </details>
+
+    <details>
+        <summary>Can I rent a laptop?</summary>
+        <p>Yes, laptops are available for daily rental.</p>
+    </details>
+
+    <details>
+        <summary>Can I track my service?</summary>
+        <p>Yes, enter your service ID to track its status.</p>
+    </details>
+</section>
+
+<section id="contact">
+    <h2>Contact Us</h2>
+
+    <form onsubmit="event.preventDefault();
+          alert('Demo message submitted!'); this.reset();">
+
+        <input placeholder="Your Name" required>
+        <input type="email" placeholder="Email" required>
+        <textarea placeholder="Message" required></textarea>
+        <button>Send Message</button>
+    </form>
+</section>
+
+<footer>
+    <p>© 2026 Ram Infotech. All Rights Reserved.</p>
+</footer>
+
+<script>
+let laptops = ["Dell Inspiron", "HP Pavilion", "Lenovo IdeaPad"];
+let prices = [45000, 65000, 40000];
+let stock = [10, 8, 12];
+let services = {};
+let count = 100;
+let admin = null;
+let loggedIn = false;
+
+function registerAdmin(e) {
+    e.preventDefault();
+    admin = {
+        email: document.getElementById("aemail").value,
+        password: document.getElementById("apass").value
+    };
+    loggedIn = false;
+    alert("Admin Registration Successful!");
+    e.target.reset();
+}
+
+function login(e) {
+    e.preventDefault();
+
+    if(admin &&
+       document.getElementById("email").value == admin.email &&
+       document.getElementById("password").value == admin.password) {
+        loggedIn = true;
+        alert("Login Successful!");
+    } else {
+        alert("Invalid Login!");
+    }
+}
+
+function displayStock() {
+    let table = document.getElementById("stocktable");
+    table.innerHTML = "";
+
+    laptops.forEach((name, i) => {
+        table.innerHTML += `<tr>
+            <td>${name}</td>
+            <td>₹${prices[i]}</td>
+            <td>${stock[i]}</td>
+        </tr>`;
+    });
+}
+
+function record(name, laptop, type, details) {
+    let row = document.getElementById("records").insertRow();
+
+    [name, laptop, type, details].forEach(value => {
+        row.insertCell().textContent = value;
+    });
+}
+
+function buy(i) {
+    if(stock[i] <= 0) {
+        alert("Out of Stock!");
+        return;
+    }
+
+    let name = prompt("Enter Customer Name");
+
+    if(name && name.trim()) {
+        stock[i]--;
+        record(name, laptops[i], "Purchase", "₹" + prices[i]);
+        displayStock();
+        alert("Purchase Successful!");
+    }
+}
+
+function service(e) {
+    e.preventDefault();
+
+    let id = "SR" + (++count);
+
+    services[id] = "Booked";
+
+    record(
+        document.getElementById("sname").value,
+        document.getElementById("model").value,
+        "Service",
+        id + " - " + document.getElementById("problem").value
+        + " - " + document.getElementById("sdate").value
+    );
+
+    alert("Service Booked! Your ID: " + id);
+    e.target.reset();
+}
+
+function track() {
+    let id = document.getElementById("sid").value;
+
+    document.getElementById("status").textContent =
+        services[id] || "Service ID Not Found";
+}
+
+function rent(e) {
+    e.preventDefault();
+
+    let name = document.getElementById("rname").value;
+    let laptop = document.getElementById("rlaptop").value;
+    let days = Number(document.getElementById("days").value);
+    let total = days * 500;
+
+    record(name, laptop, "Rental", days + " days - ₹" + total);
+
+    document.getElementById("rentresult").textContent =
+        "Rental Agreement Confirmed! Total: ₹" + total;
+
+    e.target.reset();
+}
+
+function addStock() {
+    if(!loggedIn) {
+        alert("Please login as administrator!");
+        return;
+    }
+
+    let i = Number(document.getElementById("stockmodel").value);
+    let qty = Number(document.getElementById("qty").value);
+
+    if(Number.isInteger(qty) && qty > 0) {
+        stock[i] += qty;
+        displayStock();
+        alert("Stock Updated Successfully!");
+    } else {
+        alert("Enter a valid quantity!");
+    }
+}
+
+displayStock();
+</script>
+
+</body>
+</html>
