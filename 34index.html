@@ -1,0 +1,380 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>LearnWell Tuition Centre</title>
+<style>
+body {
+    font-family: Arial;
+    margin: 0;
+    background: #eef2ff;
+    text-align: center;
+}
+header, footer {
+    background: #312e81;
+    color: white;
+    padding: 25px;
+}
+nav {
+    background: #4338ca;
+    padding: 15px;
+}
+nav a {
+    color: white;
+    margin: 10px;
+    text-decoration: none;
+}
+section {
+    background: white;
+    margin: 20px;
+    padding: 25px;
+    border-radius: 10px;
+}
+input, select, textarea {
+    display: block;
+    width: 280px;
+    max-width: 90%;
+    padding: 10px;
+    margin: 10px auto;
+}
+button {
+    background: #4338ca;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+table {
+    width: 90%;
+    margin: auto;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #ccc;
+    padding: 12px;
+}
+th {
+    background: #312e81;
+    color: white;
+}
+h2 {
+    color: #312e81;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>LEARNWELL TUITION CENTRE</h1>
+    <p>Learn Today, Lead Tomorrow</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#admin">Admin</a>
+    <a href="#teacher">Teachers</a>
+    <a href="#subjects">Subjects</a>
+    <a href="#student">Students</a>
+    <a href="#reports">Reports</a>
+    <a href="#feedback">Feedback</a>
+    <a href="#contact">Contact</a>
+</nav>
+
+<section id="home">
+    <h1>Welcome to LearnWell</h1>
+    <p>Quality Education for a Better Future</p>
+
+    <h2>Announcements</h2>
+    <p>New admissions are open!</p>
+    <p>Online and offline classes are available.</p>
+
+    <div id="notices"></div>
+
+    <input id="notice" placeholder="New Announcement">
+    <button onclick="announce()">Post Announcement</button>
+</section>
+
+<section id="admin">
+    <h2>Admin Registration and Login</h2>
+
+    <input id="aname" placeholder="Admin Name">
+    <input id="aemail" type="email" placeholder="Email">
+    <input id="apass" type="password" placeholder="Password">
+
+    <button onclick="register('admin')">Register</button>
+    <button onclick="login('admin')">Login</button>
+</section>
+
+<section id="teacher">
+    <h2>Teacher Registration and Login</h2>
+
+    <input id="tname" placeholder="Teacher Name">
+    <input id="temail" type="email" placeholder="Email">
+    <input id="tpass" type="password" placeholder="Password">
+    <input id="tsubject" placeholder="Teaching Subject">
+
+    <button onclick="register('teacher')">Register</button>
+    <button onclick="login('teacher')">Login</button>
+</section>
+
+<section id="subjects">
+    <h2>Course Offerings</h2>
+
+    <table>
+        <tr>
+            <th>Subject</th>
+            <th>Duration</th>
+            <th>Monthly Fees</th>
+            <th>Timing</th>
+            <th>Mode</th>
+        </tr>
+        <tr>
+            <td>Mathematics</td>
+            <td>3 Months</td>
+            <td>₹1500</td>
+            <td>4 PM</td>
+            <td>Online / Offline</td>
+        </tr>
+        <tr>
+            <td>Science</td>
+            <td>3 Months</td>
+            <td>₹1200</td>
+            <td>5 PM</td>
+            <td>Online / Offline</td>
+        </tr>
+        <tr>
+            <td>English</td>
+            <td>2 Months</td>
+            <td>₹1000</td>
+            <td>6 PM</td>
+            <td>Online / Offline</td>
+        </tr>
+        <tr>
+            <td>Computer Science</td>
+            <td>4 Months</td>
+            <td>₹2000</td>
+            <td>7 PM</td>
+            <td>Online / Offline</td>
+        </tr>
+    </table>
+</section>
+
+<section id="student">
+    <h2>Online Student Registration</h2>
+
+    <form onsubmit="enroll(event)">
+        <input id="sname" placeholder="Student Name" required>
+        <input id="semail" type="email" placeholder="Email" required>
+        <input id="phone" placeholder="Phone Number" required>
+
+        <select id="subject">
+            <option value="0">Mathematics</option>
+            <option value="1">Science</option>
+            <option value="2">English</option>
+            <option value="3">Computer Science</option>
+        </select>
+
+        <select id="mode">
+            <option>Online</option>
+            <option>Offline</option>
+        </select>
+
+        <input id="paid" type="number" min="0"
+               placeholder="Fees Paid" required>
+
+        <button>Register Student</button>
+    </form>
+
+    <h2>Student Details</h2>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Subject</th>
+            <th>Mode</th>
+            <th>Fees</th>
+            <th>Paid</th>
+            <th>Balance</th>
+        </tr>
+        <tbody id="students"></tbody>
+    </table>
+</section>
+
+<section id="reports">
+    <h2>Fee Collection Reports</h2>
+
+    <button onclick="report('monthly')">Monthly Report</button>
+    <button onclick="report('yearly')">Yearly Report</button>
+
+    <h3 id="reportresult"></h3>
+</section>
+
+<section id="feedback">
+    <h2>Student Feedback</h2>
+
+    <form onsubmit="feedback(event)">
+        <input id="fname" placeholder="Student Name" required>
+
+        <select id="rating">
+            <option>Excellent</option>
+            <option>Good</option>
+            <option>Average</option>
+        </select>
+
+        <textarea id="comment" placeholder="Feedback" required></textarea>
+        <button>Submit Feedback</button>
+    </form>
+
+    <h3>Feedback Report</h3>
+    <div id="feedbacklist"></div>
+</section>
+
+<section>
+    <h2>Maintenance Requests</h2>
+
+    <form onsubmit="requestHelp(event)">
+        <input id="mname" placeholder="Name" required>
+        <textarea id="issue" placeholder="Describe Issue" required></textarea>
+        <button>Submit Request</button>
+    </form>
+
+    <div id="requests"></div>
+</section>
+
+<section>
+    <h2>About Us</h2>
+    <p>LearnWell provides quality education through
+    experienced teachers and flexible learning methods.</p>
+</section>
+
+<section id="contact">
+    <h2>Contact Us</h2>
+
+    <form onsubmit="event.preventDefault();
+          alert('Demo message submitted'); this.reset();">
+
+        <input placeholder="Name" required>
+        <input type="email" placeholder="Email" required>
+        <textarea placeholder="Message" required></textarea>
+        <button>Send Message</button>
+    </form>
+</section>
+
+<footer>© LearnWell Tuition Centre</footer>
+
+<script>
+const get = id => document.getElementById(id);
+let accounts = {admin: [], teacher: []};
+let adminLogin = false;
+let records = [];
+let subjects = ["Mathematics", "Science", "English", "Computer Science"];
+let fees = [1500, 1200, 1000, 2000];
+
+function register(role) {
+    let p = role === "admin" ? "a" : "t";
+    let name = get(p+"name").value;
+    let email = get(p+"email").value;
+    let password = get(p+"pass").value;
+
+    if(!name || !email || !password)
+        return alert("Fill all details!");
+
+    if(accounts[role].some(a => a.email === email))
+        return alert("Account already exists!");
+
+    accounts[role].push({name,email,password,
+        subject: role === "teacher" ? get("tsubject").value : ""});
+
+    alert("Registration Successful!");
+}
+
+function login(role) {
+    let p = role === "admin" ? "a" : "t";
+
+    let valid = accounts[role].some(a =>
+        a.email === get(p+"email").value &&
+        a.password === get(p+"pass").value);
+
+    if(role === "admin") adminLogin = valid;
+
+    alert(valid ? "Login Successful!" : "Invalid Login!");
+}
+
+function announce() {
+    if(!adminLogin) return alert("Login as Admin!");
+
+    let p = document.createElement("p");
+    p.textContent = get("notice").value;
+    get("notices").appendChild(p);
+    get("notice").value = "";
+}
+
+function enroll(e) {
+    e.preventDefault();
+
+    let i = Number(get("subject").value);
+    let paid = Number(get("paid").value);
+
+    if(paid > fees[i])
+        return alert("Amount exceeds monthly fees!");
+
+    records.push({
+        name: get("sname").value,
+        email: get("semail").value,
+        phone: get("phone").value,
+        paid: paid,
+        date: new Date()
+    });
+
+    let row = get("students").insertRow();
+
+    [get("sname").value, subjects[i], get("mode").value,
+     fees[i], paid, fees[i]-paid].forEach(v => {
+        row.insertCell().textContent = v;
+    });
+
+    alert("Student Registered Successfully!");
+    e.target.reset();
+}
+
+function report(type) {
+    let now = new Date();
+
+    let total = records.filter(r =>
+        r.date.getFullYear() === now.getFullYear() &&
+        (type === "yearly" ||
+         r.date.getMonth() === now.getMonth())
+    ).reduce((sum,r) => sum+r.paid,0);
+
+    get("reportresult").textContent =
+        type + " Fee Collection: ₹" + total;
+}
+
+function feedback(e) {
+    e.preventDefault();
+
+    let p = document.createElement("p");
+    p.textContent = get("fname").value + " - " +
+        get("rating").value + " - " + get("comment").value;
+
+    get("feedbacklist").appendChild(p);
+    e.target.reset();
+}
+
+function requestHelp(e) {
+    e.preventDefault();
+
+    let p = document.createElement("p");
+    p.textContent = get("mname").value + ": " +
+        get("issue").value + " - Pending";
+
+    get("requests").appendChild(p);
+    alert("Request Submitted!");
+    e.target.reset();
+}
+</script>
+
+</body>
+</html>
